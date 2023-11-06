@@ -2,9 +2,11 @@ const CheckUser = (loginStatus, user, nav) => {
   if (loginStatus === true) {
     if (user.userRole === "ADMIN") {
       nav("/admin");
-    } else {
+    } else if(user.userRole === "MEMBER" || user.userRole === "ADMIN") {
       nav("/");
     }
+  } else {
+    nav("/login");
   }
 };
 

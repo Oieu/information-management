@@ -46,12 +46,17 @@ function Login() {
     e.preventDefault();
     clearErrors();
 
+    if (email.trim() === "" || password.trim() === "") {
+      if(email.trim() === "") {
+        return setErrors({ ...errors, emailError: "Please input all fields." });
+      } else {
+        return setErrors({ ...errors, passwordError: "Please input all fields." });
+      }
+    }
+
     const validationErrors = {};
     if (!validateEmail(email)) {
       return setErrors({ ...errors, emailError: "Invalid email format" });
-    }
-    if (email.trim() === "" || password.trim() === "") {
-      return setErrors({ ...errors, error: "Please input all fields." });
     }
 
     if (Object.keys(validationErrors).length === 0) {
