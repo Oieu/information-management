@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   AiFillCloseCircle,
-  AiOutlineFlag,
   AiFillEdit,
   AiFillDelete,
   AiOutlineStar,
@@ -380,7 +379,7 @@ function Services({ nav }) {
                     </span>
                     <div className="w-1/4 flex justify-end gap-3 text-xl">
                       <span>
-                        <AiFillEdit className="text-green-300 hover:text-green-600" />
+                        <AiFillEdit className="text-blue-300 hover:text-blue-600" />
                       </span>
                       <span>
                         <AiFillDelete onClick={(e) => openDeleteModal(e, index)} className="text-red-300 hover:text-red-600" />
@@ -391,7 +390,7 @@ function Services({ nav }) {
               );
             })}
           </div>
-          <div>
+          <div className="pl-5">
             <button
               type="button"
               className="bg-green-400 flex items-center gap-3 text-black font-extrabold border-none hover:bg-green-600 hover:text-white hover:translate-y-[-4px] transition-all"
