@@ -7,8 +7,10 @@ import AdminNavbar from "./UI/adminNavbarComponents/AdminNavbar";
 import AdminMain from "./adminComponents/AdminMain";
 import CheckUser from "../../controllers/CheckUser";
 import { useAppContext } from "../../controllers/auth/AuthContext";
+import { TabTitle } from "../../utils/GeneralFunctions";
 
 function AdminHome({ nav }) {
+  TabTitle("Admin", true);
   const { loginStatus, user } = useAppContext();
 
   axios.defaults.withCredentials = true;

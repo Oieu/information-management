@@ -7,8 +7,10 @@ import CheckUser from '../controllers/CheckUser';
 import { RegisterFormContainer } from './admin/UI/forms/Forms';
 import BackToHome from './admin/UI/BackToHome';
 import { useAppContext } from '../controllers/auth/AuthContext';
+import { TabTitle } from '../utils/GeneralFunctions';
 
 function SignUp() {
+  TabTitle('Register', false);
   const { loginStatus, user } = useAppContext();
   const [values, setValues] = useState({
     userName: '',

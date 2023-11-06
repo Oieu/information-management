@@ -3,9 +3,11 @@ import axios from "axios";
 import LandingPage from "./LandingPage";
 import { useAppContext } from "../../controllers/auth/AuthContext";
 import CheckUser from "../../controllers/CheckUser";
+import { TabTitle } from "../../utils/GeneralFunctions";
 
 function MemberHome({ nav }) {
   const { loginStatus, user, setLoginStatus, setUser } = useAppContext();
+  TabTitle("Home", true);
 
   axios.defaults.withCredentials = true;
 

@@ -19,7 +19,7 @@ function AdminMain({ nav }) {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/materials/*" element={<Materials nav={nav}/>} />
-          <Route path="/services" element={<Services />} />
+          <Route path="/services" element={<Services nav={nav}/>} />
         </Routes>
       </main>
   )

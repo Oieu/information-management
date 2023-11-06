@@ -7,7 +7,6 @@ import UserWrapper from "../admin/profileComponents/userComponents/UserWrapper";
 import { Link } from "react-router-dom";
 import { LogoutButtonMember } from "../admin/UI/LogoutButton";
 import { useAppContext } from "../../controllers/auth/AuthContext";
-import { Routes, Route } from "react-router-dom";
 
 function LandingPage({ handleLogout }) {
   const { loginStatus, user } = useAppContext();
@@ -57,13 +56,13 @@ function LandingPage({ handleLogout }) {
                 <div className="w-full flex justify-center items-center gap-5">
                   <Link
                     to={`/login`}
-                    className="w-1/4 p-3 rounded-lg bg-blue-300 text-black hover:text-white hover:bg-blue-900 hover:translate-y-[-5px] transition-all"
+                    className="w-1/4 p-3 rounded-lg bg-orange-300 text-black hover:text-white hover:border-black hover:border-2 hover:bg-orange-500 hover:translate-y-[-5px] transition-all"
                   >
                     Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="w-1/4 p-3 rounded-lg bg-green-400 text-black hover:text-white hover:bg-green-700 hover:translate-y-[-5px] transition-all"
+                    className="w-1/4 p-3 rounded-lg bg-green-400 text-black hover:text-white hover:border-black hover:border-2 hover:bg-green-700 hover:translate-y-[-5px] transition-all"
                   >
                     Register
                   </Link>
@@ -156,8 +155,6 @@ function LandingPage({ handleLogout }) {
           <p>About Quick-Ink-Reserve Lorem Ipsum .,..,.,.</p>
         </div>
       </div>
-      <Routes>
-      </Routes>
     </>
   );
 }

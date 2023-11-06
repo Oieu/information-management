@@ -12,8 +12,10 @@ import Label from "../../UI/forms/formComponents/Label";
 import FormHeaders from "../../UI/forms/formComponents/FormHeaders";
 import { TableHead, TableCol } from "./tableComponents/TableHead";
 import Timeout from "../../../../controllers/Timeout";
+import { TabTitle } from "../../../../utils/GeneralFunctions";
 
 function Materials({ loginStatus, nav }) {
+  TabTitle("Admin | Materials", false);
   const [materials, setMaterials] = useState([]);
   const [readMaterial, setReadMaterial] = useState({});
   const [newMaterial, setNewMaterial] = useState({

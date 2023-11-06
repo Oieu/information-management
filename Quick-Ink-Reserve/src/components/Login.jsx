@@ -6,8 +6,10 @@ import ImageSide from "./admin/UI/forms/formComponents/ImageSide";
 import BackToHome from "./admin/UI/BackToHome";
 import { useAppContext } from "../controllers/auth/AuthContext";
 import CheckUser from "../controllers/CheckUser";
+import { TabTitle } from "../utils/GeneralFunctions";
 
 function Login() {
+  TabTitle('Login', false);
   const { loginStatus, user, setLoginStatus, setUser } = useAppContext();
   const nav = useNavigate();
   const [email, setEmail] = useState("");

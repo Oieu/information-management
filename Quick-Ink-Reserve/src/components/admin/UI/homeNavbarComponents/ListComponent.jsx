@@ -25,11 +25,6 @@ export function ListComponent({ defaultActive }) {
         />
         <ListItem
           defaultActive={defaultActive}
-          title="Featured"
-          linkedTo="/admin/featured"
-        />
-        <ListItem
-          defaultActive={defaultActive}
           title="Analytics"
           linkedTo="/admin/analytics"
         />
