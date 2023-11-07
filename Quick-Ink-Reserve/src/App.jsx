@@ -50,6 +50,8 @@ function App() {
     return <div>Loading...</div>;
   }
 
+  console.log("Hello World");
+
   return (
     <Router>
       <Routes>
