@@ -9,7 +9,6 @@ import Home from './components/Home'
 import Profile from './components/Profile'
 import Edit from './components/admin/profileComponents/Edit'
 import { useAppContext } from './controllers/auth/AuthContext'
-import { AdminAuthWarning } from './controllers/auth/AuthComponents'
 
 function App() {
   const { loginStatus, user, setLoginStatus, setUser } = useAppContext();

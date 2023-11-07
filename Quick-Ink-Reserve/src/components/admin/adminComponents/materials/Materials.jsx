@@ -57,8 +57,6 @@ function Materials({ loginStatus, nav }) {
       });
   }, []);
 
-  console.log(materials)
-
   function openDeleteModal(e, index) {
     e.preventDefault();
     setOverlayOpen(true);
@@ -139,7 +137,7 @@ function Materials({ loginStatus, nav }) {
 
   return (
     <>
-      <div className="h-[90%] w-full flex flex-col gap-3">
+      <div className="h-[90%] w-full flex flex-col gap-5">
         {overlayOpen && (
           <div
             className="fixed flex justify-center items-center top-0 left-0 w-full h-full bg-gray-500 bg-opacity-80 z-10"
@@ -459,7 +457,7 @@ function Materials({ loginStatus, nav }) {
           </p>
         </header>
         <div className="overflow-auto max-h-[700px] flex">
-          <table className=" w-11/12 table-auto border-collapse mx-auto my-0 h-4/5">
+          <table className=" w-11/12 table-auto border-collapse m-auto my-0 h-4/5">
             <colgroup>
               {materials.length === 0 || !materials ? (
                 <TableCol width="100%" content={null} />
@@ -598,7 +596,7 @@ function Materials({ loginStatus, nav }) {
             </tbody>
           </table>
         </div>
-        <div className="w-11/12 m-auto flex justify-end items-center">
+        <div className="w-11/12 m-auto flex items-center">
           <ul className="flex gap-4">
             {pageNumbers > 1 &&
               Array.from({ length: pageNumbers }, (_, i) => (

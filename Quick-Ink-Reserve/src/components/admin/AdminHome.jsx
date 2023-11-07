@@ -5,18 +5,20 @@ import "../../App.css";
 
 import AdminNavbar from "./UI/adminNavbarComponents/AdminNavbar";
 import AdminMain from "./adminComponents/AdminMain";
-import CheckUser from "../../controllers/CheckUser";
+import CheckUser, { CheckAdmin } from "../../controllers/CheckUser";
 import { useAppContext } from "../../controllers/auth/AuthContext";
 import { TabTitle } from "../../utils/GeneralFunctions";
 
 function AdminHome({ nav }) {
   TabTitle("Admin", true);
   const { loginStatus, user } = useAppContext();
+  const location = useLocation();
 
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    CheckUser(loginStatus, user, nav)
+    CheckUser(loginStatus, user, nav, location);
+    if(CheckAdmin(user) === false) nav("/");
   }, []);
 
   function CheckPath() {
@@ -32,10 +34,10 @@ function AdminHome({ nav }) {
       default:
         return "Dashboard";
     }
-  }
+  };
 
   return (
-    <div className="flex h-full w-full bg-[#000122] overflow-x-hidden">
+    <div className="flex h-full w-full bg-[#000122] overflow-x-hidden relative">
       <AdminNavbar defaultActive={CheckPath()} nav={nav} />
       <AdminMain nav={nav}/>
     </div>

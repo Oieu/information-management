@@ -345,7 +345,7 @@ function Services({ loginStatus, nav }) {
             the details to existing services.
           </p>
         </header>
-        <div className=" h-[90%] w-[95%] flex flex-col m-auto bg-blue-900 p-5 rounded-t-2xl overflow-auto">
+        <div className=" h-[90%] w-[95%] flex flex-col m-auto bg-blue-900 pb-0 p-5 rounded-t-2xl overflow-auto">
           <div className="w-full h-full p-5 flex flex-wrap gap-5 justify-between">
             {services
               .slice(
@@ -393,7 +393,9 @@ function Services({ loginStatus, nav }) {
                         </span>
                         <span>
                           <AiFillDelete
-                            onClick={(e) => openDeleteModal(e, service.genServicesID)}
+                            onClick={(e) =>
+                              openDeleteModal(e, service.genServicesID)
+                            }
                             className="text-red-300 hover:text-red-600"
                           />
                         </span>
@@ -403,20 +405,22 @@ function Services({ loginStatus, nav }) {
                 );
               })}
           </div>
-          <div className="pl-5 flex justify-between items-center">
-            <button
-              type="button"
-              className="bg-green-400 flex items-center gap-3 text-black font-extrabold border-none hover:bg-green-600 hover:text-white hover:translate-y-[-4px] transition-all"
-              onClick={(e) => {
-                setIsModalOpen(true);
-                setOverlayOpen(true);
-              }}
-              disabled={isModalOpen}
-            >
-              <FaPlus />
-              Add New Service
-            </button>
-            <div className="flex justify-end">
+          <div className="pl-5 flex items-center">
+            <div className="w-1/4">
+              <button
+                type="button"
+                className="bg-green-400 flex items-center gap-3 text-black font-extrabold border-none hover:bg-green-600 hover:text-white hover:translate-y-[-4px] transition-all"
+                onClick={(e) => {
+                  setIsModalOpen(true);
+                  setOverlayOpen(true);
+                }}
+                disabled={isModalOpen}
+              >
+                <FaPlus />
+                Add New Service
+              </button>
+            </div>
+            <div className="w-3/4 flex justify-end items-center">
               <ul className="pagination">
                 {pageNumbers > 1 &&
                   Array.from({ length: pageNumbers }, (_, i) => (

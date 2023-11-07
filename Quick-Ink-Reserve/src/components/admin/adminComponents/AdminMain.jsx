@@ -6,19 +6,20 @@ import Dashboard from "./dashboard/Dashboard";
 import Materials from "./materials/Materials";
 import Services from "./services/Services";
 import { useAppContext } from '../../../controllers/auth/AuthContext';
-import CheckUser, { CheckAdmin } from '../../../controllers/CheckUser';
+import { MdOutlineRememberMe } from 'react-icons/md';
 
 function AdminMain({ nav }) {
     const { loginStatus, user } = useAppContext();
 
-    useEffect(() => {
-      CheckUser(loginStatus, user, nav);
-      if(CheckAdmin(user) === false) nav('/error-auth-admin');
-    }, []);
-
   return (
     <main className="h-full w-5/6">
-        <div className="h-[10%] w-full">
+        <div className="h-[10%] w-full relative">
+          <div className="absolute z-10 top-5 left-5">
+            <button className="flex items-center justify-between bg-green-300 text-black border-2 border-black shadow-sm shadow-white hover:text-white hover:shadow-md hover:shadow-white hover:translate-y-[-3px] hover:bg-green-500 transition-all" onClick={() => nav('/')}>
+              <MdOutlineRememberMe className='text-xl'/>
+              To member page
+            </button>
+          </div>
           {loginStatus != false && user.userRole === "ADMIN" && (
             <UserWrapper user={user} />
           )}

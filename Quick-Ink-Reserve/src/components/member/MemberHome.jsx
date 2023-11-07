@@ -4,15 +4,17 @@ import LandingPage from "./LandingPage";
 import { useAppContext } from "../../controllers/auth/AuthContext";
 import CheckUser, { CheckMember } from "../../controllers/CheckUser";
 import { TabTitle } from "../../utils/GeneralFunctions";
+import { useLocation } from "react-router-dom";
 
 function MemberHome({ nav }) {
   const { loginStatus, user, setLoginStatus, setUser } = useAppContext();
+  const location = useLocation();
   TabTitle("Home", true);
 
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    CheckUser(loginStatus, user, nav);
+    CheckUser(loginStatus, user, nav, location);
     if(CheckMember(user)) nav("/")
   }, []);
 
@@ -36,7 +38,7 @@ function MemberHome({ nav }) {
   };
 
   return (
-    <div className="h-full w-full overflow-x-hidden scroll-smooth">
+    <div className="h-full w-full overflow-x-hidden scroll-smooth relative">
       <LandingPage handleLogout={handleLogout} />
     </div>
   );
