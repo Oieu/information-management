@@ -9,47 +9,59 @@ import Home from './components/Home'
 import Profile from './components/Profile'
 import Edit from './components/admin/profileComponents/Edit'
 import { useAppContext } from './controllers/auth/AuthContext'
+import { AdminAuthWarning } from './controllers/auth/AuthComponents'
 
 function App() {
   const { loginStatus, user, setLoginStatus, setUser } = useAppContext();
+  const [isLoading, setIsLoading] = useState(true);
 
   axios.defaults.withCredentials = true;
+
   useEffect(() => {
     const sessionCookie = document.cookie.split(': ')
-    .filter((cookie) => cookie.startsWith('name'));
+      .filter((cookie) => cookie.startsWith('name'));
 
-    if(sessionCookie) {
-      axios.get('http://localhost:5000/login').then((response) => {
-          if(response.data.loggedIn == true) {
-              setLoginStatus(response.data.loggedIn);
-              setUser((prev) => ({
-                ...prev,
-                userEmail: response.data.user.userEmail,
-                userName: response.data.user.userName,
-                userAddress: response.data.user.userAddress,
-                userRole: response.data.user.userRole,
-                profilePicture: response.data.user.profilePicture
-              }));
-            } else {
-              setLoginStatus(false);
-            }
-      })
+    if (sessionCookie) {
+      axios.get('http://localhost:5000/login')
+        .then((response) => {
+          if (response.data.loggedIn == true) {
+            setLoginStatus(response.data.loggedIn);
+            setUser((prev) => ({
+              ...prev,
+              userEmail: response.data.user.userEmail,
+              userName: response.data.user.userName,
+              userAddress: response.data.user.userAddress,
+              userRole: response.data.user.userRole,
+              profilePicture: response.data.user.profilePicture
+            }));
+          } else {
+            setLoginStatus(false);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     } else {
       setLoginStatus(false);
+      setIsLoading(false);
     }
   }, []);
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-      <Router>
-        <Routes>
-          <Route path='/login' element={<Login />}/>
-          <Route path='/signup' element={<SignUp />}/>
-          <Route path='*' element={<Home />}/>
-          <Route path='/profile' element={<Profile />}/>
-          <Route path='/edit' element={<Edit />}/>
-        </Routes>
-      </Router>
-  )
+    <Router>
+      <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<SignUp />} />
+        <Route path='*' element={<Home />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/edit' element={<Edit />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import LandingPage from "./LandingPage";
 import { useAppContext } from "../../controllers/auth/AuthContext";
-import CheckUser from "../../controllers/CheckUser";
+import CheckUser, { CheckMember } from "../../controllers/CheckUser";
 import { TabTitle } from "../../utils/GeneralFunctions";
 
 function MemberHome({ nav }) {
@@ -13,6 +13,7 @@ function MemberHome({ nav }) {
 
   useEffect(() => {
     CheckUser(loginStatus, user, nav);
+    if(CheckMember(user)) nav("/")
   }, []);
 
   const handleLogout = (e) => {

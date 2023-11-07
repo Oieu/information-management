@@ -7,6 +7,10 @@ import MainW from "./MainW";
 import Catalog from "./Catalog";
 import Location from "./Location";
 import Aboutus from "./Aboutus";
+import {  Route, Routes } from "react-router-dom";
+import { useAppContext } from "../../controllers/auth/AuthContext";
+import { AdminAuthWarning } from "../../controllers/auth/AuthComponents";
+
 
 function LandingPage({ handleLogout }) {
   const { loginStatus, user } = useAppContext();
@@ -19,6 +23,9 @@ function LandingPage({ handleLogout }) {
         <Location/>
         <Aboutus/>
       </div>
+      <Routes>
+        <Route path="/error-auth-admin" element={<AdminAuthWarning />} />
+      </Routes>
     </>
   );
 }

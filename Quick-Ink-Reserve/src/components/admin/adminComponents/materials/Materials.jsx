@@ -57,6 +57,8 @@ function Materials({ loginStatus, nav }) {
       });
   }, []);
 
+  console.log(materials)
+
   function openDeleteModal(e, index) {
     e.preventDefault();
     setOverlayOpen(true);
@@ -86,7 +88,7 @@ function Materials({ loginStatus, nav }) {
 
   function handleReadMaterial(index) {
     setReadMaterial(materials[index]);
-    
+
     setTimeout(() => {
       setOverlayOpen(true);
       setIsReadModalOpen(true);
@@ -119,9 +121,25 @@ function Materials({ loginStatus, nav }) {
       });
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [servicesPerPage] = useState(10);
+
+  const indexOfLastService = currentPage * servicesPerPage;
+  const indexOfFirstService = indexOfLastService - servicesPerPage;
+  const currentMaterials = materials.slice(
+    indexOfFirstService,
+    indexOfLastService
+  );
+
+  const pageNumbers = Math.ceil(materials.length / servicesPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <>
-      <div className="h-[90%] w-full flex flex-col gap-5">
+      <div className="h-[90%] w-full flex flex-col gap-3">
         {overlayOpen && (
           <div
             className="fixed flex justify-center items-center top-0 left-0 w-full h-full bg-gray-500 bg-opacity-80 z-10"
@@ -343,16 +361,19 @@ function Materials({ loginStatus, nav }) {
             {isReadModalOpen && (
               <div className="absolute z-30 h-5/6 w-1/2 flex justify-center items-center">
                 <div className="p-5 h-full w-full bg-white rounded-lg absolute m-5 flex flex-col justify-evenly items-stretch">
-                  <AiFillCloseCircle onClick={(e) => {
+                  <AiFillCloseCircle
+                    onClick={(e) => {
                       e.preventDefault();
                       setIsReadModalOpen(false);
                       setOverlayOpen(false);
-                    }}  
+                    }}
                     className="text-4xl text-red-500 hover:text-red-700 cursor-pointer absolute top-5 right-5"
                   />
                   <h1 className="text-4xl text-red-600">Material Details</h1>
                   <ul className="text-black flex flex-col gap-5 border-2 p-2 rounded-lg border-black">
-                    <li className={`bg-[url('https://images.unsplash.com/photo-1503694978374-8a2fa686963a?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover rounded-t-lg`}>
+                    <li
+                      className={`bg-[url('https://images.unsplash.com/photo-1503694978374-8a2fa686963a?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover rounded-t-lg`}
+                    >
                       <img
                         src={`http://localhost:5000/${readMaterial.matImageUrl}`}
                         alt="Material"
@@ -361,31 +382,52 @@ function Materials({ loginStatus, nav }) {
                     </li>
                     <li className="flex justify-evenly border-t-4 border-t-black p-2">
                       <div className="w-1/2 flex justify-center gap-5 items-center">
-                        <span className="text-2xl">Name: </span><span className="text-xl underline">{readMaterial.matName}</span>
+                        <span className="text-2xl">Name: </span>
+                        <span className="text-xl underline">
+                          {readMaterial.matName}
+                        </span>
                       </div>
                     </li>
                     <li className="flex justify-center p-2">
                       <div className="w-2/3 flex justify-center gap-5 items-center">
-                        <span className="text-2xl">Size: </span><span className="text-xl underline">{readMaterial.matSize}</span>
+                        <span className="text-2xl">Size: </span>
+                        <span className="text-xl underline">
+                          {readMaterial.matSize}
+                        </span>
                       </div>
                       <div className="w-1/3 flex gap-5 items-center">
-                        <span className="text-2xl">Color: </span><span className="text-xl underline">{readMaterial.color}</span>
+                        <span className="text-2xl">Color: </span>
+                        <span className="text-xl underline">
+                          {readMaterial.color}
+                        </span>
                       </div>
                     </li>
                     <li className="flex justify-evenly p-2">
-                        <div className="w-1/3">
-                          <span className="text-2xl">Count: </span><span className="text-xl underline">{readMaterial.matCount} per {readMaterial.matUnit}</span>
-                        </div>
-                        <div className="w-1/3">
-                          <span className="text-2xl">Quantity: </span><span className="text-xl underline">{readMaterial.matQty} {readMaterial.matUnit}</span>
-                        </div>
-                        <div className="w-1/3">
-                          <span className="text-2xl">Units: </span><span className="text-xl underline">{readMaterial.matUnit}</span>
-                        </div>
+                      <div className="w-1/3">
+                        <span className="text-2xl">Count: </span>
+                        <span className="text-xl underline">
+                          {readMaterial.matCount} per {readMaterial.matUnit}
+                        </span>
+                      </div>
+                      <div className="w-1/3">
+                        <span className="text-2xl">Quantity: </span>
+                        <span className="text-xl underline">
+                          {readMaterial.matQty}
+                        </span>
+                      </div>
+                      <div className="w-1/3">
+                        <span className="text-2xl">Units: </span>
+                        <span className="text-xl underline">
+                          {readMaterial.matUnit}
+                        </span>
+                      </div>
                     </li>
                     <li className="m-auto border-t-4 border-black p-2">
                       <div className="flex gap-5">
-                        <span className="text-2xl w-1/5">Description: </span><span className="w-4/5 text-xl text-left p-3 bg-gray-200 rounded-lg">{readMaterial.description}</span>
+                        <span className="text-2xl w-1/5">Description: </span>
+                        <span className="w-4/5 text-xl text-left p-3 bg-gray-200 rounded-lg">
+                          {readMaterial.description}
+                        </span>
                       </div>
                     </li>
                   </ul>
@@ -394,7 +436,7 @@ function Materials({ loginStatus, nav }) {
             )}
           </div>
         )}
-        <header className="flex flex-col gap-5 ml-5 h-1/10">
+        <header className="flex flex-col gap-2 ml-5 h-[10%]">
           <div className="flex items-center gap-10 w-[90%]">
             <h1 className="text-left">Materials</h1>
             <button
@@ -416,139 +458,165 @@ function Materials({ loginStatus, nav }) {
             materials.
           </p>
         </header>
-        <table className="w-5/6 table-auto border-collapse mx-auto my-0 h-4/5">
-          <colgroup>
-            {materials.length === 0 || !materials ? (
-              <TableCol width="100%" content={null} />
-            ) : (
-              <>
-                <TableCol width="10%" content={null} />
-                <TableCol width="10%" content={null} />
-                <TableCol width="10%" content={null} />
-                <TableCol width="10%" content={null} />
-                <TableCol width="10%" content={null} />
-                <TableCol width="10%" content={null} />
-                <TableCol width="10%" content={null} />
-                <TableCol width="20%" content={null} />
-                <TableCol width="10%" content={null} />
-              </>
-            )}
-          </colgroup>
-          <thead>
-            <tr>
+        <div className="overflow-auto max-h-[700px] flex">
+          <table className=" w-11/12 table-auto border-collapse mx-auto my-0 h-4/5">
+            <colgroup>
               {materials.length === 0 || !materials ? (
-                <td className="text-center">
-                  <h1 className="text-4xl text-yellow-500">
-                    No Materials in the table.
-                  </h1>
-                </td>
+                <TableCol width="100%" content={null} />
               ) : (
                 <>
-                  <TableHead title="Image" />
-                  <TableHead title="Name" />
-                  <TableHead title="Size" />
-                  <TableHead title="Count" />
-                  <TableHead title="Qty" />
-                  <TableHead title="Units" />
-                  <TableHead title="Color" />
-                  <TableHead title="Description" />
-                  <TableHead title="Actions" />
+                  <TableCol width="10%" content={null} />
+                  <TableCol width="10%" content={null} />
+                  <TableCol width="10%" content={null} />
+                  <TableCol width="10%" content={null} />
+                  <TableCol width="10%" content={null} />
+                  <TableCol width="10%" content={null} />
+                  <TableCol width="10%" content={null} />
+                  <TableCol width="20%" content={null} />
+                  <TableCol width="10%" content={null} />
                 </>
               )}
-            </tr>
-          </thead>
-          <tbody>
-            {materials.length > 0 &&
-              materials.map((material, index) => {
-                return (
-                  <tr
-                    key={index}
-                    className={`${
-                      index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                    }`}
-                  >
-                    <td className="text-left text-black p-2 border border-gray-300">
-                      <img
-                        src={`http://localhost:5000/${material.matImageUrl}`}
-                        alt="Material"
-                        className="h-[100px] w-[100px] rounded-lg border border-slate-700 m-auto"
-                      />
-                    </td>
-                    <td className="text-left text-black p-2 border border-gray-300">
-                      {material.matName}
-                    </td>
-                    <td className="text-center text-black p-2 border border-gray-300">
-                      {material.matSize}
-                    </td>
-                    <td className="text-center text-black p-2 border border-gray-300">
-                      {material.matCount} per {material.matUnit}
-                    </td>
-                    <td className="text-center text-black p-2 border border-gray-300">
-                      {material.matQty} {material.matUnit}
-                    </td>
-                    <td className="text-center text-black p-2 border border-gray-300">
-                      {material.matUnit}
-                    </td>
-                    <td className="text-center text-black p-2 border border-gray-300">
-                      {material.color}
-                    </td>
-                    <td className="text-left text-black p-2 border border-gray-300">
-                      {ShortenDescription(materials[index].description)}{" "}
-                      {materials[index].description.length > 50 && (
+            </colgroup>
+            <thead>
+              <tr>
+                {materials.length === 0 || !materials ? (
+                  <td className="text-center">
+                    <h1 className="text-4xl text-yellow-500">
+                      No Materials in the table.
+                    </h1>
+                  </td>
+                ) : (
+                  <>
+                    <TableHead title="Image" />
+                    <TableHead title="Name" />
+                    <TableHead title="Size" />
+                    <TableHead title="Count" />
+                    <TableHead title="Quantity" />
+                    <TableHead title="Collection" />
+                    <TableHead title="Color" />
+                    <TableHead title="Description" />
+                    <TableHead title="Actions" />
+                  </>
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {currentMaterials.map((material, index) => {
+                  return (
+                    <tr
+                      key={index}
+                      className={`${
+                        index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                      }`}
+                    >
+                      <td className="text-left text-black p-2 border border-gray-300">
+                        <img
+                          src={`http://localhost:5000/${material.matImageUrl}`}
+                          alt="Material"
+                          className="h-[100px] w-[100px] rounded-lg border border-slate-700 m-auto"
+                        />
+                      </td>
+                      <td className="text-left text-black p-2 border border-gray-300">
+                        {material.matName}
+                      </td>
+                      <td className="text-center text-black p-2 border border-gray-300">
+                        {material.matSize}
+                      </td>
+                      <td className="text-center text-black p-2 border border-gray-300">
+                        {material.matCount} per {material.matUnit}
+                      </td>
+                      <td className="text-center text-black p-2 border border-gray-300">
+                        {material.matQty}
+                      </td>
+                      <td className="text-center text-black p-2 border border-gray-300">
+                        {material.matUnit}
+                      </td>
+                      <td className="text-center text-black p-2 border border-gray-300">
+                        {material.color}
+                      </td>
+                      <td className="text-left text-black p-2 border border-gray-300">
+                        {ShortenDescription(materials[index].description)}{" "}
+                        {materials[index].description.length > 50 && (
+                          <button
+                            onClick={() => {
+                              handleReadMaterial(index);
+                            }}
+                            className="bg-transparent p-0 border-none text-blue-600 hover:text-blue-900"
+                          >
+                            ...more
+                          </button>
+                        )}
+                      </td>
+                      <td className="text-left text-sm p-2 border border-gray-300 flex flex-col gap-3 items-center justify-center h-full">
                         <button
-                          onClick={() => {handleReadMaterial(index);}}
-                          className="bg-transparent p-0 border-none text-blue-600 hover:text-blue-900"
+                          className="flex items-center justify-center bg-yellow-400 text-black font-extrabold w-5/6 border-none hover:bg-yellow-600 hover:text-white hover:translate-y-[-4px] transition-all group"
+                          onClick={() => {
+                            handleReadMaterial(index);
+                          }}
                         >
-                          ...more
+                          <span className="flex items-center space-x-2 button-content">
+                            <span className="group-hover:hidden">
+                              <AiFillRead />
+                            </span>
+                            <span className="hidden group-hover:inline-block m-auto">
+                              Read
+                            </span>
+                          </span>
                         </button>
-                      )}
-                    </td>
-                    <td className="text-left text-sm p-2 border border-gray-300 flex flex-col gap-3 items-center justify-center h-full">
-                      <button
-                        className="flex items-center justify-center bg-yellow-400 text-black font-extrabold w-5/6 border-none hover:bg-yellow-600 hover:text-white hover:translate-y-[-4px] transition-all group"
-                        onClick={() => {handleReadMaterial(index);}}
-                      >
-                        <span className="flex items-center space-x-2 button-content">
-                          <span className="group-hover:hidden">
-                            <AiFillRead />
+                        <button
+                          className="flex items-center justify-center bg-blue-400 text-black font-extrabold w-5/6 border-none hover:bg-blue-600 hover:text-white hover:translate-y-[-4px] transition-all group"
+                          onClick={(e) =>
+                            handleDeleteMaterial(e, material.matID)
+                          }
+                        >
+                          <span className="flex items-center space-x-2 button-content">
+                            <span className="group-hover:hidden">
+                              <AiFillEdit />
+                            </span>
+                            <span className="hidden group-hover:inline-block m-auto">
+                              Update
+                            </span>
                           </span>
-                          <span className="hidden group-hover:inline-block m-auto">
-                            Read
+                        </button>
+                        <button
+                          className="flex items-center justify-center text-center bg-red-400 text-black font-extrabold w-5/6 border-none hover:bg-red-600 hover:text-white hover:translate-y-[-4px] transition-all group"
+                          onClick={(e) => openDeleteModal(e, material.matID)}
+                        >
+                          <span className="flex items-center space-x-2 button-content">
+                            <span className="group-hover:hidden">
+                              <AiFillDelete />
+                            </span>
+                            <span className="hidden group-hover:inline-block">
+                              Delete
+                            </span>
                           </span>
-                        </span>
-                      </button>
-                      <button
-                        className="flex items-center justify-center bg-blue-400 text-black font-extrabold w-5/6 border-none hover:bg-blue-600 hover:text-white hover:translate-y-[-4px] transition-all group"
-                        onClick={(e) => handleDeleteMaterial(e, material.matID)}
-                      >
-                        <span className="flex items-center space-x-2 button-content">
-                          <span className="group-hover:hidden">
-                            <AiFillEdit />
-                          </span>
-                          <span className="hidden group-hover:inline-block m-auto">
-                            Update
-                          </span>
-                        </span>
-                      </button>
-                      <button
-                        className="flex items-center justify-center text-center bg-red-400 text-black font-extrabold w-5/6 border-none hover:bg-red-600 hover:text-white hover:translate-y-[-4px] transition-all group"
-                        onClick={(e) => openDeleteModal(e, material.matID)}
-                      >
-                        <span className="flex items-center space-x-2 button-content">
-                          <span className="group-hover:hidden">
-                            <AiFillDelete />
-                          </span>
-                          <span className="hidden group-hover:inline-block">
-                            Delete
-                          </span>
-                        </span>
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+        <div className="w-11/12 m-auto flex justify-end items-center">
+          <ul className="flex gap-4">
+            {pageNumbers > 1 &&
+              Array.from({ length: pageNumbers }, (_, i) => (
+                <li key={i}>
+                  <button
+                    onClick={() => handlePageChange(i + 1)}
+                    className={`${
+                      i + 1 === currentPage
+                        ? "font-bold underline text-white"
+                        : "text-blue-600 hover:text-blue-900"
+                    } cursor-pointer`}
+                  >
+                    {i + 1}
+                  </button>
+                </li>
+              ))}
+          </ul>
+        </div>
       </div>
     </>
   );
