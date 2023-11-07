@@ -86,47 +86,78 @@
     flex-direction: column;
     align-items: center;
     height: 50vh;
+    position: relative;
+    top: 30px;
 }
 
 .Loc h2{
     font-size: 3em;
-    color: white;
+    color: black;
 }  
 
 .LocCont {
     display: flex;
     flex: 1;
     position: relative;
-    right: 650px;
+    right: 350px;
 }
 
 .MapLoc {
  flex: 1;
- background-color: red;
+ /* background-color: red; */
  padding: 150px;
- padding-right: 200%;
- padding-left: 200%;
+ padding-right: 10%;
+ padding-left: 40%;
  margin-right: 20px;
 }
 
 .StoreLoc {
-  background-color: aqua;
-  flex: 1;
-  padding: 150px;
-  padding-right: 110%;
+    /* background-color: aqua; */
+    flex: 1;
+    padding: 20px;
+    white-space: nowrap; 
+    position: relative;
+    top: 300px;
 }
+
+
+.StoreLoc div{
+    display: flex;
+    align-items: center; 
+    margin-bottom: 10px; 
+}
+.StoreLoc span{
+    margin-right: 10px;
+}
+
 
 /* for About section */
 .About {
+    position: relative;
+    top:500px;
     height: 50vh;
+    background-color: lightblue;
 }
 
 .About h1{
     text-align: center;
-    color: whitesmoke;
+    color: black;
 }
 
-.About p{
-    text-align: center;
-    color: whitesmoke   
+.contact-info {
+    display: flex;
+    flex-direction: column; /* Stack child elements vertically */
+    position: relative;
+    left: 200px;
+}
+
+
+.contact-info div {
+    display: flex; /* Make each div a flex container */
+    align-items: center; /* Align children vertically in the center */
+    margin-bottom: 10px; /* Add some spacing between items */
+}
+
+.contact-info span {
+    margin-right: 10px; /* Add spacing between icon and text */
 }
