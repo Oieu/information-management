@@ -2,6 +2,7 @@ import React from "react";
 import { ListComponent } from "../homeNavbarComponents/ListComponent";
 import logo from "../../../../assets/logo.png";
 import axios from "axios";
+import { LiaWindowMinimizeSolid } from "react-icons/lia";
 import LogoutButton from "../LogoutButton";
 import { useAppContext } from "../../../../controllers/auth/AuthContext";
 
@@ -26,8 +27,9 @@ export function AdminNavbar({ defaultActive, nav }) {
       });
   };
   return (
-    <div className="flex flex-col h-11/12 w-[1/6] bg-blue-500 rounded-lg m-2">
+    <div className="flex flex-col h-11/12 w-[1/6] bg-blue-500 rounded-lg m-2 relative">
       <div className="h-2/3 w-full">
+        <LiaWindowMinimizeSolid />
         <img src={logo} alt="Logo" className="h-[10%] w-[90%] m-auto my-5" />
         <ListComponent defaultActive={defaultActive} />
       </div>

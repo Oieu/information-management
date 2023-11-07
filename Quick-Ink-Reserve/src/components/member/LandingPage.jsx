@@ -4,9 +4,10 @@ import "./LandingPage.css";
 import logo from "../../assets/logo.png";
 import box from "../../assets/Images/box.jpg";
 import UserWrapper from "../admin/profileComponents/userComponents/UserWrapper";
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { LogoutButtonMember } from "../admin/UI/LogoutButton";
 import { useAppContext } from "../../controllers/auth/AuthContext";
+import { AdminAuthWarning } from "../../controllers/auth/AuthComponents";
 
 function LandingPage({ handleLogout }) {
   const { loginStatus, user } = useAppContext();
@@ -155,6 +156,9 @@ function LandingPage({ handleLogout }) {
           <p>About Quick-Ink-Reserve Lorem Ipsum .,..,.,.</p>
         </div>
       </div>
+      <Routes>
+        <Route path="/error-auth-admin" element={<AdminAuthWarning />} />
+      </Routes>
     </>
   );
 }

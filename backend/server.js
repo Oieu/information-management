@@ -7,15 +7,11 @@ import { config as configDotenv } from 'dotenv';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import session from 'express-session';
+import db from './routes/db.js';
 
 const app = express();
 const saltRounds = 10;
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "official-quick-ink-reserve"
-});
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads');
@@ -49,14 +45,6 @@ app.use(session({
 }));
 app.use('/uploads', express.static('uploads'));
 app.use(express.static('/public'));
-
-db.connect((err) => {
-    if (err) {
-      console.error('Error connecting to MySQL database:', err);
-    } else {
-      console.log('Connected to MySQL database');
-    }
-});
 
 //HOMEPAGE POST AND GET, AND LOGOUT
 app.get('/', (req, res) => {
@@ -123,7 +111,7 @@ app.get('/login', (req, res) => {
 
 //SERVICES STUFF
 app.get('/admin/services', (req, res) => {
-    const query = 'SELECT * FROM genservices';
+    const query = 'SELECT * FROM genservices ORDER BY genServiceName';
     db.query(query, (err, result) => {
         if (err) {
             return res.status(500).json({ Message: 'Error on the server side!' });
@@ -149,6 +137,19 @@ app.post('/admin/services', upload.single('serviceImage'), (req, res) => {
     });
 });
 
+app.post('/admin/services/delete/:id', (req, res) => {
+    const id = req.params.id;
+    const deleteSql = 'DELETE FROM genservices WHERE genServicesID = ?';
+
+    db.query(deleteSql, id, (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ Message: 'Error on the server side!' });
+        }
+        return res.status(200).json({ Message: 'Query successful', services: result });
+    });
+});
+
 app.post('/admin/services/:id', (req, res) => {
     const id = req.params.id;
     const featured = req.body.featured;
@@ -166,7 +167,7 @@ app.post('/admin/services/:id', (req, res) => {
 
 //MATERIAL STUFF
 app.get('/admin/materials', (req, res) => {
-    const query = 'SELECT * FROM materials';
+    const query = 'SELECT * FROM materials ORDER BY matName';
     db.query(query, (err, result) => {
         if (err) {
             return res.status(500).json({ Message: 'Error on the server side!' });

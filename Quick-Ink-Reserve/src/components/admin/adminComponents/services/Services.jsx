@@ -12,12 +12,11 @@ import Inputs from "../../UI/forms/formComponents/Inputs";
 import Label from "../../UI/forms/formComponents/Label";
 import FormHeaders from "../../UI/forms/formComponents/FormHeaders";
 import Timeout from "../../../../controllers/Timeout";
-import { useAppContext } from "../../../../controllers/auth/AuthContext";
+import "./Services.css";
 import { TabTitle } from "../../../../utils/GeneralFunctions";
 
-function Services({ nav }) {
+function Services({ loginStatus, nav }) {
   TabTitle("Admin | Services", false);
-  const { loginStatus } = useAppContext();
   const [services, setServices] = useState([]);
   const [readMaterial, setReadMaterial] = useState({});
   const [newService, setNewService] = useState({
@@ -30,6 +29,8 @@ function Services({ nav }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isReadModalOpen, setIsReadModalOpen] = useState(false);
   const [id, setId] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const servicesPerPage = 8;
 
   useEffect(() => {
     if (loginStatus === false) {
@@ -52,12 +53,11 @@ function Services({ nav }) {
     setId(index);
   }
 
-  function ShortenDescription(description) {
-    const [shortDescription] = description.split(".");
-    return shortDescription;
-  }
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
-  function handleDeleteMaterial(e, index) {
+  function handleDeleteService(e, index) {
     e.preventDefault();
     axios
       .post(`http://localhost:5000/admin/services/delete/${index}`)
@@ -115,6 +115,8 @@ function Services({ nav }) {
         console.log(error);
       });
   };
+
+  const pageNumbers = Math.ceil(services.length / servicesPerPage);
 
   return (
     <>
@@ -245,7 +247,7 @@ function Services({ nav }) {
                       </button>
                       <button
                         onClick={(e) => {
-                          handleDeleteMaterial(e, id);
+                          handleDeleteService(e, id);
                         }}
                       >
                         Delete
@@ -343,54 +345,65 @@ function Services({ nav }) {
             the details to existing services.
           </p>
         </header>
-        <div className=" h-[90%] w-[95%] flex flex-col m-auto bg-blue-900 p-5 rounded-t-2xl">
+        <div className=" h-[90%] w-[95%] flex flex-col m-auto bg-blue-900 p-5 rounded-t-2xl overflow-auto">
           <div className="w-full h-full p-5 flex flex-wrap gap-5 justify-between">
-            {services.map((service, index) => {
-              return (
-                <div
-                  key={index}
-                  className="bg-gray-800 w-[300px] h-[300px] rounded-lg p-5 relative overflow-hidden cursor-pointer text-zinc-400 shadow-zinc-400 shadow-sm border-white hover:shadow-blue-400 hover:shadow-lg transition-all"
-                >
-                  <div className="absolute z-10 right-5" onClick={
-                    (e) => {
-                      e.preventDefault();
-                      handleReadMaterial(index);
-                    }
-                  }>
-                    <span>
-                      {service.featured === 'false' ? (
-                        <AiOutlineStar className="text-3xl text-yellow-200 hover:text-yellow-300 hover:scale-125 transition-all"/>
-                      ) : (
-                        <AiFillStar className="text-3xl text-yellow-200 hover:text-yellow-300 hover:scale-125 transition-all"/>
-                      )}
-                    </span>
-                  </div>
-                  <div className="absolute top-0 left-0 w-full h-4/5 bg-cover bg-center hover:scale-150 transition-all">
-                    <img
-                      className="rounded-lg w-[100%] h-[100%] absolute top-0 left-0"
-                      src={`http://localhost:5000/${service.genServiceImageUrl}`}
-                      alt="Image"
-                    />
-                    <div className="bg-gradient-to-b from-zinc-400 to-black w-full h-full absolute top-0 left-0 bg-cover bg-center rounded-lg opacity-80"></div>
-                  </div>
-                  <div className="text-lg absolute z-1 top-[85%] flex items-center justify-between w-[85%]">
-                    <span className="flex w-3/4 hover:text-white">
-                      {service.genServiceName}
-                    </span>
-                    <div className="w-1/4 flex justify-end gap-3 text-xl">
+            {services
+              .slice(
+                (currentPage - 1) * servicesPerPage,
+                currentPage * servicesPerPage
+              )
+              .map((service, index) => {
+                const currentIndex =
+                  index + (currentPage - 1) * servicesPerPage;
+                return (
+                  <div
+                    key={index}
+                    className="bg-gray-800 w-[300px] h-[300px] rounded-lg p-5 relative overflow-hidden cursor-pointer text-zinc-400 shadow-zinc-400 shadow-sm border-white hover:shadow-blue-400 hover:shadow-lg transition-all"
+                  >
+                    <div
+                      className="absolute z-10 right-5"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleReadMaterial(index);
+                      }}
+                    >
                       <span>
-                        <AiFillEdit className="text-blue-300 hover:text-blue-600" />
-                      </span>
-                      <span>
-                        <AiFillDelete onClick={(e) => openDeleteModal(e, index)} className="text-red-300 hover:text-red-600" />
+                        {service.featured === "false" ? (
+                          <AiOutlineStar className="text-3xl text-yellow-200 hover:text-yellow-300 hover:scale-125 transition-all" />
+                        ) : (
+                          <AiFillStar className="text-3xl text-yellow-200 hover:text-yellow-300 hover:scale-125 transition-all" />
+                        )}
                       </span>
                     </div>
+                    <div className="absolute top-0 left-0 w-full h-4/5 bg-cover bg-center hover:scale-150 transition-all">
+                      <img
+                        className="rounded-lg w-[100%] h-[100%] absolute top-0 left-0"
+                        src={`http://localhost:5000/${service.genServiceImageUrl}`}
+                        alt="Image"
+                      />
+                      <div className="bg-gradient-to-b from-zinc-400 to-black w-full h-full absolute top-0 left-0 bg-cover bg-center rounded-lg opacity-80"></div>
+                    </div>
+                    <div className="text-lg absolute z-1 top-[85%] flex items-center justify-between w-[85%]">
+                      <span className="flex w-3/4 hover:text-white">
+                        {service.genServiceName}
+                      </span>
+                      <div className="w-1/4 flex justify-end gap-3 text-xl">
+                        <span>
+                          <AiFillEdit className="text-blue-300 hover:text-blue-600" />
+                        </span>
+                        <span>
+                          <AiFillDelete
+                            onClick={(e) => openDeleteModal(e, service.genServicesID)}
+                            className="text-red-300 hover:text-red-600"
+                          />
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
-          <div className="pl-5">
+          <div className="pl-5 flex justify-between items-center">
             <button
               type="button"
               className="bg-green-400 flex items-center gap-3 text-black font-extrabold border-none hover:bg-green-600 hover:text-white hover:translate-y-[-4px] transition-all"
@@ -403,6 +416,30 @@ function Services({ nav }) {
               <FaPlus />
               Add New Service
             </button>
+            <div className="flex justify-end">
+              <ul className="pagination">
+                {pageNumbers > 1 &&
+                  Array.from({ length: pageNumbers }, (_, i) => (
+                    <li
+                      key={i}
+                      className={`page-item ${
+                        i + 1 === currentPage ? "active" : ""
+                      }`}
+                    >
+                      <button
+                        onClick={() => handlePageChange(i + 1)}
+                        className={`${
+                          i + 1 === currentPage
+                            ? "font-bold underline text-white"
+                            : "text-blue-600 hover:text-blue-900"
+                        } cursor-pointer`}
+                      >
+                        {i + 1}
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
