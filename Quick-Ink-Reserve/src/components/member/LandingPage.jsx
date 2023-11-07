@@ -4,10 +4,10 @@ import "./LandingPage.css";
 import logo from "../../assets/logo.png";
 import box from "../../assets/Images/box.jpg";
 import UserWrapper from "../admin/profileComponents/userComponents/UserWrapper";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { LogoutButtonMember } from "../admin/UI/LogoutButton";
 import { useAppContext } from "../../controllers/auth/AuthContext";
-import { MdAdminPanelSettings } from "react-icons/md";
+import { AdminAuthWarning } from "../../controllers/auth/AuthComponents";
 
 function LandingPage({ handleLogout }) {
   const { loginStatus, user } = useAppContext();
@@ -77,12 +77,6 @@ function LandingPage({ handleLogout }) {
             <div className="Welcome">
                 <h1>Welcome to Quick-Ink-Reserve</h1>
             </div>
-            {user.userRole === "ADMIN" && <div className="fixed z-10 bottom-5 right-5">
-              <button className="flex items-center justify-between bg-blue-300 text-black border-2 border-black shadow-sm shadow-white hover:text-white hover:shadow-md hover:shadow-white hover:translate-y-[-3px] hover:bg-blue-500 transition-all" onClick={() => nav('/admin')}>
-                <MdAdminPanelSettings className="text-xl"/>
-                Go to admin page
-              </button>
-            </div>}
         </div>
         <div className="Catalog" id="catalog">
           <h2>Here is what we can do for you!</h2>
