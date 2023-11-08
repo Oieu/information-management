@@ -69,6 +69,7 @@ app.post('/logout', (req, res) => {
     }
 });
 
+
 //LOGIN POST AND GET
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
@@ -106,6 +107,21 @@ app.get('/login', (req, res) => {
         return res.status(200).json({ loggedIn: false, Message: 'No user is logged in.' });
     }
 });
+
+// Backend for Service Images from Databaase
+
+app.get('/member/LandingPageComponents', (req, res) => {
+    const query = "SELECT * FROM genservices";
+    db.query(query, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error on the server side' });
+        }
+        console.log(results);
+        return res.status(200).json(results);
+    });
+});
+
+
 
 //SERVICES STUFF
 app.get('/admin/services', (req, res) => {

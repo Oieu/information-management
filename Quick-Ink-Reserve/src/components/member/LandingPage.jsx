@@ -3,11 +3,11 @@ import "./NavBar.css";
 import "./LandingPage.css";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../controllers/auth/AuthContext";
-import Nav from "./Nav";
-import MainW from "./MainW";
-import Catalog from "./Catalog";
-import Location from "./Location";
-import Aboutus from "./Aboutus";
+import Nav from "./LandingPageComponents/Nav";
+import MainW from "./LandingPageComponents/MainW";
+import Catalog from "./LandingPageComponents/Catalog";
+import Location from "./LandingPageComponents/Location";
+import Aboutus from "./LandingPageComponents/Aboutus";
 
 
 function LandingPage({ handleLogout }) {

@@ -34,50 +34,57 @@
 
  /* For Services Section */
 
-.Catalog {
-    text-align: center;
-    padding: 20px;
-    color: whitesmoke;
-  }
+/* Changes: Made the Services Cards from flex to grid */
+/* Added Designs */
 
-.Catalog h2 {
-    font-size: 3em;
-}
-  
-.Carousel {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;    
-}
-  
-.serv1 {
-    margin: 10px;
-    flex: 1 1 300px;
+ .Catalog {
+    max-width: 1500px;
+    margin:0 auto;
+    padding:2em 2em;
+ }
+
+ .Catalog h2 {
+    color:#444;
+    font-size: 3.5em;
+    margin-bottom: 3em;
+    text-transform: uppercase;
     text-align: center;
-   
-}
-  
-.Catalog img {
-    max-width: 100%;
-    height: auto;
-}
-  
-.Des {
-    margin-top: 10px;
-}
-  
-  /* Responsive Styles */
-@media (max-width: 768px) {
-    .Carousel {
-      flex-direction: column;
-}
-  
-.serv1 {
-      flex: none;
-      width: 100%;
-    }
+ }
+
+ .Catalog .Carousel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(22em, 1fr));
+    gap:1em;   
 }
 
+
+.Catalog .Carousel .serv1 {
+    text-align: center;
+    padding:3rem 2rem;
+    background: FFFF;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+    outline: .1rem solid #ccc;
+    outline-offset: -1.5rem;
+    cursor: pointer;
+}  
+
+.Desc {
+    font-size: 2em;
+}
+
+
+.Catalog .Carousel .serv1:hover {
+    outline: .2rem solid #222;
+    outline-offset: 0;
+}  
+
+.Catalog .Carousel .serv1 img {
+    height: 25em;
+}  
+
+.Catalog .Carousel .serv1:hover img {
+    transform: scale(.9);
+}  
 
   /* for location section */
 
@@ -91,6 +98,7 @@
 }
 
 .Loc h2{
+    color:#222;
     font-size: 3em;
 }  
 
