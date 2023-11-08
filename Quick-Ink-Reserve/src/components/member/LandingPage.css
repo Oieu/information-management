@@ -46,7 +46,6 @@
  .Catalog h2 {
     color:#444;
     font-size: 3.5em;
-    margin-bottom: 3em;
     text-transform: uppercase;
     text-align: center;
  }
@@ -83,7 +82,8 @@
 }  
 
 .Catalog .Carousel .serv1:hover img {
-    transform: scale(.9);
+    transition: all .3s ease-in-out;
+    transform: scale(0.9);
 }  
 
   /* for location section */
