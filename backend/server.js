@@ -7,6 +7,8 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import db from './routes/db.js';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
 
 const app = express();
 const saltRounds = 10;
@@ -43,6 +45,47 @@ app.use(session({
 }));
 app.use('/uploads', express.static('uploads'));
 app.use(express.static('/public'));
+
+//FORGOT PASSWORD
+app.post('/api/forgot-password', (req, res) => {
+    console.log("Hello");
+   const { email } = req.body;
+   console.log(email);
+   const resetToken = crypto.randomBytes(32).toString('hex');
+
+    req.session.resetToken = resetToken;
+
+    const resetLink = `http://localhost:5173/reset-password?token=${resetToken}`;
+    sendResetEmail(email, resetLink);
+
+    res.status(200).json({ message: 'Reset link sent to email.' });
+});
+
+function sendResetEmail(email, resetLink) {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: '19104099@usc.edu.ph',
+            pass: '08083008_Poi'
+        },
+        secure: true,
+    })
+
+    const mailOptions = {
+        from: '19104099@usc.edu.ph',
+        to: email,
+        subject: 'Reset your password',
+        html: `<p>Click the following link to reset your password:</p><p><a href="${resetLink}">${resetLink}</a></p>`,
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+};
 
 //HOMEPAGE POST AND GET, AND LOGOUT
 app.get('/', (req, res) => {

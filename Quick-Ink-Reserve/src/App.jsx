@@ -8,6 +8,7 @@ import SignUp from './components/SignUp'
 import Home from './components/Home'
 import Profile from './components/Profile'
 import Edit from './components/admin/profileComponents/Edit'
+import ForgotPassword from './controllers/auth/ForgotPassword'
 import { useAppContext } from './controllers/auth/AuthContext'
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
         <Route path='*' element={<Home />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/edit' element={<Edit />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
       </Routes>
     </Router>
   );

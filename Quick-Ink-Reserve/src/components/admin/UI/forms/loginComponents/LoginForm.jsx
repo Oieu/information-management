@@ -41,6 +41,9 @@ function LoginForm({
           <Errors errors={errors.passwordError} />
         )}
       </div>
+      <div className="flex justify-end w-2/3 m-auto">
+        <a className="text-xs" href="/forgot-password">Forgot Password?</a>
+      </div>
       <button
         className="target:shadow-lg text-black hover:text-white w-1/2 mx-auto p-3 bg-blue-400 hover:bg-blue-800 hover:border-transparent transition duration-500 ease-in-out"
         onClick={handleSubmit}

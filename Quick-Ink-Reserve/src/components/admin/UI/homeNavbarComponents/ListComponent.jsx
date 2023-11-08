@@ -13,6 +13,11 @@ export function ListComponent({ defaultActive }) {
           title="Dashboard"
           linkedTo="/admin"
         />
+          <ListItem
+            defaultActive={defaultActive}
+            title="Users"
+            linkedTo="/admin/users"
+          />
         <ListItem
           defaultActive={defaultActive}
           title="Materials"
@@ -25,13 +30,13 @@ export function ListComponent({ defaultActive }) {
         />
         <ListItem
           defaultActive={defaultActive}
-          title="Analytics"
-          linkedTo="/admin/analytics"
+          title="Orders"
+          linkedTo="/admin/orders"
         />
         <ListItem
           defaultActive={defaultActive}
-          title="Notifications"
-          linkedTo="/admin/notifications"
+          title="Analytics"
+          linkedTo="/admin/analytics"
         />
       </ul>
     </div>
