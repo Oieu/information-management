@@ -1,90 +1,44 @@
 import React, { useState, useEffect } from "react";
-import "../LandingPage.css"
-import box from "../../../assets/Images/box.jpg";
-import axios from 'axios';
+import axios from "axios";
+import "../LandingPage.css";
 
 function Catalog() {
+  const [services, setServices] = useState([]);
 
-    const [services, setServices] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/member/LandingPageComponents");
 
-    useEffect(() => {
-      axios
-      .get("http://localhost:5000/member/LandingPageComponents")
-      .then((response) => {
-        setServices(response.data.result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        if (Array.isArray(response.data)) {
+          setServices(response.data);
+        } else {
+          console.error("API response is not an array:", response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  
+  return (
+    <div className="Catalog" id="catalog">
+      <h2>Here is what we can do for you!</h2>
 
-    return(
-        <div className="Catalog" id="catalog">
-          <h2>Here is what we can do for you!</h2>
-
-          <div className="Carousel">
-            <div className="serv1">
-              <a target="" href="">
-                <img src={box} alt="Box making" width="600" height="400" />
-              </a>
-              <div className="Des">Box Making</div>
-            </div>
-
-            <div className="serv1">
-              <a target="" href="">
-                <img src={box} alt="Box making" width="600" height="400" />
-              </a>
-              <div className="Des">Box Making</div>
-            </div>
-
-            <div className="serv1">
-              <a target="" href="">
-                <img src={box} alt="Box making" width="600" height="400" />
-              </a>
-              <div className="Des">Box Making</div>
-            </div>
-
-            <div className="serv1">
-              <a target="" href="">
-                <img src={box} alt="Box making" width="600" height="400" />
-              </a>
-              <div className="Des">Box Making</div>
-            </div>
-
-            <div className="serv1">
-              <a target="" href="">
-                <img src={box} alt="Box making" width="600" height="400" />
-              </a>
-              <div className="Des">Box Making</div>
-            </div>
-
-            <div className="serv1">
-              <a target="" href="">
-                <img src={box} alt="Box making" width="600" height="400" />
-              </a>
-              <div className="Des">Box Making</div>
-            </div>
-
-            <div className="serv1">
-              <a target="" href="">
-                <img src={box} alt="Box making" width="600" height="400" />
-              </a>
-              <div className="Des">Box Making</div>
-            </div>
-
-            <div className="serv1">
-              <a target="" href="">
-                <img src={box} alt="Box making" width="600" height="400" />
-              </a>
-              <div className="Des">Box Making</div>
-            </div>
-
-             
+      <div className="Carousel">
+        {services.map((service) => (
+          <div className="serv1" key={service.genServicesID}>
+            <a href="#">
+              <img src={`http://localhost:5000/${service.genServiceImageUrl}`} alt={service.genServiceName} />
+            </a>
+            <div className="Des">{service.genServiceName}</div>
           </div>
-        </div>
-    );
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export default Catalog
+export default Catalog;
