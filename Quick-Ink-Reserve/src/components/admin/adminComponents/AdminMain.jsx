@@ -5,6 +5,8 @@ import UserWrapper from '../profileComponents/userComponents/UserWrapper';
 import Dashboard from "./dashboard/Dashboard";
 import Materials from "./materials/Materials";
 import Services from "./services/Services";
+import Users from "./users/Users";
+
 import { useAppContext } from '../../../controllers/auth/AuthContext';
 import { MdOutlineRememberMe } from 'react-icons/md';
 
@@ -28,6 +30,7 @@ function AdminMain({ nav }) {
           <Route path="/" element={<Dashboard />} />
           <Route path="/materials/*" element={<Materials nav={nav}/>} />
           <Route path="/services/*" element={<Services nav={nav}/>} />
+          <Route path='/users/*' element={<Users nav={nav}/>} />
         </Routes>
       </main>
   )

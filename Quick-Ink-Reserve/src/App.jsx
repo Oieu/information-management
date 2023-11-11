@@ -10,6 +10,7 @@ import Profile from './components/Profile'
 import Edit from './components/admin/profileComponents/Edit'
 import ForgotPassword from './controllers/auth/ForgotPassword'
 import { useAppContext } from './controllers/auth/AuthContext'
+import ResetPassword from './controllers/auth/ResetPassword'
 
 function App() {
   const { loginStatus, user, setLoginStatus, setUser } = useAppContext();
@@ -60,6 +61,7 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/edit' element={<Edit />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
       </Routes>
     </Router>
   );

@@ -3,7 +3,12 @@ import { createContext, useContext, useState } from 'react';
 const AppContext = createContext();
 
 export function useAppContext() {
-    return useContext(AppContext);
+    const context = useContext(AppContext);
+    if (!context) {
+        throw new Error('useAppContext must be used within an AppContextProvider');
+    }
+    
+    return context;
 }
 
 const AppContextProvider = ({ children }) => {
@@ -24,9 +29,12 @@ const AppContextProvider = ({ children }) => {
 }
 
 const withUser = (Child) => (props) => {
-    <AppContext.Consumer>
-        {(context) => <Child {...props} {...context} />}
-    </AppContext.Consumer>
+    return (
+        <AppContext.Consumer>
+            {(context) => <Child {...props} {...context} />}
+        </AppContext.Consumer>
+    );
 };
+
 
 export { AppContextProvider, withUser };

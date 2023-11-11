@@ -12,6 +12,15 @@ const CheckUser = (loginStatus, user, nav, location) => {
         case "admin/services":
           nav("/admin/services");
           break;
+        case "/admin/users":
+          nav("/admin/users");
+          break;
+        case "/admin/orders":
+          nav("/admin/orders");
+          break;
+        case "/admin/analytics":
+          nav("/admin/analytics");
+          break;
         default:
           nav("/admin");
           break;

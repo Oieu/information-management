@@ -48,9 +48,7 @@ app.use(express.static('/public'));
 
 //FORGOT PASSWORD
 app.post('/api/forgot-password', (req, res) => {
-    console.log("Hello");
    const { email } = req.body;
-   console.log(email);
    const resetToken = crypto.randomBytes(32).toString('hex');
 
     req.session.resetToken = resetToken;
@@ -58,21 +56,35 @@ app.post('/api/forgot-password', (req, res) => {
     const resetLink = `http://localhost:5173/reset-password?token=${resetToken}`;
     sendResetEmail(email, resetLink);
 
-    res.status(200).json({ message: 'Reset link sent to email.' });
+    res.status(200).json({ message: 'Reset link sent to email.', email: email });
+});
+
+app.get('/api/reset-password', (req, res) => {
+    const { resetToken } = req.session;
+
+    if (resetToken !== undefined) {   
+        console.log(resetToken);
+        res.status(200).json({ message: 'Token verified.' });
+    } else {
+        res.status(401).json({ message: 'Token invalid.' });
+    }
 });
 
 function sendResetEmail(email, resetLink) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: '19104099@usc.edu.ph',
-            pass: '08083008_Poi'
+            user: 'markosallenus@gmail.com',
+            pass: 'vvda hjnu xrvz fjhj'
         },
         secure: true,
+        tls: {
+            rejectUnauthorized: false
+        }
     })
 
     const mailOptions = {
-        from: '19104099@usc.edu.ph',
+        from: 'markosallenus@gmail.com',
         to: email,
         subject: 'Reset your password',
         html: `<p>Click the following link to reset your password:</p><p><a href="${resetLink}">${resetLink}</a></p>`,
@@ -159,12 +171,34 @@ app.get('/member/LandingPageComponents', (req, res) => {
         if (err) {
             return res.status(500).json({ error: 'Error on the server side' });
         }
-        console.log(results);
         return res.status(200).json(results);
     });
 });
 
+//USER STUFF
+app.get('/admin/users', (req, res) => {
+    const query = 'SELECT * FROM user ORDER BY userEmail';
+    db.query(query, (err, result) => {
+        if(err) {
+            return res.status(500).json({ Message: 'Error on the server side!' });
+        }
 
+        return res.status(200).json({ Message: 'Query successful', result });
+    }
+)});
+
+app.post('/admin/users/delete/:id', (req, res) => {
+    const id = req.params.id;
+    const deleteSql = 'DELETE FROM user WHERE userID = ?';
+
+    db.query(deleteSql, id, (err, result) => {
+        if(err) {
+            return res.status(500).json({ Message: 'Error on the server side!' });
+        }
+
+        return res.status(200).json({ Message: 'Query successful', result });
+    });
+})
 
 //SERVICES STUFF
 app.get('/admin/services', (req, res) => {
