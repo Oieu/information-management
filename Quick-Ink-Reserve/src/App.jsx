@@ -53,10 +53,6 @@ function App() {
     return <div>Loading...</div>;
   }
 
-
-
-
-  
   return (
     <Router>
       <Routes>
@@ -66,6 +62,8 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/edit' element={<Edit />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path = '/service-avail/:genServiceID' element = {<ServiceAvail/>} />
+        <Route path='/reset-password' element={<ResetPassword />} />
       </Routes>
     </Router>
   );
