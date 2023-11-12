@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../LandingPage.css";
+import { Link } from 'react-router-dom'
 
 function Catalog() {
   const [services, setServices] = useState([]);
@@ -30,9 +31,9 @@ function Catalog() {
       <div className="Carousel">
         {services.map((service) => (
           <div className="serv1" key={service.genServicesID}>
-            <a href="#">
+            <Link to = {`/service-avail/${service.genServicesID}`}>
               <img src={`http://localhost:5000/${service.genServiceImageUrl}`} alt={service.genServiceName} />
-            </a>
+            </Link>
             <div className="Des">{service.genServiceName}</div>
           </div>
         ))}

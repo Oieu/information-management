@@ -10,6 +10,7 @@ import Profile from './components/Profile'
 import Edit from './components/admin/profileComponents/Edit'
 import ForgotPassword from './controllers/auth/ForgotPassword'
 import { useAppContext } from './controllers/auth/AuthContext'
+import ServiceAvail from './components/member/LandingPageComponents/ServiceAvail'
 
 function App() {
   const { loginStatus, user, setLoginStatus, setUser } = useAppContext();
@@ -51,6 +52,10 @@ function App() {
     return <div>Loading...</div>;
   }
 
+
+
+
+  
   return (
     <Router>
       <Routes>
@@ -60,6 +65,7 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/edit' element={<Edit />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path = '/service-avail/:genServiceID' element = {<ServiceAvail/>} />
       </Routes>
     </Router>
   );
