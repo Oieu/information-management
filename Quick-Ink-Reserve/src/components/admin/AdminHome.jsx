@@ -27,10 +27,16 @@ function AdminHome({ nav }) {
     switch (location.pathname) {
       case "/admin":
         return "Dashboard";
+      case "/admin/users":
+        return "Users";
       case "/admin/materials":
         return "Materials";
       case "/admin/services":
         return "Services";
+      case "/admin/orders":
+        return "Orders";
+      case "/admin/analytics":
+        return "Analytics";
       default:
         return "Dashboard";
     }
