@@ -14,9 +14,10 @@ function Nav({ handleLogout, user, loginStatus }) {
             </div>
             <ul className="w-1/2">
               <li className="active">
-                <a className="active1 list" href="#home">
-                  Home
-                </a>
+              <Link to={loginStatus ? '/MemberHome' : '/LandingPage'} className="active1 list">
+                Home
+              </Link>
+              
               </li>
               <li>
                 <a href="#catalog" className="active1 list">
