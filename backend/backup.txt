@@ -1,0 +1,320 @@
+//HOMEPAGE POST AND GET, AND LOGOUT
+// app.get('/', (req, res) => {
+//     if(req.session.user) {
+//         return res.status(200).json({ loggedIn: true, user: req.session.user });
+//     } else {
+//         return res.status(200).json({ loggedIn: false });
+//     }
+// });
+// app.post('/logout', (req, res) => {
+//     if (req.session && req.session.user) {
+//         req.session.destroy((err) => {
+//             if (err) {
+//                 return res.status(500).json({ Message: 'Error in logging out. ' + err })
+//             } else {
+//                 if (req.cookies['name']) {
+//                     res.clearCookie('name');
+//                 }
+//                 return res.status(200).json({ Message: 'Logout was Successful.', loggedIn: false });
+//             }
+//         });
+//     } else {
+//         return res.status(401).json({ Message: 'Not logged in' });
+//     }
+// });
+
+
+// //LOGIN POST AND GET
+// app.post('/login', (req, res) => {
+//     const { email, password } = req.body;
+//     const emailCheck = 'SELECT * FROM user WHERE userEmail = ?';
+    
+//     db.query(emailCheck, [email], (checkError, checkResult) => {
+//         if (checkError) {
+//             return res.status(500).json({ Message: "Error from the server side." });
+//         }
+        
+//         if (checkResult.length === 0) {
+//             return res.status(401).json({ errorEmailMessage: "Email not found." });
+//         }
+        
+//         const user = checkResult[0];
+        
+//         bcrypt.compare(password, user.userPassword, (err, response) => {
+//             if (err) {
+//                 return res.status(401).json({ errorPasswordMessage: "Incorrect password." });
+//             }
+//             if (response) {
+//                 req.session.user = user;
+//                 req.session.loggedIn = true;
+//                 return res.status(200).json({ Message: "Login successful", user: user, loggedIn: true });
+//             } else {
+//                 return res.status(401).json({ errorPasswordMessage: "Incorrect password." });
+//             }
+//         });
+//     });
+// });
+// app.get('/login', (req, res) => {
+//     if(req.session.user) {
+//         return res.status(200).json({ loggedIn: true, user: req.session.user })
+//     } else {
+//         return res.status(200).json({ loggedIn: false, Message: 'No user is logged in.' });
+//     }
+// });
+
+// // Backend for Service Images from Databaase
+
+// app.get('/member/LandingPageComponents', (req, res) => {
+//     const query = "SELECT * FROM genservices";
+//     db.query(query, (err, results) => {
+//         if (err) {
+//             return res.status(500).json({ error: 'Error on the server side' });
+//         }
+//         return res.status(200).json(results);
+//     });
+// });
+
+// app.get('/service-avail/:genServiceID', (req, res) => {
+//     const genServiceID = req.params.genServiceID;
+//     const query = "SELECT * FROM genservices WHERE genServicesID = ?";
+
+//     db.query(query, [genServiceID], (err, results) => {
+//         if (err) {
+//             return res.status(500).json({ error: 'Error on the server side' });
+//         }
+
+//         if (results.length === 0) {
+//             return res.status(404).json({ error: 'Service not found' });
+//         }
+
+//         return res.status(200).json(results); // Assuming genServiceID is unique
+//     });
+// });
+
+
+// //USER STUFF
+// app.get('/admin/users', (req, res) => {
+//     const query = 'SELECT * FROM user ORDER BY userEmail';
+//     db.query(query, (err, result) => {
+//         if(err) {
+//             return res.status(500).json({ Message: 'Error on the server side!' });
+//         }
+
+//         return res.status(200).json({ Message: 'Query successful', result });
+//     }
+// )});
+
+// app.post('/admin/users/delete/:id', (req, res) => {
+//     const id = req.params.id;
+//     const deleteSql = 'DELETE FROM user WHERE userID = ?';
+
+//     db.query(deleteSql, id, (err, result) => {
+//         if(err) {
+//             return res.status(500).json({ Message: 'Error on the server side!' });
+//         }
+
+//         return res.status(200).json({ Message: 'Query successful', result });
+//     });
+// })
+
+// //SERVICES STUFF
+// app.get('/admin/services', (req, res) => {
+//     const query = 'SELECT * FROM genservices ORDER BY genServiceName';
+//     db.query(query, (err, result) => {
+//         if (err) {
+//             return res.status(500).json({ Message: 'Error on the server side!' });
+//         }
+//         return res.status(200).json({ Message: 'Query successful', result });
+//     }
+// )});
+
+// app.post('/admin/services', upload.single('serviceImage'), (req, res) => {
+//     const { name, description } = req.body;
+//     const serviceImagePath = req.file ? req.file.path : null;
+//     const insertSql = 'INSERT INTO genservices (genServiceName, genServiceDesc, genServiceImageUrl) VALUES (?, ?, ?)';
+    
+//     console.log(req.file);
+//     const values = [name, description, serviceImagePath];
+//     db.query(insertSql, values, (err, result) => {
+//         if (err) {
+//             console.log(err);
+//             return res.status(500).json({ Message: 'Error on the server side!' });
+//         }
+//         console.log(result);
+//         return res.status(200).json({ Message: 'Query successful', services: result });
+//     });
+// });
+
+// app.post('/admin/services/delete/:id', (req, res) => {
+//     const id = req.params.id;
+//     const deleteSql = 'DELETE FROM genservices WHERE genServicesID = ?';
+
+//     db.query(deleteSql, id, (err, result) => {
+//         if (err) {
+//             console.log(err);
+//             return res.status(500).json({ Message: 'Error on the server side!' });
+//         }
+//         return res.status(200).json({ Message: 'Query successful', services: result });
+//     });
+// });
+
+// app.post('/admin/services/:id', (req, res) => {
+//     const id = req.params.id;
+//     const featured = req.body.featured;
+//     const updateSql = 'UPDATE genservices SET featured = ? WHERE genServiceID = ?';
+//     const values = [featured, id];
+
+//     db.query(updateSql, values, (err, result) => {
+//         if (err) {
+//             console.log(err);
+//             return res.status(500).json({ Message: 'Error on the server side!' });
+//         }
+//         return res.status(200).json({ Message: 'Query successful', services: result });
+//     });
+// });
+
+// //MATERIAL STUFF
+// app.get('/admin/materials', (req, res) => {
+//     const query = 'SELECT * FROM materials ORDER BY matName';
+//     db.query(query, (err, result) => {
+//         if (err) {
+//             return res.status(500).json({ Message: 'Error on the server side!' });
+//         }
+//         return res.status(200).json({ Message: 'Query successful', result });
+//     });
+// });
+
+// app.post('/admin/materials', upload.single('materialImage'), (req, res) => {
+//     const { name, size, count, quantity, units, color, description } = req.body;
+//     const materialImagePath = req.file ? req.file.path : null;
+//     const insertSql = 'INSERT INTO materials (matName, matSize, matCount, matQty, matUnit, matImageUrl, color, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    
+//     console.log(req.file);
+//     const values = [name, size, count, quantity, units, materialImagePath, color, description];
+//     db.query(insertSql, values, (err, result) => {
+//         if (err) {
+//             return res.status(500).json({ Message: 'Error on the server side!' });
+//         }
+//         return res.status(200).json({ Message: 'Query successful', materials: result });
+//     });
+// });
+
+// app.post('/admin/materials/delete/:id', (req, res) => {
+//     const id = req.params.id;
+//     const deleteSql = 'DELETE FROM materials WHERE matID = ?';
+
+//     db.query(deleteSql, id, (err, result) => {
+//         if (err) {
+//             console.log(err);
+//             return res.status(500).json({ Message: 'Error on the server side!' });
+//         }
+//         return res.status(200).json({ Message: 'Query successful', materials: result });
+//     });
+// });
+
+// //SIGNUP POST AND GET
+// app.post('/signup', upload.single('profilePicture'), (req, res) => {
+//     const { email, password, userName } = req.body;
+//     const profilePicturePath = req.file ? req.file.path : null;
+
+//   const emailCheck = 'SELECT * FROM user WHERE userEmail = ?';
+
+//   db.query(emailCheck, [email], (checkError, checkResult) => {
+//       if (checkError) {
+//           return res.status(500).json({ Message: "Error from the server side." });
+//       }
+
+//       if (checkResult.length > 0) {
+//           return res.status(500).json({ Message: "Email already exists in the database" });
+//       }
+
+//       const insertSql = 'INSERT INTO user (userEmail, userPassword, userName, profilePicture) VALUES (?, ?, ?, ?)';
+      
+//         bcrypt.hash(password, saltRounds, (err, hash) => {
+//             if (err) {
+//                 return res.status(500).json({ Message: 'Error on the server side!' });
+//             }
+            
+//             const values = [email, hash, userName, profilePicturePath];
+//             db.query(insertSql, values, (err, insertResult) => {
+//                 if (err) {
+//                     return res.status(500).json({ Message: 'Error on the server side!' });
+//                 }
+//                 return res.status(200).json({ Message: 'User registration successful' , user: insertResult});
+//             });
+//         });    
+//     });
+// });
+
+
+//PROFILE STUFF
+app.get('/profile', (req, res) => {
+    if(req.session.user) {
+        const id = req.session.user.userID;
+        const userCheck = 'SELECT * FROM user WHERE userID = ?';
+
+        db.query(userCheck, id, (err, result) => {
+            if(err) {
+                return res.status(401).json({ Message: 'Error on the server side' });
+            }
+            if(result.length === 0) {
+                return res.status(401).json({ Message: 'Email was not found' });
+            }
+
+            const user = result[0];
+
+            if(user) {
+                return res.status(200).json({ loggedIn: req.session.loggedIn, Message: 'User was found', user: user });
+            } else {
+                return res.status(401).json({ Message: 'Error on the server side' });
+            }
+        })
+    } else {
+        return res.status(401).json({ Message: 'No user is logged in.' });
+    }
+});
+
+app.put('/reset', (req, res) => {
+    const { email, newUsername, newPassword, currPassword } = req.body;  
+    const checkCurrPasswordQuery = 'SELECT * FROM user WHERE userEmail = ?';
+  
+    db.query(checkCurrPasswordQuery, [email], (checkError, checkResult) => {
+      if (checkError) {
+        return res.status(500).json({ Message: 'Error on the server side.' });
+      }
+  
+      if (checkResult.length === 0) {
+        return res.status(401).json({ Message: 'User not found.' });
+      }
+  
+      const user = checkResult[0];
+  
+      bcrypt.compare(currPassword, user.userPassword, (compareErr, passwordMatch) => {
+        if (compareErr) {
+          return res.status(500).json({ Message: 'Error on the server side.' });
+        }
+  
+        if (passwordMatch) {
+          const updateSql = 'UPDATE user SET userName = ?, userPassword = ? WHERE userEmail = ?';
+  
+          bcrypt.hash(newPassword, saltRounds, (hashErr, hash) => {
+            if (hashErr) {
+              return res.status(500).json({ Message: 'Error on the server side.' });
+            }
+  
+            const values = [newUsername, hash, email];
+  
+            db.query(updateSql, values, (updateErr, updateResult) => {
+              if (updateErr) {
+                return res.status(500).json({ Message: 'Error on the server side.' });
+              }
+  
+              return res.status(200).json({ Message: 'User information updated successfully. Redirecting in 3 seconds...' });
+            });
+          });
+        } else {
+          return res.status(401).json({ passMessage: 'Wrong current password! Please input the correct current password.' });
+        }
+      });
+    });
+});

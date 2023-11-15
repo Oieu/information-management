@@ -13,6 +13,7 @@ import FormHeaders from "../../UI/forms/formComponents/FormHeaders";
 import { TableHead, TableCol } from "./tableComponents/TableHead";
 import Timeout from "../../../../controllers/Timeout";
 import { TabTitle } from "../../../../utils/GeneralFunctions";
+import { BiSearchAlt } from "react-icons/bi";
 
 function Materials({ loginStatus, nav }) {
   TabTitle("Admin | Materials", false);
@@ -33,6 +34,8 @@ function Materials({ loginStatus, nav }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isReadModalOpen, setIsReadModalOpen] = useState(false);
   const [id, setId] = useState(0);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState(materials);
 
   function handleFileInputChange(event) {
     const fileInput = event.target;
@@ -41,7 +44,7 @@ function Materials({ loginStatus, nav }) {
       const selectedFile = fileInput.files[0];
       setNewMaterial({ ...newMaterial, imageUrl: selectedFile });
     }
-  }
+  };
 
   useEffect(() => {
     if (loginStatus === false) {
@@ -51,6 +54,7 @@ function Materials({ loginStatus, nav }) {
       .get("http://localhost:5000/admin/materials")
       .then((response) => {
         setMaterials(response.data.result);
+        setFilter(response.data.result);
       })
       .catch((error) => {
         console.log(error);
@@ -62,7 +66,7 @@ function Materials({ loginStatus, nav }) {
     setOverlayOpen(true);
     setIsDeleteModalOpen(true);
     setId(index);
-  }
+  };
 
   function handleDeleteMaterial(e, index) {
     e.preventDefault();
@@ -77,21 +81,18 @@ function Materials({ loginStatus, nav }) {
     setOverlayOpen(false);
     setIsDeleteModalOpen(false);
     Timeout(1000);
-  }
+  };
 
   function ShortenDescription(description) {
     const [shortDescription] = description.split(".");
     return shortDescription;
-  }
+  };
 
   function handleReadMaterial(index) {
     setReadMaterial(materials[index]);
-
-    setTimeout(() => {
-      setOverlayOpen(true);
-      setIsReadModalOpen(true);
-    }, 1000);
-  }
+    setOverlayOpen(true);
+    setIsReadModalOpen(true);
+  };
 
   const handleAddMaterials = (e) => {
     e.preventDefault();
@@ -120,11 +121,11 @@ function Materials({ loginStatus, nav }) {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [servicesPerPage] = useState(10);
+  const [servicesPerPage, setServicesPerPage] = useState(10);
 
   const indexOfLastService = currentPage * servicesPerPage;
   const indexOfFirstService = indexOfLastService - servicesPerPage;
-  const currentMaterials = materials.slice(
+  const currentMaterials = filter.slice(
     indexOfFirstService,
     indexOfLastService
   );
@@ -134,6 +135,15 @@ function Materials({ loginStatus, nav }) {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  useEffect(() => {
+    const results = materials.filter((material) => {
+      return (
+        material.matName.toLowerCase().includes(search.toLocaleLowerCase())
+      );
+    });
+    setFilter(results);
+  }, [search]);
 
   return (
     <>
@@ -435,20 +445,29 @@ function Materials({ loginStatus, nav }) {
           </div>
         )}
         <header className="flex flex-col gap-2 ml-5 h-[10%]">
-          <div className="flex items-center gap-10 w-[90%]">
-            <h1 className="text-left">Materials</h1>
-            <button
-              type="button"
-              className="bg-green-400 flex items-center gap-3 text-black font-extrabold w-1/6 border-none hover:bg-green-600 hover:text-white hover:translate-y-[-4px] transition-all"
-              onClick={(e) => {
-                setIsModalOpen(true);
-                setOverlayOpen(true);
-              }}
-              disabled={isModalOpen}
-            >
-              <FaPlus />
-              Add New Material
-            </button>
+          <div className="flex items-center gap-10 w-[95%]">
+            <div className="w-2/3 flex gap-5">
+              <h1 className="text-left">Materials</h1>
+              <button
+                type="button"
+                className="bg-green-400 flex items-center gap-3 text-black font-extrabold w-1/4 border-none hover:bg-green-600 hover:text-white hover:translate-y-[-4px] transition-all"
+                onClick={(e) => {
+                  setIsModalOpen(true);
+                  setOverlayOpen(true);
+                }}
+                disabled={isModalOpen}
+              >
+                <FaPlus />
+                Add New Material
+              </button>
+            </div>
+            <div className="w-1/3 flex justify-end items-center gap-2">
+              <BiSearchAlt className="text-3xl" />
+              <input type="text" placeholder="Find item here..."
+                className="border-2 border-black rounded-md w-2/3 p-2"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
           </div>
           <p className="text-left">
             This component will allow the admin to see the available materials,
@@ -459,7 +478,7 @@ function Materials({ loginStatus, nav }) {
         <div className="overflow-auto max-h-[700px] flex">
           <table className=" w-11/12 table-auto border-collapse m-auto my-0 h-4/5">
             <colgroup>
-              {materials.length === 0 || !materials ? (
+              {filter.length === 0 || !materials ? (
                 <TableCol width="100%" content={null} />
               ) : (
                 <>
@@ -477,7 +496,7 @@ function Materials({ loginStatus, nav }) {
             </colgroup>
             <thead>
               <tr>
-                {materials.length === 0 || !materials ? (
+                {filter.length === 0 || !filter ? (
                   <td className="text-center">
                     <h1 className="text-4xl text-yellow-500">
                       No Materials in the table.
@@ -533,8 +552,8 @@ function Materials({ loginStatus, nav }) {
                         {material.color}
                       </td>
                       <td className="text-left text-black p-2 border border-gray-300">
-                        {ShortenDescription(materials[index].description)}{" "}
-                        {materials[index].description.length > 50 && (
+                        {ShortenDescription(filter[index].description)}{" "}
+                        {filter[index].description.length > 50 && (
                           <button
                             onClick={() => {
                               handleReadMaterial(index);
@@ -596,17 +615,31 @@ function Materials({ loginStatus, nav }) {
             </tbody>
           </table>
         </div>
-        <div className="w-11/12 m-auto flex items-center">
-          <ul className="flex gap-4">
+        <div className="w-11/12 mx-auto flex items-center h-16">
+          <div className="w-1/4 h-full items-center flex gap-3">
+            <label className="text-right" htmlFor="ServicePerPage">No. of rows per page: </label>
+            <select
+                id="servicePerPage"
+                className="w-1/5 text-center h-10 border-2 border-black rounded-md cursor-pointer"
+                value={servicesPerPage}
+                onChange={(e) => setServicesPerPage(e.target.value)}
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+          </div>
+          <ul className="flex justify-end gap-4 w-3/4">
             {pageNumbers > 1 &&
               Array.from({ length: pageNumbers }, (_, i) => (
                 <li key={i}>
                   <button
                     onClick={() => handlePageChange(i + 1)}
-                    className={`${
+                    className={`bg-gray-700 ${
                       i + 1 === currentPage
                         ? "font-bold underline text-white"
-                        : "text-blue-600 hover:text-blue-900"
+                        : "text-sky-400 hover:text-blue-500"
                     } cursor-pointer`}
                   >
                     {i + 1}

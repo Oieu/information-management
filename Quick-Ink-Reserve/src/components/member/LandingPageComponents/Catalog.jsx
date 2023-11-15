@@ -9,7 +9,7 @@ function Catalog() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/member/LandingPageComponents");
+        const response = await axios.get("http://localhost:5000/service-avail");
 
         if (Array.isArray(response.data)) {
           setServices(response.data);

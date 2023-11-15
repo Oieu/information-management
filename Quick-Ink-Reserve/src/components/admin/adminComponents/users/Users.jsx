@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { TableWithData, actions, statusFilters, modal } from "./TableData";
 import createColumns from "./TableData";
+import JsPDF from "jspdf";
+import "jspdf-autotable";
 
 function Users() {
   const [data, setData] = useState([]);
@@ -9,7 +11,7 @@ function Users() {
   const [filter, setFilter] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [deleteID, setDeleteID] = useState("");
-  const [statusFilter, setStatusFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -29,12 +31,39 @@ function Users() {
   };
 
   const filterData = (status) => {
-    if (status === '') {
+    if (status === "") {
       setFilter(data);
     } else {
-      const filtered = data.filter((row) => row.status.toLowerCase() === status.toLowerCase());
+      const filtered = data.filter(
+        (row) => row.status.toLowerCase() === status.toLowerCase()
+      );
       setFilter(filtered);
     }
+  };
+
+  const generatePDF = () => {
+    const unit = "pt";
+    const size = "A4";
+    const orientation = "portrait";
+
+    const marginLeft = 40;
+    const doc = new JsPDF(orientation, unit, size);
+
+    doc.setFontSize(15);
+
+    const title = "Users Report";
+    const headers = [["Name", "Email", "Status"]];
+    const data = filter.map((elt) => [elt.userName, elt.userEmail, elt.status]);
+
+    let content = {
+      startY: 50,
+      head: headers,
+      body: data,
+    };
+
+    doc.text(title, marginLeft, 40);
+    doc.autoTable(content);
+    doc.save("report.pdf");
   };
 
   useEffect(() => {
@@ -75,15 +104,20 @@ function Users() {
         <div className="row">
           <div className="flex w-full m-auto h-20">
             {actions(search, setSearch, setFilter, data)}
-            {statusFilters(statusFilter, handleStatusFilterChange, startDate, endDate, setStartDate, setEndDate, filterDataByDate)}
+            {statusFilters(
+              statusFilter,
+              handleStatusFilterChange,
+              startDate,
+              endDate,
+              setStartDate,
+              setEndDate,
+              filterDataByDate, generatePDF
+            )}
           </div>
           <div className="col-md-12">
             <TableWithData
               columns={createColumns(setOpenModal, setDeleteID)}
               data={filter}
-              search={search}
-              setSearch={setSearch}
-              setFilter={setFilter}
             />
           </div>
           {modal(openModal, setOpenModal, deleteID)}

@@ -142,14 +142,27 @@ const createColumns = (setOpenModal, setDeleteID) => {
   return columns;
 };
 
-const DatePickerComponent = ({ startDate, setStartDate, endDate, setEndDate, filterDataByDate }) => {
+const DatePickerComponent = ({
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  filterDataByDate,
+  generatePDF,
+}) => {
   return (
-    <div className="flex items-center justify-end w-2/3 h-full gap-5">
-        <div className="h-full w-2/5 flex flex-col items-end gap-2">
-          <label className="w-1/2 text-left">Filter by Date:</label>
-          <button className="w-1/2" onClick={filterDataByDate}>Filter</button>
+    <div className="flex items-center justify-end w-4/5 h-full gap-5">
+      <div className="w-2/3 flex justify-end items-end">
+        <div className="h-full w-1/3 flex flex-col gap-2">
+          <label className="w-full text-left">Filter by Date:</label>
+          <button
+            className="w-4/5 border-none bg-blue-300 text-black transition-all hover:bg-blue-500 hover:text-white"
+            onClick={filterDataByDate}
+          >
+            Filter
+          </button>
         </div>
-        <div className="h-full w-1/5 flex flex-col gap-3">
+        <div className="h-full w-1/3 flex flex-col gap-3 text-left">
           <label htmlFor="startDate">Start:</label>
           <DatePicker
             selected={startDate}
@@ -160,7 +173,7 @@ const DatePickerComponent = ({ startDate, setStartDate, endDate, setEndDate, fil
             className="border-none bg-gray-300 p-2 rounded-lg w-4/5 text-black"
           />
         </div>
-        <div className="h-full w-1/5 flex flex-col gap-3">
+        <div className="h-full w-1/3 flex flex-col gap-3 text-left">
           <label htmlFor="endDate">End:</label>
           <DatePicker
             selected={endDate}
@@ -173,9 +186,17 @@ const DatePickerComponent = ({ startDate, setStartDate, endDate, setEndDate, fil
           />
         </div>
       </div>
-  )
+      <div className="w-1/5 flex h-full items-end justify-center">
+        <button
+          onClick={generatePDF}
+          className="w-2/3 bg-blue-500 border-none text-white rounded-md p-3 hover:bg-blue-600 transition-all duration-200 hover:translate-y-[-2px]"
+        >
+          Export
+        </button>
+      </div>
+    </div>
+  );
 };
-
 
 export const styles = {
   rows: {
@@ -212,10 +233,18 @@ export const styles = {
   },
 };
 
-export function statusFilters(statusFilter, handleStatusFilterChange, 
-  startDate, endDate, setStartDate, setEndDate, filterDataByDate) {
+export function statusFilters(
+  statusFilter,
+  handleStatusFilterChange,
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+  filterDataByDate,
+  generatePDF
+) {
   return (
-    <div className="w-2/3 m-auto h-full flex justify-evenly items-center gap-5">
+    <div className="w-2/3 m-auto h-full flex items-center gap-5">
       <div className="flex gap-5 items-center h-full">
         <label htmlFor="statusFilter">Filter by Status:</label>
         <select
@@ -228,26 +257,30 @@ export function statusFilters(statusFilter, handleStatusFilterChange,
           <option value="inactive">Inactive</option>
         </select>
       </div>
-      <DatePickerComponent 
-        startDate={startDate} 
-        setStartDate={setStartDate} 
-        endDate={endDate} 
-        setEndDate={setEndDate} 
+      <DatePickerComponent
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
         filterDataByDate={filterDataByDate}
+        generatePDF={generatePDF}
       />
     </div>
   );
 }
 
-export function actions(search, setSearch, setFilter, data) {
+export function actions(search, setSearch, setFilter, data, generatePDF) {
   return (
-    <div className="w-1/3 h-full flex justify-center items-center gap-5 bg-transparent m-0 p-0">
+    <div className="w-1/3 h-full flex justify-end items-center gap-5 bg-transparent m-0 p-0">
       <div className="w-[95%] h-full flex items-center gap-5">
-        <div className="w-2/3 flex items-center gap-5">
+        <div className="w-4/5 flex items-center justify-center gap-1">
+          <label className="text-left w-1/3 text-xl " htmlFor="Search">
+            Search :
+          </label>
           <input
             type="text"
             className="p-2 rounded-lg w-full bg-gray-300 "
-            placeholder="Search..."
+            placeholder="Username or Email here..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -261,9 +294,6 @@ export function actions(search, setSearch, setFilter, data) {
             }}
           />
         </div>
-        <button className="bg-blue-500 border-none text-white rounded-md p-2 hover:bg-blue-600 transition-all duration-200 hover:translate-y-[-2px]">
-          Export PDF
-        </button>
       </div>
     </div>
   );
@@ -279,7 +309,10 @@ function emptyTable() {
 
 export function TableWithData({ columns, data }) {
   return (
-    <div className="relative w-full max-h-[650px] overflow-y-auto m-auto p-5">
+    <div
+      id="report"
+      className="relative w-full max-h-[650px] overflow-y-auto m-auto p-5"
+    >
       <DataTable
         columns={columns}
         data={data}
