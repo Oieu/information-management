@@ -14,7 +14,6 @@ import update from './auth/reset/update.js';
 
 const router = express.Router();
 
-// Import the login APIs from loginApis.js
 router.use(login);
 router.use(signup);
 router.use(members);

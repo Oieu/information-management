@@ -18,7 +18,6 @@ router.get("/api/reset-password", (req, res) => {
   const { resetToken } = req.session;
 
   if (resetToken !== undefined) {
-    console.log(resetToken);
     res.status(200).json({ message: "Token verified." });
   } else {
     res.status(401).json({ message: "Token invalid." });

@@ -26,7 +26,7 @@ router.get("/service-avail/:genServiceID", (req, res) => {
       return res.status(404).json({ error: "Service not found" });
     }
 
-    return res.status(200).json(results); // Assuming genServiceID is unique
+    return res.status(200).json(results);
   });
 });
 

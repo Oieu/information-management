@@ -9,7 +9,7 @@ const CheckUser = (loginStatus, user, nav, location) => {
         case "/admin/materials":
           nav("/admin/materials");
           break;
-        case "admin/services":
+        case "/admin/services":
           nav("/admin/services");
           break;
         case "/admin/users":

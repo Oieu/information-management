@@ -19,14 +19,11 @@ router.post('/admin/services', upload.single('serviceImage'), (req, res) => {
     const serviceImagePath = req.file ? req.file.path : null;
     const insertSql = 'INSERT INTO genservices (genServiceName, genServiceDesc, genServiceImageUrl) VALUES (?, ?, ?)';
     
-    console.log(req.file);
     const values = [name, description, serviceImagePath];
     db.query(insertSql, values, (err, result) => {
         if (err) {
-            console.log(err);
             return res.status(500).json({ Message: 'Error on the server side!' });
         }
-        console.log(result);
         return res.status(200).json({ Message: 'Query successful', services: result });
     });
 });
@@ -37,7 +34,6 @@ router.post('/admin/services/delete/:id', (req, res) => {
 
     db.query(deleteSql, id, (err, result) => {
         if (err) {
-            console.log(err);
             return res.status(500).json({ Message: 'Error on the server side!' });
         }
         return res.status(200).json({ Message: 'Query successful', services: result });
@@ -52,7 +48,6 @@ router.post('/admin/services/:id', (req, res) => {
 
     db.query(updateSql, values, (err, result) => {
         if (err) {
-            console.log(err);
             return res.status(500).json({ Message: 'Error on the server side!' });
         }
         return res.status(200).json({ Message: 'Query successful', services: result });
