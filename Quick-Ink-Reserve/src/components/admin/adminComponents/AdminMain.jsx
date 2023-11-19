@@ -9,6 +9,7 @@ import Users from "./users/Users";
 
 import { useAppContext } from '../../../controllers/auth/AuthContext';
 import { MdOutlineRememberMe } from 'react-icons/md';
+import Analytics from './analytics/Analytics';
 
 function AdminMain({ nav }) {
     const { loginStatus, user } = useAppContext();
@@ -31,6 +32,7 @@ function AdminMain({ nav }) {
           <Route path="/materials/*" element={<Materials nav={nav}/>} />
           <Route path="/services/*" element={<Services nav={nav}/>} />
           <Route path='/users/*' element={<Users nav={nav}/>} />
+          <Route path='/analytics/*' element={<Analytics nav={nav}/>} />
         </Routes>
       </main>
   )

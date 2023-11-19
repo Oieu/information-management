@@ -11,6 +11,7 @@ import getServices from "./members/getServices.js";
 import profile from './members/profile.js';
 import test from './test.js';
 import update from './auth/reset/update.js';
+import analytics from './admin/analytics/analytics.js';
 
 const router = express.Router();
 
@@ -26,5 +27,6 @@ router.use(getServices);
 router.use(profile);
 router.use(test);
 router.use(update);
+router.use(analytics);
 
 export default router;
