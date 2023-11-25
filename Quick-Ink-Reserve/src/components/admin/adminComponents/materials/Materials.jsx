@@ -13,9 +13,12 @@ import {
   handlePageChange,
   setPageFiltering
 } from './materialFunctions.js';
+import LoadingComponent from "../../../../utils/LoadingComponent.jsx";
 
 function Materials({ loginStatus, nav }) {
   TabTitle("Admin | Materials", false);
+  
+  //DATA STUFF
   const [materials, setMaterials] = useState([]);
   const [readMaterial, setReadMaterial] = useState({});
   const [newMaterial, setNewMaterial] = useState({
@@ -28,18 +31,23 @@ function Materials({ loginStatus, nav }) {
     color: "",
     description: "",
   });
+  const [isLoading, setIsLoading] = useState(true);
+
+  //OVERLAY STUFF
   const [overlayOpen, setOverlayOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isReadModalOpen, setIsReadModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  //READING AND DELETING STUFF
   const [id, setId] = useState(0);
 
   useEffect(() => {
     if (loginStatus === false) {
       nav("/login");
     }
-    fetchData(setMaterials, setFilter);
+    fetchData(setMaterials, setFilter, setIsLoading);
   }, []);
 
   function openDeleteModal(e, index) {
@@ -129,7 +137,7 @@ function Materials({ loginStatus, nav }) {
       .catch((error) => {
         console.log(error);
       });
-  }  
+  };  
 
   //PAGINATION STUFF AND SEARCH FILTERING
   const [currentPage, setCurrentPage] = useState(1);
@@ -146,6 +154,7 @@ function Materials({ loginStatus, nav }) {
   const pageNumbers = Math.ceil(filter.length / servicesPerPage);
 
   setPageFiltering(search, materials, setFilter);
+  if(isLoading) return <LoadingComponent loading={isLoading} />;
 
   return (
     <>

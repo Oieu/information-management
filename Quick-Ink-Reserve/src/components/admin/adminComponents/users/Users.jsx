@@ -4,11 +4,16 @@ import { TableWithData, actions, statusFilters, modal } from "./TableData";
 import createColumns from "./TableData";
 import JsPDF from "jspdf";
 import "jspdf-autotable";
+import LoadingComponent from "../../../../utils/LoadingComponent";
 
 function Users() {
+  //DATA STUFF
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  //OVERLAY STUFF
   const [openModal, setOpenModal] = useState(false);
   const [deleteID, setDeleteID] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -72,6 +77,9 @@ function Users() {
       .then((response) => {
         setData(response.data.result);
         setFilter(response.data.result);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       })
       .catch((error) => {
         console.log(error);
@@ -87,6 +95,8 @@ function Users() {
     });
     setFilter(results);
   }, [search]);
+
+  if(loading) return <LoadingComponent loading={loading} />
 
   return (
     <div className="w-full relative h-[90%]">

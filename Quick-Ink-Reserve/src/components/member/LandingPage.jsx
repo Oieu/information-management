@@ -21,7 +21,6 @@ function LandingPage({ handleLogout }) {
         <Catalog/>
         <Location/>
         <Aboutus/>
-
       </div>
     </>
   );

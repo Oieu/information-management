@@ -11,7 +11,7 @@ export function handleFileInputChange(event, newMaterial, setNewMaterial) {
   }
 }
 
-export function fetchData(setMaterials, setFilter) {
+export function fetchData(setMaterials, setFilter, setIsLoading) {
   axios
     .get("http://localhost:5000/admin/materials")
     .then((response) => {
@@ -20,6 +20,10 @@ export function fetchData(setMaterials, setFilter) {
     })
     .catch((error) => {
       console.log(error);
+    }).finally(() => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000)
     });
 }
 
