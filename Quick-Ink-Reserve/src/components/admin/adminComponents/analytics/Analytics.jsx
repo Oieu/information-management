@@ -3,8 +3,8 @@ import { fetchData, fetchInactiveData } from "./Functions";
 import PieCharts, { Header } from "./PieCharts";
 import { CardContainer } from "./Cards";
 import { BarCharts, Headers, UserCompare, UserCount } from "./BarCharts";
-import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 import { months } from "./Functions";
+import LoadingComponent from "../../../../utils/LoadingComponent";
 
 export default function Analytics() {
   const [data, setData] = useState([]);
@@ -23,9 +23,9 @@ export default function Analytics() {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        //setTimeout(() => {
-        setLoading(false);
-        // }, 1000);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       }
     };
 
@@ -34,18 +34,7 @@ export default function Analytics() {
 
   if (loading) {
     return (
-      <div className="w-2/5 h-2/5 m-auto p-5 bg-gray-500 relative rounded-xl">
-        <ClimbingBoxLoader
-          color={"#ffffff"}
-          loading={loading}
-          size={30}
-          aria-label="Loading Ladder"
-          className="absolute top-1/4 left-[40%]"
-        />
-        <h1 className="absolute text-center left-1/4 top-[70%]">
-          Fetching data...
-        </h1>
-      </div>
+      <LoadingComponent loading={loading} />
     );
   }
   

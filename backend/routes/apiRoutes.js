@@ -12,6 +12,7 @@ import profile from './members/profile.js';
 import test from './test.js';
 import update from './auth/reset/update.js';
 import analytics from './admin/analytics/analytics.js';
+import uploadFiles from "./members/uploadFiles.js";
 
 const router = express.Router();
 
@@ -28,5 +29,6 @@ router.use(profile);
 router.use(test);
 router.use(update);
 router.use(analytics);
+router.use(uploadFiles);
 
 export default router;

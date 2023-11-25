@@ -305,7 +305,7 @@ function emptyTable() {
       <h1 className="m-auto">No data available</h1>
     </div>
   );
-}
+};
 
 export function TableWithData({ columns, data }) {
   return (

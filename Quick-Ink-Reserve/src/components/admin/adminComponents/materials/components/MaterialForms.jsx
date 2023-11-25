@@ -431,10 +431,9 @@ export function EditModal({ id, materials, newMaterial, setNewMaterial, setOverl
                 label="Material Name"
                 value={newMaterial.name}
                 handleChange={(e) => {
-                  console.log(materials[id].matName)
                   setNewMaterial({
                     ...newMaterial,
-                    name: materials[id].matName || e.target.value,
+                    name: e.target.value,
                   });
                 }}
               />
