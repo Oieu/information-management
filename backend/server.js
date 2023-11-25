@@ -8,6 +8,8 @@ import apiRoutes from './routes/apiRoutes.js';
 
 const port = process.env.PORT || 5000;
 const app = express();
+
+
 configDotenv();
 app.use(express.json());
 app.use(cors({
