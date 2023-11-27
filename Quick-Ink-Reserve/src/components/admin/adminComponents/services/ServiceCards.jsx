@@ -13,8 +13,17 @@ function ServiceCards({
   setReadMaterial,
   setOverlayOpen,
   setIsReadModalOpen,
+  setUpdateModalOpen,
   setId, setLoading
 }) {
+  function openUpdateModal(e) {
+    e.preventDefault();
+
+    setOverlayOpen(true);
+    setUpdateModalOpen(true);
+    setId(service.genServicesID);
+  }
+
   return (
     <div
       className="bg-gray-800 w-[300px] h-[300px] rounded-lg p-5 relative overflow-hidden cursor-pointer text-zinc-400 shadow-zinc-400 shadow-sm border-white hover:shadow-blue-400 hover:shadow-lg transition-all"
@@ -54,7 +63,10 @@ function ServiceCards({
         </span>
         <div className="w-1/4 flex justify-end gap-3 text-xl">
           <span>
-            <AiFillEdit className="text-blue-300 hover:text-blue-600" />
+            <AiFillEdit 
+              className="text-blue-300 hover:text-blue-600" 
+              onClick={(e) => openUpdateModal(e)}
+            />
           </span>
           <span>
             <AiFillDelete

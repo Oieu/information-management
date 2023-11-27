@@ -85,21 +85,76 @@ router.post("/admin/services/delete/:id", (req, res) => {
   });
 });
 
-router.put("/admin/services/:id", (req, res) => {
-  const id = req.params.id;
-  const featured = req.body.featured;
-  const updateSql =
-    "UPDATE genservices SET featured = ? WHERE genServiceID = ?";
-  const values = [featured, id];
+router.put(
+  "/admin/services/update/:id",
+  upload.single("serviceImage"),
+  (req, res) => {
+    const { id, name, rateUnit, description, featured } = req.body;
+    const serviceImagePath = req.file ? req.file.path : null;
 
-  db.query(updateSql, values, (err, result) => {
-    if (err) {
-      return res.status(500).json({ Message: "Error on the server side!" });
+    console.log(req.body, serviceImagePath, req.file);
+    let updateSql;
+    let params;
+
+    if (serviceImagePath === null) {
+      updateSql =
+        "UPDATE genservices SET genServiceName = ?, genServiceDesc = ?, rateUnit = ?, featured = ? WHERE genServicesID = ?";
+      params = [name, description, rateUnit, featured, id];
+    } else {
+      updateSql =
+        "UPDATE genservices SET genServiceName = ?, genServiceDesc = ?, genServiceImageUrl = ?, rateUnit = ?, featured = ? WHERE genServicesID = ?";
+      params = [name, description, serviceImagePath, rateUnit, featured, id];
     }
-    return res
-      .status(200)
-      .json({ Message: "Query successful", services: result });
-  });
-});
+
+    db.query(updateSql, params, (err, result) => {
+      if (err) throw err;
+      if (result) {
+        console.log("Service updated");
+      }
+    });
+
+    const { materials } = req.body;
+
+    if (materials) {
+      const items = JSON.parse(materials);
+      const query2 = `DELETE FROM \`service-materials\` WHERE serviceID = ? AND matID NOT IN (?)`;
+
+      db.query(query2, [id, items], (err, result) => {
+        if (err) throw err;
+        if (result) {
+          console.log("Service materials deleted");
+        }
+      });
+
+      const checkSql =
+        "SELECT matID FROM `service-materials` WHERE serviceID = ?";
+      db.query(checkSql, id, (err, result) => {
+        if (err) throw err;
+        if (result.length > 0) {
+          const checkSqlResult = result;
+          const checkSqlIds = checkSqlResult.map((row) => row.matID);
+          const filteredItems = items.filter(
+            (item) => !checkSqlIds.includes(item)
+          );
+
+          filteredItems.forEach((item) => {
+            const insertSql =
+              "INSERT INTO `service-materials` (serviceID, matID) VALUES (?, ?)";
+            db.query(insertSql, [id, item], (err, result) => {
+              if (err) throw err;
+              if (result) {
+                console.log("Service materials inserted");
+              }
+            });
+          });
+        }
+      });
+    } else {
+      console.log("No selected items");
+    }
+
+    return res.status(200).json({ Message: "Query successful" });
+  }
+);
 
 export default router;

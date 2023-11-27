@@ -12,6 +12,7 @@ import profile from './members/profile.js';
 import test from './test.js';
 import update from './auth/reset/update.js';
 import analytics from './admin/analytics/analytics.js';
+import serviceMaterials from './admin/service-materials/serviceMaterials.js';
 import uploadFiles from "./members/uploadFiles.js";
 
 const router = express.Router();
@@ -25,6 +26,7 @@ router.use(services);
 router.use(materials);
 router.use(reset);
 router.use(getServices);
+router.use(serviceMaterials);
 router.use(profile);
 router.use(test);
 router.use(update);
