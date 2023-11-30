@@ -42,7 +42,7 @@ function LoginForm({
         )}
       </div>
       <div className="flex justify-end w-2/3 m-auto">
-        <a className="text-xs" href="/forgot-password">Forgot Password?</a>
+        <a className="text-xs text-red-500 hover:text-red-800 transition-all" href="/forgot-password">Forgot Password?</a>
       </div>
       <button
         className="target:shadow-lg text-black hover:text-white w-1/2 mx-auto p-3 bg-blue-400 hover:bg-blue-800 hover:border-transparent transition duration-500 ease-in-out"
@@ -51,7 +51,7 @@ function LoginForm({
         Sign In
       </button>
       <h3 className="text-gray-500 text-sm">
-        Don't have an account yet? <Link to="/signUp">Register</Link>
+        Don't have an account yet? <Link to="/signUp" className="text-green-500 transition-all hover:text-green-700">Register</Link>
       </h3>
     </form>
   );

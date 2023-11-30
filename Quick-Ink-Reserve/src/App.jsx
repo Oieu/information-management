@@ -63,7 +63,7 @@ function App() {
         <Route path='/edit' element={<Edit />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path = '/service-avail/:genServiceID' element = {<ServiceAvail/>} />
-        <Route path='/reset-password' element={<ResetPassword />} />
+        <Route path = '/reset/*' element = {<ResetPassword />} />
       </Routes>
     </Router>
   );

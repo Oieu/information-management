@@ -2,7 +2,7 @@ import React from 'react'
 
 export const AdminAuthWarning = () => {
     setTimeout(() => {
-        window.location.href = "/"
+      window.location.href = "/"
     }, 3000);
 
   return (

@@ -59,7 +59,7 @@ router.get("/test-get", (req, res) => {
 router.get("/test-file", async (req, res) => {
   try {
     const numPages = await checkFileExtension(
-      "http://localhost:5000/uploads/amen.pdf"
+      "http://localhost:5000/uploads/report.pdf"
     );
     return res.status(200).send({ PageCount: numPages });
   } catch (err) {
