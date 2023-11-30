@@ -14,7 +14,7 @@ function Nav({ handleLogout, user, loginStatus }) {
             </div>
             <ul className="w-1/2">
               <li className="active">
-              <Link to={loginStatus ? '/MemberHome' : '/LandingPage'} className="active1 list">
+              <Link to='/' className="active1 list">
                 Home
               </Link>
               

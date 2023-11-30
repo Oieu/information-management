@@ -73,7 +73,7 @@ function ReadModal({
               </span>
             </div>
           </li>
-          <li className="border-t-2 border-black overflow-y-scroll w-full max-h-64">
+          <li className="border-t-2 border-black overflow-y-scroll w-full max-h-52">
             <div className="flex flex-col">
               {materialContent.length === 0 ? (
                 <h1 className="text-center text-4xl">
@@ -81,7 +81,7 @@ function ReadModal({
                 </h1>
               ) : (
                 <table className="w-full h-1/3">
-                  <thead className="sticky top-0 left-0">
+                  <thead className="sticky top-[-1px] left-0">
                     <tr className="text-gray-100">
                       <th className="bg-gray-600 border border-black">
                         Material ID

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Label from '../../components/admin/UI/forms/formComponents/Label'
+import BackToHome from '../../components/admin/UI/BackToHome';
+import { BsBoxArrowInDownLeft } from 'react-icons/bs';
 
 function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -18,12 +20,14 @@ function ForgotPassword() {
         if (!validateEmail(email)) {
             return setErrors("Invalid email format.");
         }
-        try {
-            await axios.post('http://localhost:5000/api/forgot-password', { email });
-            alert('Check your email to reset your password');
-        } catch (error) {
-            console.log(error);
-        }
+        axios.post('http://localhost:5000/api/reset', {email})
+        .then((res) => {
+            console.log(res);
+            setErrors(res.data.message);
+        }).catch((err) => {
+            console.log(err);
+            setErrors(err.response.data.message);
+        });
     };
 
   return (
@@ -49,6 +53,7 @@ function ForgotPassword() {
                             className='text-black w-2/3 bg-slate-200 p-5 shadow-xl rounded-xl border-black border'
                         />
                         {errors && <p className='text-red-500'>{errors}</p>}
+                        <a href="/" className='hover:text-blue-900 absolute bottom-5 left-5 flex items-center gap-2'><BsBoxArrowInDownLeft /><span>Back to home</span></a>
                     </div>
                     <button className='w-2/3' onClick={handleForgotPassword}>Reset Password</button>
                 </div>

@@ -92,9 +92,10 @@ router.put(
     const { id, name, rateUnit, description, featured } = req.body;
     const serviceImagePath = req.file ? req.file.path : null;
 
-    console.log(req.body, serviceImagePath, req.file);
-    let updateSql;
-    let params;
+    let updateSql, params;
+    let updatedData = [];
+    let results = [];
+    let dataDeleted = [];
 
     if (serviceImagePath === null) {
       updateSql =
@@ -109,7 +110,7 @@ router.put(
     db.query(updateSql, params, (err, result) => {
       if (err) throw err;
       if (result) {
-        console.log("Service updated");
+        updatedData.push(result);
       }
     });
 
@@ -122,7 +123,7 @@ router.put(
       db.query(query2, [id, items], (err, result) => {
         if (err) throw err;
         if (result) {
-          console.log("Service materials deleted");
+          dataDeleted.push(result);
         }
       });
 
@@ -143,17 +144,33 @@ router.put(
             db.query(insertSql, [id, item], (err, result) => {
               if (err) throw err;
               if (result) {
-                console.log("Service materials inserted");
+                results.push(result);
+              }
+            });
+          });
+        } else if (result.length === 0) {
+          items.forEach((item) => {
+            const insertSql =
+              "INSERT INTO `service-materials` (serviceID, matID) VALUES (?, ?)";
+            db.query(insertSql, [id, item], (err, result) => {
+              if (err) throw err;
+              if (result) {
+                results.push(result);
               }
             });
           });
         }
       });
-    } else {
-      console.log("No selected items");
-    }
+    } else return res.status(404).json({ Message: "No selected items" });
 
-    return res.status(200).json({ Message: "Query successful" });
+    return res
+      .status(200)
+      .json({
+        Message: "Query successful",
+        data: results,
+        deleted: dataDeleted,
+        updatedData: updatedData,
+      });
   }
 );
 
