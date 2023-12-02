@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { fetchData, fetchInactiveData } from "./Functions";
-import PieCharts, { Header } from "./PieCharts";
-import { CardContainer } from "./Cards";
-import { BarCharts, Headers, UserCompare, UserCount } from "./BarCharts";
+import { fetchData, fetchInactiveData, fetchServiceMaterialData } from "./Functions";
 import { months } from "./Functions";
 import LoadingComponent from "../../../../utils/LoadingComponent";
+import AnalyticsHeader from "./components/AnalyticsHeader";
+import UserCountData, { UserStatusCompare } from "./components/UserData";
+import ServiceMatTable from "./ServiceMatTable";
+import { TabTitle } from "../../../../utils/GeneralFunctions";
 
 export default function Analytics() {
+  TabTitle("Analytics", false);
   const [data, setData] = useState([]);
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [year, setYear] = useState(new Date().getFullYear());
@@ -33,50 +35,25 @@ export default function Analytics() {
   }, []);
 
   if (loading) {
-    return (
-      <LoadingComponent loading={loading} />
-    );
+    return <LoadingComponent loading={loading} />;
   }
-  
+
   return (
     <div className="w-full h-full flex flex-col">
-      <header className="h-[10%] w-full">
-        <h1 className="font-bold text-left ml-5 mb-5">Analytics</h1>
-      </header>
+      <AnalyticsHeader />
       <div className="w-full h-full flex flex-col gap-5">
-        <div className="w-[95%] h-full mx-auto flex p-3 rounded-xl transition-all bg-gray-800 hover:bg-gray-900 hover:translate-y-[-2px]">
-          <div className="h-full w-2/3 flex flex-col gap-5 p-3">
-            <Headers
-              text="User Count per Month | Year : "
-              year={year}
-              setYear={setYear}
-              setData={setData}
-              fetchData={fetchData}
-            />
-            <BarCharts data={data} />
-          </div>
-          <div className="w-1/3 h-full flex flex-col p-3 gap-3">
-            <UserCount data={data} />
-            <UserCompare 
-              months={months} month={month} 
-              setMonth={setMonth} 
-              data={data} 
-            />
-          </div>
-        </div>
-        <div className="w-[95%] h-full flex bg-gray-200 mx-auto p-5 rounded-xl transition-all hover:bg-gray-100 hover:translate-y-[-2px]">
-          <div className="w-2/3 h-full flex gap-5 justify-center items-center">
-            <Header
-              year={year}
-              setYear={setYear}
-              fetchInactiveData={fetchInactiveData}
-            />
-            <div className="h-full w-1/2">
-              <PieCharts data={inactiveUsers} />
-            </div>
-          </div>
-          <CardContainer inactiveUsers={inactiveUsers} />
-        </div>
+        <UserCountData
+          year={year} data={data} 
+          month={month} months={months}
+          setYear={setYear} setData={setData} setMonth={setMonth}
+          fetchData={fetchData}
+        />
+        <UserStatusCompare
+          year={year} setYear={setYear}
+          inactiveUsers={inactiveUsers}
+          fetchInactiveData={fetchInactiveData}
+        />
+        <ServiceMatTable />
       </div>
     </div>
   );

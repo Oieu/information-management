@@ -26,7 +26,7 @@ export function AdminNavbar({ defaultActive, nav }) {
       });
   };
   return (
-    <div className="flex flex-col h-11/12 w-1/6 bg-blue-500 rounded-lg m-2 sticky top-1 left-1">
+    <div className="flex flex-col w-1/6 bg-blue-500 rounded-lg m-2 sticky top-1 left-1">
       <div className="h-2/3 w-full">
         <img src={logo} alt="Logo" className="h-[10%] w-[90%] m-auto my-5" />
         <ListComponent defaultActive={defaultActive} />

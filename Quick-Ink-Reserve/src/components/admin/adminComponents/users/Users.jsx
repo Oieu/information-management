@@ -5,8 +5,10 @@ import createColumns from "./TableData";
 import JsPDF from "jspdf";
 import "jspdf-autotable";
 import LoadingComponent from "../../../../utils/LoadingComponent";
+import { TabTitle } from "../../../../utils/GeneralFunctions";
 
 function Users() {
+  TabTitle("Users", false);
   //DATA STUFF
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");

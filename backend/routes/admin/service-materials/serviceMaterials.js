@@ -4,7 +4,7 @@ import db from "../../db.js";
 const router = express.Router();
 
 router.get("/admin/service-materials", (req, res) => {
-    const query = "SELECT * FROM `service-materials`";
+    const query = "SELECT * FROM `service_materials`";
     db.query(query, (err, result) => {
         if (err) {
         return res.status(500).json({ Message: "Error on the server side!" });
@@ -14,7 +14,7 @@ router.get("/admin/service-materials", (req, res) => {
 });
 
 router.get("/admin/service-materials/:id", (req, res) => {
-    const query = "SELECT * FROM `service-materials` WHERE `serviceID` = ?";
+    const query = "SELECT * FROM `service_materials` WHERE `serviceID` = ?";
     db.query(query, req.params.id, (err, result) => {
         if (err) {
             return res.status(500).json({ Message: "Error on the server side!" });
