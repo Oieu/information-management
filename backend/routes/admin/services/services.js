@@ -43,7 +43,7 @@ router.post("/admin/services", upload.single("serviceImage"), (req, res) => {
 
           if (result.length > 0) {
             const insertToServiceMaterialsSql =
-              "INSERT INTO `service-materials` (serviceID, matID) VALUES (?, ?)";
+              "INSERT INTO `service_materials` (serviceID, matID) VALUES (?, ?)";
             const values = [serviceID, material];
 
             return db.query(insertToServiceMaterialsSql, values);
@@ -118,7 +118,7 @@ router.put(
 
     if (materials) {
       const items = JSON.parse(materials);
-      const query2 = `DELETE FROM \`service-materials\` WHERE serviceID = ? AND matID NOT IN (?)`;
+      const query2 = `DELETE FROM \`service_materials\` WHERE serviceID = ? AND matID NOT IN (?)`;
 
       db.query(query2, [id, items], (err, result) => {
         if (err) throw err;
@@ -128,7 +128,7 @@ router.put(
       });
 
       const checkSql =
-        "SELECT matID FROM `service-materials` WHERE serviceID = ?";
+        "SELECT matID FROM `service_materials` WHERE serviceID = ?";
       db.query(checkSql, id, (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
@@ -140,7 +140,7 @@ router.put(
 
           filteredItems.forEach((item) => {
             const insertSql =
-              "INSERT INTO `service-materials` (serviceID, matID) VALUES (?, ?)";
+              "INSERT INTO `service_materials` (serviceID, matID) VALUES (?, ?)";
             db.query(insertSql, [id, item], (err, result) => {
               if (err) throw err;
               if (result) {
@@ -151,7 +151,7 @@ router.put(
         } else if (result.length === 0) {
           items.forEach((item) => {
             const insertSql =
-              "INSERT INTO `service-materials` (serviceID, matID) VALUES (?, ?)";
+              "INSERT INTO `service_materials` (serviceID, matID) VALUES (?, ?)";
             db.query(insertSql, [id, item], (err, result) => {
               if (err) throw err;
               if (result) {
