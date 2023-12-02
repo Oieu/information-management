@@ -13,7 +13,7 @@ import AddButton from "./components/AddButton";
 import UpdateModal from "./components/UpdateModal";
 
 function Services({ loginStatus, nav }) {
-  TabTitle("Admin | Services", false);
+  TabTitle("Services", false);
   
   //DATA STUFF
   const [materials, setMaterials] = useState([]);

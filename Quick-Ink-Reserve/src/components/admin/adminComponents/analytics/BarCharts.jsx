@@ -6,11 +6,14 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useState, useEffect } from "react";
 import { FaUsers } from "react-icons/fa";
 import { RiUserSharedFill } from "react-icons/ri";
 import { FaArrowUpRightDots } from "react-icons/fa6";
+import { fetchServiceMaterialData } from "./Functions";
 
 export function Headers({ text, year, setYear, setData, fetchData }) {
   return (
@@ -72,8 +75,12 @@ export function UserCompare({ months, month, setMonth, data }) {
   const currentMonthUsers = data[months.indexOf(month)].Count;
   const previousMonthUsers = data[months.indexOf(month) - 1]?.Count;
 
-  let percentageChange = Math.round(((currentMonthUsers - previousMonthUsers) / previousMonthUsers) * 100);
-  percentageChange === Infinity ? percentageChange = 100 : percentageChange = percentageChange;
+  let percentageChange = Math.round(
+    ((currentMonthUsers - previousMonthUsers) / previousMonthUsers) * 100
+  );
+  percentageChange === Infinity
+    ? (percentageChange = 100)
+    : (percentageChange = percentageChange);
   //percentageChange === NaN ? percentageChange = 100 : percentageChange = percentageChange
 
   return (
@@ -95,10 +102,14 @@ export function UserCompare({ months, month, setMonth, data }) {
       <div className="h-1/2 w-full flex justify-evenly items-center">
         <div className="flex flex-col w-1/2 justify-center items-center gap-2">
           <div className="w-full h-2/3 flex items-center">
-            <RiUserSharedFill className="h-1/3 w-1/4 text-blue-200"/>
-            <h1 className="text-blue-400">{data[months.indexOf(month)].Count}</h1>
+            <RiUserSharedFill className="h-1/3 w-1/4 text-blue-200" />
+            <h1 className="text-blue-400">
+              {data[months.indexOf(month)].Count}
+            </h1>
           </div>
-          <h3 className="w-full h-1/3 flex">Previous month: {data[(months.indexOf(month))-1].Count}</h3>
+          <h3 className="w-full h-1/3 flex">
+            Previous month: {data[months.indexOf(month) - 1].Count}
+          </h3>
         </div>
         <div className="flex gap-3 items-center h-full">
           {percentageChange > 0 ? (

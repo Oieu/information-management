@@ -104,7 +104,8 @@ function SignUp() {
   }, [loginStatus, user]);
 
   return (
-    <div className='bg-[url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")] h-full w-full flex align-items-center justify-center'>
+    <div className='h-full w-full flex align-items-center justify-center'>
+      <div className='absolute z-[-1] blur-sm opacity-70 bg-[url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")] bg-cover bg-no-repeat h-full w-full '></div>
       <RegisterFormContainer 
         values={values}
         setValues={setValues}

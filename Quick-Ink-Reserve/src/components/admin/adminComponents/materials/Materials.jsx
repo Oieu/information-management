@@ -4,7 +4,7 @@ import { ColGroup, THead, TBody } from "./tableComponents/TableHead";
 import Timeout from "../../../../controllers/Timeout";
 import { TabTitle } from "../../../../utils/GeneralFunctions";
 import Header from "./components/Header";
-import { AddMaterialForm, DeleteModal, OpenOverlay, ReadModal } from "./components/MaterialForms";
+import { OpenOverlay } from "./components/MaterialForms";
 import MaterialPagination from "./components/MaterialPagination";
 import {
   handleFileInputChange,
@@ -16,7 +16,7 @@ import {
 import LoadingComponent from "../../../../utils/LoadingComponent.jsx";
 
 function Materials({ loginStatus, nav }) {
-  TabTitle("Admin | Materials", false);
+  TabTitle("Materials", false);
   
   //DATA STUFF
   const [materials, setMaterials] = useState([]);
