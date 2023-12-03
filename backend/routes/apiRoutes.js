@@ -14,6 +14,7 @@ import update from './auth/reset/update.js';
 import analytics from './admin/analytics/analytics.js';
 import serviceMaterials from './admin/service-materials/serviceMaterials.js';
 import uploadFiles from "./members/uploadFiles.js";
+import orders from "./members/orders.js";
 
 const router = express.Router();
 
@@ -32,5 +33,7 @@ router.use(test);
 router.use(update);
 router.use(analytics);
 router.use(uploadFiles);
+router.use(orders);
+
 
 export default router;
