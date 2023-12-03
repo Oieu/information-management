@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 function MemberHome({ nav }) {
   const { loginStatus, user, setLoginStatus, setUser } = useAppContext();
   const location = useLocation();
-  TabTitle("Home", true);
+  TabTitle("Quick Ink Reserve", false);
 
   axios.defaults.withCredentials = true;
 

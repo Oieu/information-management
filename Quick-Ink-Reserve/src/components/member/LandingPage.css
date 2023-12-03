@@ -1,27 +1,198 @@
 .Main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("https://images.unsplash.com/photo-1581508512961-0e3b9524db40?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover;
+  position: relative;
+}
+
+.Welcome {
+  color: rgb(15, 15, 15);
+  font-size: 1.5em;
+  text-shadow: 3px 3px 10px #d1d1d1, -2px 1px 30px #ffffff;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.Main::before {
+  content: "";
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* For Services Section */
+
+/* Changes: Made the Services Cards from flex to grid */
+/* Added Designs */
+
+.Catalog {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 2em 1em;
+}
+
+.Catalog h2 {
+  color: #d1d1d1;
+  font-size: 3.5em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.Catalog .Carousel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(22em, 1fr));
+  gap: 2em;
+  background: rgb(122, 122, 122);
+  padding: 20px 0px;
+}
+
+.Catalog .Carousel .serv1 {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: FFFF;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  outline-offset: -1.5rem;
+  cursor: pointer;
+}
+
+.Desc {
+  font-size: 2em;
+}
+
+.Catalog .Carousel .serv1:hover {
+  outline: 0.2rem solid #222;
+  outline-offset: 0;
+  border-radius: 10px;
+}
+
+.Catalog .Carousel .serv1 img {
+  height: 25em;
+}
+
+.Catalog .Carousel .serv1:hover img {
+  transition: all 0.3s ease-in-out;
+  transform: scale(0.9);
+}
+
+/* for location section */
+
+.Loc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 50vh;
+  position: relative;
+  top: 30px;
+}
+
+.Loc h2 {
+  color: #dddddd;
+  font-size: 3em;
+}
+
+.LocCont {
+  display: flex;
+  flex: 1;
+  position: relative;
+  right: 350px;
+}
+
+.MapLoc {
+  flex: 1;
+  /* background-color: red; */
+  padding: 150px;
+  padding-right: 10%;
+  padding-left: 40%;
+  margin-right: 20px;
+}
+
+.StoreLoc {
+  /* background-color: aqua; */
+  flex: 1;
+  padding: 20px;
+  white-space: nowrap;
+  position: relative;
+  top: 300px;
+}
+
+.StoreLoc div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin: auto;
+  color: #dddddd;
+}
+.StoreLoc span {
+  margin-right: 10px;
+  color: #dddddd;
+}
+
+/* for About section */
+.About {
+  position: relative;
+  top: 500px;
+  height: 50vh;
+  background-color: lightblue;
+}
+
+.About h1 {
+  text-align: center;
+  color: black;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column; /* Stack child elements vertically */
+  position: relative;
+  left: 200px;
+}
+
+.contact-info div {
+  display: flex; /* Make each div a flex container */
+  align-items: center; /* Align children vertically in the center */
+  margin-bottom: 10px; /* Add some spacing between items */
+}
+
+.contact-info span {
+  margin-right: 10px; /* Add spacing between icon and text */
+}
+
+@media screen and (max-width: 768px) {
+  .Main {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('https://images.unsplash.com/photo-1581508512961-0e3b9524db40?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-image: url("https://images.unsplash.com/photo-1581508512961-0e3b9524db40?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     background-size: cover;
     position: relative;
-}
+  }
 
-.Welcome {
+  .Welcome {
     color: rgb(15, 15, 15);
     font-size: 1.5em;
-    text-shadow: 3px 3px 10px #d1d1d1,
-    -2px 1px 30px #ffffff;
+    text-shadow: 3px 3px 10px #d1d1d1, -2px 1px 30px #ffffff;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-}
+  }
 
-.Main::before {
+  .Main::before {
     content: "";
     background: rgba(0, 0, 0, 0.6);
     position: absolute;
@@ -30,141 +201,56 @@
     width: 100%;
     height: 100%;
     z-index: 0;
-}
+  }
 
- /* For Services Section */
+  /* For Services Section */
 
-/* Changes: Made the Services Cards from flex to grid */
-/* Added Designs */
+  /* Changes: Made the Services Cards from flex to grid */
+  /* Added Designs */
 
- .Catalog {
+  .Catalog {
     max-width: 1500px;
-    margin:0 auto;
-    padding:2em 2em;
- }
+    margin: 0 auto;
+    padding: 2em 1em;
+  }
 
- .Catalog h2 {
-    color:#444;
+  .Catalog h2 {
+    color: #d1d1d1;
     font-size: 3.5em;
     text-transform: uppercase;
     text-align: center;
- }
+    margin-bottom: 2rem;
+  }
 
- .Catalog .Carousel {
+  .Catalog .Carousel {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(22em, 1fr));
-    gap:1em;   
-}
+    gap: 2em;
+    background-image: rgb(122, 122, 122);
+    padding: 20px 0px;
+  }
 
-
-.Catalog .Carousel .serv1 {
+  .Catalog .Carousel .serv1 {
     text-align: center;
-    padding:3rem 2rem;
-    background: FFFF;
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
-    outline: .1rem solid #ccc;
-    outline-offset: -1.5rem;
-    cursor: pointer;
-}  
+  }
 
-.Desc {
-    font-size: 2em;
-}
+  .Loc {
+    gap: 30px;
+  }
 
-
-.Catalog .Carousel .serv1:hover {
-    outline: .2rem solid #222;
-    outline-offset: 0;
-}  
-
-.Catalog .Carousel .serv1 img {
-    height: 25em;
-}  
-
-.Catalog .Carousel .serv1:hover img {
-    transition: all .3s ease-in-out;
-    transform: scale(0.9);
-}  
-
-  /* for location section */
-
-.Loc{
-    display: flex;
+  .LocCont {
+    right: 0;
     flex-direction: column;
-    align-items: center;
-    height: 50vh;
-    position: relative;
-    top: 30px;
-}
+    gap: 30px;
+  }
 
-.Loc h2{
-    color:#222;
-    font-size: 3em;
-}  
-
-.LocCont {
-    display: flex;
-    flex: 1;
-    position: relative;
-    right: 350px;
-}
-
-.MapLoc {
- flex: 1;
- /* background-color: red; */
- padding: 150px;
- padding-right: 10%;
- padding-left: 40%;
- margin-right: 20px;
-}
-
-.StoreLoc {
-    /* background-color: aqua; */
-    flex: 1;
-    padding: 20px;
-    white-space: nowrap; 
-    position: relative;
-    top: 300px;
-}
-
-
-.StoreLoc div{
-    display: flex;
-    align-items: center; 
-    margin-bottom: 10px; 
-}
-.StoreLoc span{
-    margin-right: 10px;
-}
-
-
-/* for About section */
-.About {
-    position: relative;
-    top:500px;
-    height: 50vh;
-    background-color: lightblue;
-}
-
-.About h1{
-    text-align: center;
-    color: black;
-}
-
-.contact-info {
-    display: flex;
-    flex-direction: column; /* Stack child elements vertically */
-    position: relative;
-    left: 200px;
-}
-
-
-.contact-info div {
-    display: flex; /* Make each div a flex container */
-    align-items: center; /* Align children vertically in the center */
-    margin-bottom: 10px; /* Add some spacing between items */
-}
-
-.contact-info span {
-    margin-right: 10px; /* Add spacing between icon and text */
+  .MapLoc {
+    padding: 0px;
+    margin: auto;
+  }
+  .StoreLoc {
+    top: 0;
+    padding: 0px;
+    margin: auto;
+  }
 }
