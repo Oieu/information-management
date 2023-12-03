@@ -164,7 +164,7 @@ function ServiceAvail({ handleLogout }) {
                           </td>
                           <td>{material.matName}</td>
                           <td>{material.matSize}</td>
-                          <td>{material.matID}</td>
+                      
                         </tr>
                       ))}
                     </tbody>
