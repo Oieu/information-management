@@ -13,11 +13,11 @@ router.get("/service-avail", (req, res) => {
   });
 });
 
-router.get("/service-avail/:genServiceID", (req, res) => {
-  const genServiceID = req.params.genServiceID;
-  const query = "SELECT * FROM genservices WHERE genServicesID = ?";
+router.get("/service-avail/:genServiceName", (req, res) => {
+  const genServiceName = req.params.genServiceName;
+  const query = "SELECT * FROM genservices WHERE genServiceName = ?";
 
-  db.query(query, [genServiceID], (err, results) => {
+  db.query(query, [genServiceName], (err, results) => {
     if (err) {
       return res.status(500).json({ error: "Error on the server side" });
     }
@@ -30,17 +30,17 @@ router.get("/service-avail/:genServiceID", (req, res) => {
   });
 });
 
-router.get("/service-avail/materials/:genServiceID", (req, res) => {
-  const genServiceID = req.params.genServiceID;
+router.get("/service-avail/materials/:genServiceName", (req, res) => {
+  const genServiceName = req.params.genServiceName;
   const query =  `
-       SELECT  sm.service_materialsID, sm.matID,  s.genServiceName, m.matName, m.matSize
+       SELECT  sm.service_materialsID, sm.matID,  s.genServiceName, m.matName, m.matSize, m.price_per_count
        FROM  service_materials sm 
        INNER JOIN genservices s ON s.genServicesID = sm.serviceID
        INNER JOIN materials m ON sm.matID = m.matID
-       WHERE s.genServicesID = ?
+       WHERE s.genServiceName = ?
      `;
 
-  db.query(query, [genServiceID], (err, results) => {
+  db.query(query, [genServiceName], (err, results) => {
     if (err) {
       return res.status(500).json({ error: "Error on the server side" });
     }

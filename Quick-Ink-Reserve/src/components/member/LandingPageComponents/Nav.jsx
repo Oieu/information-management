@@ -69,7 +69,7 @@ function Nav({ handleLogout, user, loginStatus }) {
       </ul>
       <div className="h-full w-2/3 md:w-1/4 flex flex-col justify-center">
         <img src={logo} alt="Logo" className={`hidden w-full logo transition-opacity ${openMenu === true ? "opacity-100 duration-[1500ms]" : "opacity-0"}`}/>
-        <div className="h-auto w-full flex flex-col justify-center items-center">
+        <div className="h-auto w-full flex flex-col lg:flex-row justify-center items-center">
           {loginStatus != false ? (
             <>
               <UserWrapper user={user} maxWidth={"75%"} />

@@ -99,7 +99,7 @@ function Login() {
     <>
       <div className='h-full w-full flex align-items-center relative'>
         <div className='absolute z-[-1] blur-sm opacity-70 bg-[url("https://images.unsplash.com/photo-1500964757637-c85e8a162699?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2103&q=80")] bg-cover bg-no-repeat h-full w-full '></div>
-        <div className="m-auto border-black border shadow-md shadow-gray-200 bg-white w-full md:w-2/3 lg:w-1/2 h-2/3 rounded-md flex">
+        <div className="m-auto border-black border shadow-md shadow-gray-200 bg-white w-4/5 md:w-2/3 2xl:w-1/2 h-2/3 rounded-md flex">
           <LoginFormContainer
             user={user}
             errors={errors}

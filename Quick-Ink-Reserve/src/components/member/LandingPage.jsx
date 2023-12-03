@@ -9,7 +9,6 @@ import Catalog from "./LandingPageComponents/Catalog";
 import Location from "./LandingPageComponents/Location";
 import Aboutus from "./LandingPageComponents/Aboutus";
 
-
 function LandingPage({ handleLogout }) {
   const { loginStatus, user } = useAppContext();
   const nav = useNavigate();
