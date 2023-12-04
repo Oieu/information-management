@@ -16,6 +16,7 @@ import serviceMaterials from './admin/service-materials/serviceMaterials.js';
 import uploadFiles from "./members/uploadFiles.js";
 import orders from "./members/orders.js";
 import getOrders from "./admin/orders/getOrders.js";
+import getMaterials from "./members/getMaterials.js";
 
 const router = express.Router();
 
@@ -36,6 +37,6 @@ router.use(analytics);
 router.use(uploadFiles);
 router.use(orders);
 router.use(getOrders);
-
+router.use(getMaterials);
 
 export default router;

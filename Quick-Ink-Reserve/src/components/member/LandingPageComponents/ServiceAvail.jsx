@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import Nav from "./Nav";
@@ -13,6 +13,7 @@ import { BsSearch } from "react-icons/bs";
 function ServiceAvail() {
   const { loginStatus, user, setUser, setLoginStatus } = useAppContext();
   const { genServiceName } = useParams();
+
   const [service, setService] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
@@ -25,6 +26,11 @@ function ServiceAvail() {
   const [filtered, setFiltered] = useState([]);
   const [matPrice, setMatPrice] = useState(0);
   const [search, setSearch] = useState("");
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [error, setError] = useState("");
+  const initialSelectedMaterialID = useRef(-1);
+  const initialPdfPageCount = useRef(0);
+
   const nav = useNavigate();
 
   useEffect(() => {
@@ -82,6 +88,7 @@ function ServiceAvail() {
       if (material) {
         setMatPrice(material.price_per_count);
       }
+      setError("");
     }
   }, [selectedMaterialID]);
 
@@ -92,18 +99,49 @@ function ServiceAvail() {
         material.matSize.toLowerCase().includes(search.toLowerCase())
       );
     });
-    console.log(results);
     setFiltered(results);
   }, [search]);
 
-  const handleInkTypeChange = (event) => {
-    setSelectedInkType(event.target.value);
-  };
+  useEffect(() => {
+    if (
+      inkTypePrice !== 0 &&
+      selectedFile !== "" &&
+      selectedMaterialID !== -1
+    ) {
+      const total = getTotalPrice(inkTypePrice, matPrice, pdfPageCount);
+      setTotalAmount(parseFloat(Math.round(total)).toFixed(2));
+    } else {
+      setTotalAmount(0);
+    }
+  }, [inkTypePrice, selectedFile, selectedMaterialID, matPrice, pdfPageCount]);
+
+  useEffect(() => {
+    if (
+      selectedMaterialID !== initialSelectedMaterialID.current &&
+      pdfPageCount !== initialPdfPageCount.current
+    ) {
+      axios
+        .get(`http://localhost:5000/material-count/${selectedMaterialID}`)
+        .then((response) => {
+          if (response.data.count < pdfPageCount) {
+            setError("Not enough materials. Please select another.");
+          } else {
+            setError("");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [selectedMaterialID, pdfPageCount]);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+
     if (loginStatus == false) {
       setShowLoginPopup(true);
+    } else if (error !== "") {
+      setError("Not enough materials. Please select another.");
     } else {
       const formData = new FormData();
       formData.append("inkType", selectedInkType);
@@ -111,6 +149,8 @@ function ServiceAvail() {
       formData.append("userID", user.userID);
       formData.append("genServiceName", genServiceName);
       formData.append("matID", selectedMaterialID);
+      formData.append("totalAmount", totalAmount);
+      formData.append("genServicesID", service[0].genServicesID);
       try {
         const response = await axios.post(
           `http://localhost:5000/submit_order`,
@@ -127,15 +167,6 @@ function ServiceAvail() {
         console.error("Error submitting order:", error);
       }
     }
-  };
-
-  const handleCloseLoginPopup = () => {
-    setShowLoginPopup(false);
-  };
-
-  const handleCloseOrderSubmit = () => {
-    setconfirmOrder(false);
-    window.location.reload();
   };
 
   function handleFileChange(event) {
@@ -190,7 +221,12 @@ function ServiceAvail() {
                 src={`http://localhost:5000/${singleService.genServiceImageUrl}`}
                 alt={singleService.genServiceName}
               />
-              <div className="ServDescr">{singleService.genServiceDesc}</div>
+              <div className="ServDescr">
+                <div className="bg-blue-500 w-full p-2 rounded-t-md sticky top-0 left-0">
+                  <span className="text-xl font-black">Description: <br/></span>
+                </div>
+                <p className="px-6 mt-2">{singleService.genServiceDesc}</p>
+              </div>
             </div>
           </div>
           <div className="service">
@@ -199,8 +235,11 @@ function ServiceAvail() {
               onSubmit={handleFormSubmit}
             >
               <div className="w-full flex gap-5">
-                <div className="w-2/3 h-full flex flex-col justify-between p-2 rounded-lg bg-gray-500">
-                  <label htmlFor="fileUpload" className="text-left">
+                <div className="w-2/3 h-full flex flex-col justify-between p-2 rounded-lg bg-gray-400">
+                  <label
+                    htmlFor="fileUpload"
+                    className="text-left text-gray-800"
+                  >
                     Upload File:
                   </label>
                   <input
@@ -208,11 +247,11 @@ function ServiceAvail() {
                     id="fileUpload"
                     accept="image/*, application/pdf"
                     onChange={(e) => handleFileChange(e)}
-                    className="p-2 text-gray-200 w-4/5"
+                    className="p-2 text-gray-800 w-4/5"
                   />
                 </div>
                 <div className="w-1/3 flex flex-col">
-                  <h2 className="text-xl text-left">
+                  <h2 className="text-xl text-right">
                     Page Count: <br />
                     {selectedFile
                       ? pdfPageCount + " pages in file"
@@ -221,13 +260,15 @@ function ServiceAvail() {
                 </div>
               </div>
               <div className="w-full flex items-center gap-5">
-                <div className="w-2/3 flex items-center gap-2">
-                  <label htmlFor="inkType">Select Ink Type:</label>
+                <div className="w-2/3 flex flex-col">
+                  <label className="text-left" htmlFor="inkType">
+                    Select Ink Type:
+                  </label>
                   <select
                     id="inkType"
                     value={selectedInkType}
-                    onChange={handleInkTypeChange}
-                    className="p-2 rounded-lg bg-gray-500 text-gray-200"
+                    onChange={(event) => setSelectedInkType(event.target.value)}
+                    className="p-2 rounded-md bg-gray-500 text-gray-200 w-1/2"
                   >
                     <option value="">Select...</option>
                     <option value="black and white">Black and White</option>
@@ -235,19 +276,12 @@ function ServiceAvail() {
                     <option value="no ink">No Ink</option>
                   </select>
                 </div>
-                <div className="w-1/3">
-                  <h2 className="text-xl text-left">
-                    Price: <br />
-                    {inkTypePrice !== 0 &&
-                    selectedFile !== "" &&
-                    selectedMaterialID !== -1 ? (
-                      <span className="text-green-400 ml-5">
-                        Php{" "}
-                        {parseFloat(
-                          Math.round(
-                            getTotalPrice(inkTypePrice, matPrice, pdfPageCount)
-                          )
-                        ).toFixed(2)}
+                <div className="w-1/3 p-3 rounded-lg relative">
+                  <h2 className="text-md text-right text-green-200">
+                    Total Amount: <br />
+                    {totalAmount !== 0 ? (
+                      <span className="text-green-600 text-center text-2xl ml-5">
+                        ₱ {totalAmount}
                       </span>
                     ) : (
                       <span className="text-red-400 ml-5">Php 0.00</span>
@@ -299,6 +333,7 @@ function ServiceAvail() {
                       ))}
                     </tbody>
                   </table>
+                  {error && <p className="text-red-500">{error}</p>}
                 </div>
               ) : (
                 <h1 className="text-center text-gray-400 w-full text-4xl p-5">
@@ -320,7 +355,10 @@ function ServiceAvail() {
             <p className="text-gray-800 leading-10 mt-5">
               <h1>Hello Customer!</h1> Please log in to place an order.
             </p>
-            <button className="Closebtn" onClick={handleCloseLoginPopup}>
+            <button
+              className="Closebtn"
+              onClick={() => setShowLoginPopup(false)}
+            >
               <FaTimes />
             </button>
             <Link to="/login">
@@ -336,7 +374,7 @@ function ServiceAvail() {
         <div className="popup-overlay">
           <div className="login-popup">
             <p>Your Order Has been Submitted.</p>
-            <button className="Loginbtn" onClick={handleCloseOrderSubmit}>
+            <button className="Loginbtn" onClick={() => setconfirmOrder(false)}>
               Close
             </button>
           </div>
