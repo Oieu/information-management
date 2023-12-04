@@ -1,8 +1,12 @@
 import { TabTitle } from "../../../../utils/GeneralFunctions";
 import axios from "axios";
-import React, { useState,  useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import LoadingComponent from "../../../../utils/LoadingComponent";
 import "./Order.css";
+import { createColumns } from "./functions";
+import DataTable from "react-data-table-component";
+import { styles } from "../users/TableData";
+import { StyleSheetManager } from "styled-components";
 
 function Orders() {
   TabTitle("Orders", false);
@@ -10,6 +14,7 @@ function Orders() {
   const [UpdateStatus, setUpdateStatus] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,6 +28,10 @@ function Orders() {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       }
     };
 
@@ -30,28 +39,22 @@ function Orders() {
   }, []);
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-  
-
-    
     try {
-      // Assuming your API endpoint for updating status is '/api/updateStatus'
-      const response = await axios.post(`http://localhost:5000/updateStatus/${selectedOrder.orderID}`, {
-        status: selectedStatus,
-        // Add any other data you need to send in the request body
-      });
-      
+      const response = await axios.post(
+        `http://localhost:5000/updateStatus/${selectedOrder.orderID}`,
+        {
+          status: selectedStatus,
+        }
+      );
+
       console.log("Status updated successfully", response.data.message);
       setUpdateStatus(false);
       window.location.reload();
     } catch (error) {
-      // Handle the error
       console.error("Error updating status:", error);
-      // Display an error message or take appropriate action
     }
   };
 
-  
   const handleStatusChange = (event) => {
     setSelectedStatus(event.target.value);
   };
@@ -59,7 +62,6 @@ function Orders() {
   const handleUpdatePopup = (order) => {
     setUpdateStatus(true);
     setSelectedOrder(order);
-    
   };
 
   const handleUpdatePopupClose = () => {
@@ -68,47 +70,45 @@ function Orders() {
     setSelectedStatus("");
   };
 
+  if (loading) {
+    return <LoadingComponent loading={loading} />;
+  }
+
   return (
-      <>
-        <div>Orders</div>
-        <div>
-          <table>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Unique Order ID</th>
-              <th>Custom Print Image URL</th>
-              <th>Total Amount</th>
-              <th>Ink Type</th>
-              <th>Status</th>
-              <th>Material</th>
-              <th>Service</th>
-              <th>Order Date</th>
-              <th>User Name</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-          {orders.map(order => (
-              <tr key={order.orderID}>
-                <td>{order.orderID}</td>
-                <td>{order.uniqueNum}</td>
-                <td><a href ={`http://localhost:5000/${order.submissionURL}`} target="_blank">{order.submissionURL}</a></td>
-                <td>{order.totalAMount} Php</td>
-                <td>{order.inkType}</td>
-                <td>{order.status}</td>
-                <td>{order.matName}</td>
-                <td>{order.genServiceName}</td>
-                <td>{order.createdAt}</td>
-                <td>{order.userName}</td>
-                <td> <button onClick={() => handleUpdatePopup(order)}>Update status</button></td>
-              </tr>
-            ))}
-          </tbody> 
-          </table>
+    <div className="w-full h-[90%] flex flex-col gap-5">
+      <header className="flex flex-col gap ml-5 h-[10%] text-white">
+        <div className="flex items-center gap-5 w-[90%]">
+          <h1 className="text-left">Orders</h1>
         </div>
-        
-        {UpdateStatus && selectedOrder && (
+        <p className="text-left">
+          This component will allow the admin to see orders made by the users.
+          Here they can also update the status of the order.
+        </p>
+      </header>
+      <div className="w-full h-full">
+        <StyleSheetManager shouldForwardProp={(prop) => prop !== "sortActive"}>
+          <DataTable
+            columns={createColumns(handleUpdatePopup)}
+            data={orders}
+            pagination
+            paginationRowsPerPageOptions={[10, 20, 30]}
+            className="w-full bg-white border border-gray-300 shadow-md"
+            noDataComponent={<span>No orders found.</span>}
+            defaultSortField="userName"
+            defaultSortAsc={true}
+            highlightOnHover
+            paginationComponentOptions={{
+              rowsPerPageText: "No. of rows per page:",
+              rangeSeparatorText: "of",
+              noRowsPerPage: false,
+              selectAllRowsItem: false,
+            }}
+            style={styles}
+            scrollX
+          />
+        </StyleSheetManager>
+      </div>
+      {UpdateStatus && selectedOrder && (
         <div className="popup-container">
           <div className="popup-content">
             <form onSubmit={handleSubmit}>
@@ -134,7 +134,7 @@ function Orders() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

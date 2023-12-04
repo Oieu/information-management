@@ -8,6 +8,7 @@ import { useAppContext } from "../../../controllers/auth/AuthContext";
 import { FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { getTotalPrice } from "./calculations";
+import { BsSearch } from "react-icons/bs";
 
 function ServiceAvail() {
   const { loginStatus, user, setUser, setLoginStatus } = useAppContext();
@@ -21,7 +22,9 @@ function ServiceAvail() {
   const [selectedMaterialID, setSelectedMaterialID] = useState(-1);
   const [pdfPageCount, setPdfPageCount] = useState(0);
   const [inkTypePrice, setInkTypePrice] = useState(0);
+  const [filtered, setFiltered] = useState([]);
   const [matPrice, setMatPrice] = useState(0);
+  const [search, setSearch] = useState("");
   const nav = useNavigate();
 
   useEffect(() => {
@@ -48,6 +51,7 @@ function ServiceAvail() {
 
         if (Array.isArray(response.data)) {
           setMaterials(response.data);
+          setFiltered(response.data);
         } else {
           console.error("API response is not an array:", response.data);
         }
@@ -80,6 +84,17 @@ function ServiceAvail() {
       }
     }
   }, [selectedMaterialID]);
+
+  useEffect(() => {
+    const results = materials.filter((material) => {
+      return (
+        material.matName.toLowerCase().includes(search.toLowerCase()) ||
+        material.matSize.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+    console.log(results);
+    setFiltered(results);
+  }, [search]);
 
   const handleInkTypeChange = (event) => {
     setSelectedInkType(event.target.value);
@@ -224,32 +239,43 @@ function ServiceAvail() {
                   <h2 className="text-xl text-left">
                     Price: <br />
                     {inkTypePrice !== 0 &&
-                      selectedFile !== "" &&
-                      selectedMaterialID !== -1 ? (
-                        <span className="text-green-400 ml-5">
-                          Php{" "}
-                          {parseFloat(
-                            Math.round(getTotalPrice(inkTypePrice, matPrice, pdfPageCount)))
-                            .toFixed(2)}
-                        </span>
-                      ) : (
-                        <span className="text-red-400 ml-5">Php 0.00</span>
-                      )}
+                    selectedFile !== "" &&
+                    selectedMaterialID !== -1 ? (
+                      <span className="text-green-400 ml-5">
+                        Php{" "}
+                        {parseFloat(
+                          Math.round(
+                            getTotalPrice(inkTypePrice, matPrice, pdfPageCount)
+                          )
+                        ).toFixed(2)}
+                      </span>
+                    ) : (
+                      <span className="text-red-400 ml-5">Php 0.00</span>
+                    )}
                   </h2>
                 </div>
               </div>
-              {materials.length > 0 ? (
+              <div className="w-full flex items-center gap-2">
+                <BsSearch className="text-gray-500 text-2xl" />
+                <input
+                  type="text"
+                  placeholder="Search material or size..."
+                  className="w-1/2 p-2 rounded-lg bg-gray-300 placeholder:text-gray-500 text-gray-800"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+              {filtered.length > 0 ? (
                 <div className="max-h-[66%] overflow-y-auto">
-                  <table className="w-full">
+                  <table className="w-full relative">
                     <thead>
-                      <tr className="bg-gray-500">
-                        <th>Select</th>
-                        <th>Material Name</th>
-                        <th>Material Size</th>
+                      <tr className="bg-gray-500 sticky top-0 left-0">
+                        <th className="text-gray-100">Select</th>
+                        <th className="text-gray-100">Material Name</th>
+                        <th className="text-gray-100">Material Size</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {materials.map((material, index) => (
+                      {filtered.map((material, index) => (
                         <tr
                           key={material.service_materialsID}
                           className={`${

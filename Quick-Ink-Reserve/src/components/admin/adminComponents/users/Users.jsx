@@ -6,6 +6,7 @@ import JsPDF from "jspdf";
 import "jspdf-autotable";
 import LoadingComponent from "../../../../utils/LoadingComponent";
 import { TabTitle } from "../../../../utils/GeneralFunctions";
+import { StyleSheetManager } from "styled-components";
 
 function Users() {
   TabTitle("Users", false);
@@ -127,10 +128,12 @@ function Users() {
             )}
           </div>
           <div className="col-md-12">
-            <TableWithData
-              columns={createColumns(setOpenModal, setDeleteID)}
-              data={filter}
-            />
+            <StyleSheetManager shouldForwardProp={(prop) => prop !== 'sortActive'}>
+              <TableWithData
+                columns={createColumns(setOpenModal, setDeleteID)}
+                data={filter}
+              />
+            </StyleSheetManager>
           </div>
           {modal(openModal, setOpenModal, deleteID)}
         </div>
