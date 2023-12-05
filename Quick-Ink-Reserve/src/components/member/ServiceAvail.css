@@ -138,8 +138,19 @@
   padding: 10px 20px;
   border-radius: 4px;
 }
-.login-popup button:hover {
-  background-color: #b92929;
+
+
+
+.Checkoutbtn{
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.Checkoutbtn:hover{
+  background-color: lightgreen;
 }
 
 #login:hover {
