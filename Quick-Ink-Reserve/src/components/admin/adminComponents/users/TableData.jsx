@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import axios from "axios";
+import { BsSearch } from "react-icons/bs";
 
 export const modal = (openModal, setOpenModal, deleteID) => {
   return (
@@ -208,7 +209,7 @@ export const styles = {
   },
   headRow: {
     style: {
-      backgroundColor: "gray",
+      backgroundColor: "#111827",
       fontWeight: "bold",
       color: "white",
       position: "sticky",
@@ -232,6 +233,23 @@ export const styles = {
     },
   },
 };
+
+export const rowStyles = [
+  {
+    when: row => row.index % 2 === 0,
+    style: {
+      backgroundColor: '#F3F4F6',
+      transition: 'background-color 0.5s ease'
+    }
+  },
+  {
+    when: row => row.index % 2 !== 0,
+    style: {
+      backgroundColor: '#E5E7EB',
+      transition: 'background-color 0.5s ease'
+    }
+  }
+]
 
 export function statusFilters(
   statusFilter,
@@ -267,15 +285,15 @@ export function statusFilters(
       />
     </div>
   );
-}
+};
 
 export function actions(search, setSearch, setFilter, data, generatePDF) {
   return (
     <div className="w-1/3 h-full flex justify-end items-center gap-5 bg-transparent m-0 p-0">
       <div className="w-[95%] h-full flex items-center gap-5">
-        <div className="w-4/5 flex items-center justify-center gap-1">
-          <label className="text-left w-1/3 text-xl " htmlFor="Search">
-            Search :
+        <div className="w-4/5 flex items-center justify-center gap-2">
+          <label className="text-left text-xl " htmlFor="Search">
+            <BsSearch />
           </label>
           <input
             type="text"
@@ -297,7 +315,7 @@ export function actions(search, setSearch, setFilter, data, generatePDF) {
       </div>
     </div>
   );
-}
+};
 
 function emptyTable() {
   return (
@@ -311,7 +329,7 @@ export function TableWithData({ columns, data }) {
   return (
     <div
       id="report"
-      className="relative w-full max-h-[650px] overflow-y-auto m-auto p-5"
+      className="relative w-full max-h-[650px] overflow-y-auto m-auto p-2"
     >
       <DataTable
         columns={columns}
@@ -333,6 +351,6 @@ export function TableWithData({ columns, data }) {
       />
     </div>
   );
-}
+};
 
 export default createColumns;

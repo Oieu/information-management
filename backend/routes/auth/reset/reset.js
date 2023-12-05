@@ -98,7 +98,7 @@ router.post("/api/reset", (req, res) => {
 
           db.query(
             insertSql,
-            [user.userID, otp, mysqlTimestamp],
+            [user.userID, otp, philippinesTime],
             (err, result) => {
               if (err) {
                 console.log(err);

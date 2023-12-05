@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { TabTitle } from "../../../../utils/GeneralFunctions";
 import LoadingComponent from "../../../../utils/LoadingComponent";
 import { getUserData, currentMonthIndex } from "./Functions";
-import { UserCountCards } from "./Cards";
+import { PendingOrderCards, TotalAmountCards, UserCountCards } from "./Cards";
 
 function Dashboard() {
   TabTitle("Dashboard", false);
 
   const [data, setData] = useState([]);
-  const [materialData, setMaterialData] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +15,6 @@ function Dashboard() {
     getUserData(setData, setError, setLoading);
   }, []);
 
-  //console.log(data);
   if(loading) return <LoadingComponent loading={loading} />
 
   return (
@@ -27,10 +25,8 @@ function Dashboard() {
           data={data}
           currentMonthIndex={currentMonthIndex}
         />
-        <div className="h-[40%] w-[40%] bg-[#060641] p-5 rounded-lg">
-          <h1 className="text-white">Materials</h1>
-          <p className="text-white">{data.Data[1].Count}</p>
-        </div>
+        <PendingOrderCards setLoading={setLoading}/>
+        <TotalAmountCards setLoading={setLoading}/>
       </div>
     </div>
   );

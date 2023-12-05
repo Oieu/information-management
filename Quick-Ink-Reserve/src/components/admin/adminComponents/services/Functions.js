@@ -48,7 +48,6 @@ export async function getServiceMaterials(setServiceMaterials) {
   axios
     .get("http://localhost:5000/admin/service-materials")
     .then((response) => {
-      console.log(response);
       setServiceMaterials(response.data.result);
     })
     .catch((error) => {

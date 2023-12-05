@@ -23,13 +23,6 @@ export const createColumns = (handleUpdatePopup) => {
       width: "12%",
     },
     {
-      name: <span className="text-lg">User</span>,
-      selector: (row) => (
-        <span className="overflow-ellipsis">{row.userName}</span>
-      ),
-      width: "5%",
-    },
-    {
       name: <span className="text-lg">Submission URL</span>,
       selector: (row) => (
         <span>
@@ -90,15 +83,16 @@ export const createColumns = (handleUpdatePopup) => {
       name: <span className="text-lg">Date Ordered</span>,
       selector: (row) => row.createdAt,
       width: "10%",
+      sortable: true,
     },
     {
       name: <span className="text-lg">Action</span>,
       cell: (row) => (
         <button
-          className="bg-blue-400 hover:bg-blue-600 transition-colors m-auto text-gray-800 hover:text-white font-bold py-2 px-4 rounded"
+          className="h-4/5 bg-blue-400 hover:bg-blue-600 transition-colors m-auto text-gray-800 hover:text-white font-bold py-2 px-4 rounded"
           onClick={() => handleUpdatePopup(row)}
         >
-          Update status
+          Update
         </button>
       ),
       width: "10%",

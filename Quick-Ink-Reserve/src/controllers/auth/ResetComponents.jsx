@@ -116,22 +116,6 @@ export function ResetPasswordForm({
           <section className="flex flex-col w-full items-center">
             <label
               className="w-4/5 text-left text-lg text-gray-700"
-              htmlFor="old"
-            >
-              Old Password
-            </label>
-            <input
-              type="password"
-              name="currPassword"
-              placeholder="Enter previous password..."
-              value={state.currPassword}
-              onChange={(e) => handleInputChange(e)}
-              className="text-gray-100 bg-zinc-500 p-2 w-4/5 rounded-lg focus:border-black"
-            />
-          </section>
-          <section className="flex flex-col w-full items-center">
-            <label
-              className="w-4/5 text-left text-lg text-gray-700"
               htmlFor="new"
             >
               New Password

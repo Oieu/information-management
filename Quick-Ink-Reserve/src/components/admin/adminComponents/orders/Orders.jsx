@@ -7,6 +7,7 @@ import { createColumns } from "./functions";
 import DataTable from "react-data-table-component";
 import { styles } from "../users/TableData";
 import { StyleSheetManager } from "styled-components";
+import { OrdersTable } from "./components/Components";
 
 function Orders() {
   TabTitle("Orders", false);
@@ -85,29 +86,7 @@ function Orders() {
           Here they can also update the status of the order.
         </p>
       </header>
-      <div className="w-full h-full">
-        <StyleSheetManager shouldForwardProp={(prop) => prop !== "sortActive"}>
-          <DataTable
-            columns={createColumns(handleUpdatePopup)}
-            data={orders}
-            pagination
-            paginationRowsPerPageOptions={[10, 20, 30]}
-            className="w-full bg-white border border-gray-300 shadow-md"
-            noDataComponent={<span>No orders found.</span>}
-            defaultSortField="userName"
-            defaultSortAsc={true}
-            highlightOnHover
-            paginationComponentOptions={{
-              rowsPerPageText: "No. of rows per page:",
-              rangeSeparatorText: "of",
-              noRowsPerPage: false,
-              selectAllRowsItem: false,
-            }}
-            style={styles}
-            scrollX
-          />
-        </StyleSheetManager>
-      </div>
+      <OrdersTable orders={orders} handleUpdatePopup={handleUpdatePopup} />
       {UpdateStatus && selectedOrder && (
         <div className="popup-container">
           <div className="popup-content">

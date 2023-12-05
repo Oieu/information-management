@@ -8,7 +8,7 @@ function UserDetails({ user }) {
         {userWords[0] + " " + (userWords[1] ? userWords[1][0] + "." : "")}
       </h1>
       <h2 className="text-sm text-left" style={{ fontFamily: "Inder" }}>
-        {user.userRole.toLowerCase()}: {user.userEmail}
+        {user.userRole.toLowerCase()}: <br/>{user.userEmail}
       </h2>
     </div>
   );

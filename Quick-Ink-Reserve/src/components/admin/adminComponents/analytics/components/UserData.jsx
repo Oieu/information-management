@@ -15,7 +15,7 @@ function UserCountData({
 }) {
   return (
     <div className="w-[95%] h-full mx-auto flex p-3 rounded-xl transition-all bg-gray-800 hover:bg-gray-900 hover:translate-y-[-2px]">
-      <div className="h-full w-2/3 flex flex-col gap-5 p-3">
+      <div className="h-full w-3/4 flex flex-col gap-5 p-3">
         <Headers
           text="User Count per Month | Year : "
           year={year}
@@ -25,7 +25,7 @@ function UserCountData({
         />
         <BarCharts data={data} />
       </div>
-      <div className="w-1/3 h-full flex flex-col p-3 gap-3">
+      <div className="w-1/4 h-full flex flex-col p-3 gap-3">
         <UserCount data={data} />
         <UserCompare
           months={months}

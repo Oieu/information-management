@@ -35,12 +35,6 @@
 
 label {
   display: block;
-  margin-bottom: 10px;
-}
-
-select,
-button {
-  margin-bottom: 15px;
 }
 
 .submit-button {

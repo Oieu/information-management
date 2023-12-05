@@ -39,10 +39,10 @@ export function Headers({ text, year, setYear, setData, fetchData }) {
 
 export function BarCharts({ data }) {
   return (
-    <ResponsiveContainer className="mx-auto" width="95%" height="100%">
+    <ResponsiveContainer className="mx-auto" width="100%" height="100%">
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="Month" name="Month" />
+        <XAxis dataKey="Month" name="Month" className="text-gray-200"/>
         <YAxis />
         <Tooltip />
         <Bar
@@ -58,12 +58,12 @@ export function BarCharts({ data }) {
 export function UserCount({ data }) {
   return (
     <div className="w-full h-1/2 flex p-5 bg-gray-600 rounded-xl hover:bg-gray-700">
-      <h2 className="text-gray-200 text-3xl font-bold text-center w-1/2 h-full flex justify-center items-center">
-        Total No. of <br></br> Users Registered
+      <h2 className="text-gray-200 text-3xl font-bold text-center w-1/2 h-full flex flex-col gap-4 justify-center items-center">
+        Total Users <span className="text-yellow-200">{new Date().getFullYear()}</span>
       </h2>
       <div className="w-1/2 h-full flex flex-col justify-center items-center">
-        <FaUsers className="w-2/3 h-2/3 m-auto text-gray-200" />
-        <h1 className="text-gray-200 text-3xl font-bold text-center w-2/3 h-1/3">
+        <FaUsers className="w-2/3 h-2/3 m-auto text-blue-200" />
+        <h1 className="text-blue-300 text-3xl font-bold text-center w-2/3 h-1/3">
           {data.reduce((acc, curr) => acc + curr.Count, 0)}
         </h1>
       </div>
@@ -81,14 +81,13 @@ export function UserCompare({ months, month, setMonth, data }) {
   percentageChange === Infinity
     ? (percentageChange = 100)
     : (percentageChange = percentageChange);
-  //percentageChange === NaN ? percentageChange = 100 : percentageChange = percentageChange
 
   return (
     <div className="w-full h-1/2 bg-gray-600 p-5 rounded-xl hover:bg-gray-700">
       <h2 className="text-gray-200 text-3xl font-bold text-center w-full h-1/2">
-        No. of Users <br></br> Month :
+        Users Registered <br></br> <span className="text-xl">Month :</span>
         <select
-          className="w-1/3 p-2 text-base m-auto rounded-lg ml-3 bg-gray-800"
+          className="w-1/3 p-1 text-base m-auto rounded-lg ml-3 bg-gray-800"
           value={month}
           onChange={(e) => setMonth(e.target.value)}
         >
@@ -101,14 +100,14 @@ export function UserCompare({ months, month, setMonth, data }) {
       </h2>
       <div className="h-1/2 w-full flex justify-evenly items-center">
         <div className="flex flex-col w-1/2 justify-center items-center gap-2">
-          <div className="w-full h-2/3 flex items-center">
+          <div className="w-full h-2/3 flex justify-center items-center">
             <RiUserSharedFill className="h-1/3 w-1/4 text-blue-200" />
             <h1 className="text-blue-400">
               {data[months.indexOf(month)].Count}
             </h1>
           </div>
-          <h3 className="w-full h-1/3 flex">
-            Previous month: {data[months.indexOf(month) - 1].Count}
+          <h3 className="w-full h-1/3 flex gap-3 items-center">
+            Previous <br/> month: <span className={`text-2xl ${percentageChange < 0 ? "text-green-400" : "text-red-400"}`}>{data[months.indexOf(month) - 1].Count}</span>
           </h3>
         </div>
         <div className="flex gap-3 items-center h-full">
