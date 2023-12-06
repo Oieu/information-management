@@ -106,17 +106,15 @@
 }
 
 .login-popup {
-  position: relative;
+  position: absolute;
   background-color: #fff;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  max-width: 100em;
   text-align: center;
-}
-
-.login-popup p {
-  margin-bottom: 20px;
+  display: flex;
+  gap: 20px;
+  top: 15%;
 }
 
 .Closebtn {

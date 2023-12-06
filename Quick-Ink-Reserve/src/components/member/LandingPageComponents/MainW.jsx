@@ -5,7 +5,7 @@ import { MdAdminPanelSettings } from "react-icons/md";
 function MainW({ user, nav }) {
     return(
         <div className={`Main`}>
-            <div className="Welcome">
+            <div className="Welcome" id="welcome">
               <h1 className="leading-loose text-5xl sm:text-7xl">Welcome to Quick-Ink-Reserve</h1>
             </div>
             {user.userRole === "ADMIN" && <div className="fixed z-10 bottom-5 right-5">

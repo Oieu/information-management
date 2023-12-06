@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import "../NavBar.css";
 import logo from "../../../assets/logo.png";
-import smlogo from "../../../assets/smlogo.png";
 import { LogoutButtonMember } from "../../admin/UI/LogoutButton";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import UserWrapper from "../../admin/profileComponents/userComponents/UserWrapper";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RiCloseFill } from "react-icons/ri";
 
 function Nav({ handleLogout, user, loginStatus }) {
   const [openMenu, setOpenMenu] = useState(true);
+  const location = useLocation();
 
   function toggleMenu() {
     setOpenMenu(!openMenu);
@@ -46,10 +46,10 @@ function Nav({ handleLogout, user, loginStatus }) {
           openMenu ? "hide-on-open open" : "hide-on-open"
         }`}
       >
-        <li className="active">
-          <Link to="/" className="active1 list">
+        <li className="active1">
+          <a href="/#welcome" className="active1 list">
             Home
-          </Link>
+          </a>
         </li>
         <li>
           <a href="#catalog" className="active1 list">

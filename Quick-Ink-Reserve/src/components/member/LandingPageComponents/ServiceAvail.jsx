@@ -8,7 +8,8 @@ import { useAppContext } from "../../../controllers/auth/AuthContext";
 import { FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { getTotalPrice } from "./calculations";
-import { BsSearch } from "react-icons/bs";
+import { BsClipboard2CheckFill, BsSearch } from "react-icons/bs";
+
 function ServiceAvail() {
   const { loginStatus, user, setUser, setLoginStatus } = useAppContext();
   const { genServiceName } = useParams();
@@ -32,8 +33,7 @@ function ServiceAvail() {
   const nav = useNavigate();
   const paypal = useRef();
   const [showPaypalButton, setShowPaypalButton] = useState(false);
-
-
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     const fetchServiceData = async () => {
@@ -68,6 +68,7 @@ function ServiceAvail() {
     fetchMaterialData();
     fetchServiceData();
   }, [genServiceName]);
+
   useEffect(() => {
     if (selectedInkType === "black and white") {
       setInkTypePrice(2);
@@ -77,6 +78,7 @@ function ServiceAvail() {
       setInkTypePrice(0);
     }
   }, [selectedInkType]);
+
   useEffect(() => {
     if (selectedMaterialID !== -1) {
       const material = materials.find(
@@ -89,6 +91,7 @@ function ServiceAvail() {
       setError("");
     }
   }, [selectedMaterialID, materials]);
+
   useEffect(() => {
     const results = materials.filter((material) => {
       return (
@@ -98,6 +101,7 @@ function ServiceAvail() {
     });
     setFiltered(results);
   }, [search]);
+
   useEffect(() => {
     if (
       inkTypePrice !== 0 &&
@@ -110,6 +114,7 @@ function ServiceAvail() {
       setTotalAmount(0);
     }
   }, [inkTypePrice, selectedFile, selectedMaterialID, matPrice, pdfPageCount]);
+
   useEffect(() => {
     if (
       selectedMaterialID !== initialSelectedMaterialID.current &&
@@ -130,43 +135,86 @@ function ServiceAvail() {
     }
   }, [selectedMaterialID, pdfPageCount]);
 
+  useEffect(() => {
+    if (showPaypalButton) {
+      const script = document.createElement("script");
+      script.src =
+        "https://www.paypal.com/sdk/js?client-id=AQHIxgrzelZZ_Ror73nF0zxvne1Lz7QnQkQXbQ7afN-lKXiwbcori21MHj74JoHiw_YWSFe-3FxnheGG&currency=PHP";
+      script.async = true;
+      script.onload = () => {
+        window.paypal
+          .Buttons({
+            createOrder: (data, actions, err) => {
+              return actions.order.create({
+                intent: "CAPTURE",
+                purchase_units: [
+                  {
+                    description: "Order Payment",
+                    amount: {
+                      currency_code: "PHP",
+                      value: totalAmount,
+                    },
+                  },
+                ],
+              });
+            },
+            onApprove: async (data, actions) => {
+              const order = await actions.order.capture();
+              console.log(order);
+
+              //WHEN PAYPAL TRANSACTION BECOMES SUCCESSFUL ORDER IS POSTED IN THE SERVER
+
+              const formData = new FormData();
+              formData.append("inkType", selectedInkType);
+              formData.append("file", selectedFile);
+              formData.append("userID", user.userID);
+              formData.append("genServiceName", genServiceName);
+              formData.append("matID", selectedMaterialID);
+              formData.append("totalAmount", totalAmount);
+              formData.append("genServicesID", service[0].genServicesID);
+
+              try {
+                const response = await axios.post(
+                  `http://localhost:5000/submit_order`,
+                  formData,
+                  {
+                    headers: {
+                      "Content-Type": "multipart/form-data",
+                    },
+                  }
+                );
+                console.log("Order placed:", response.data);
+              } catch (error) {
+                console.error("Error submitting order:", error);
+              }
+            },
+            onError: (err) => {
+              console.error("PayPal error:", err);
+            },
+          })
+          .render(paypal.current);
+      };
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [showPaypalButton, totalAmount]);
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
 
     if (loginStatus == false) {
       setShowLoginPopup(true);
     } else if (error !== "") {
       setError("Not enough materials. Please select another.");
     } else {
-      // const formData = new FormData();
-      // formData.append("inkType", selectedInkType);
-      // formData.append("file", selectedFile);
-      // formData.append("userID", user.userID);
-      // formData.append("genServiceName", genServiceName);
-      // formData.append("matID", selectedMaterialID);
-      // formData.append("totalAmount", totalAmount);
-      // formData.append("genServicesID", service[0].genServicesID);
-      // try {
-      //   const response = await axios.post(
-      //     `http://localhost:5000/submit_order`,
-      //     formData,
-      //     {
-      //       headers: {
-      //         "Content-Type": "multipart/form-data",
-      //       },
-      //     }
-      //   );
-      //   console.log("Order placed:", response.data);
-      //   setconfirmOrder(true);
-      //   setShowPaypalButton(true);
-      // } catch (error) {
-      //   console.error("Error submitting order:", error);
-      // }
       setconfirmOrder(true);
       setShowPaypalButton(true);
     }
   };
+
   function handleFileChange(event) {
     const file = event.target.files[0];
     setSelectedFile(file);
@@ -181,6 +229,7 @@ function ServiceAvail() {
       setPdfPageCount(1);
     }
   }
+
   const handleLogout = (e) => {
     e.preventDefault();
     axios
@@ -199,75 +248,7 @@ function ServiceAvail() {
       });
   };
 
-  useEffect(() => {
 
-    if (showPaypalButton) {
-    const script = document.createElement("script");
-    script.src =
-      "https://www.paypal.com/sdk/js?client-id=AQHIxgrzelZZ_Ror73nF0zxvne1Lz7QnQkQXbQ7afN-lKXiwbcori21MHj74JoHiw_YWSFe-3FxnheGG";
-    script.async = true;
-    script.onload = () => {
-      window.paypal
-        .Buttons({
-          createOrder: (data, actions, err) => {
-            return actions.order.create({
-              intent: "CAPTURE",
-              purchase_units: [
-                {
-                  description: "Order Payment",
-                  amount: {
-                    currency_code: "USD",
-                    value: totalAmount,
-                  },
-                },
-              ],
-            });
-          },
-          onApprove: async (data, actions) => {
-            const order = await actions.order.capture();
-            console.log(order);
-            
-            //WHEN PAYPAL TRANSACTION BECOMES SUCCESSFUL ORDER IS POSTED IN THE SERVER
-
-            const formData = new FormData();
-            formData.append("inkType", selectedInkType);
-            formData.append("file", selectedFile);
-            formData.append("userID", user.userID);
-            formData.append("genServiceName", genServiceName);
-            formData.append("matID", selectedMaterialID);
-            formData.append("totalAmount", totalAmount);
-            formData.append("genServicesID", service[0].genServicesID);
-            try {
-              const response = await axios.post(
-                `http://localhost:5000/submit_order`,
-                formData,
-                {
-                  headers: {
-                    "Content-Type": "multipart/form-data",
-                  },
-                }
-              );
-              console.log("Order placed:", response.data);
-            } catch (error) {
-              console.error("Error submitting order:", error);
-            }
-
-          },
-          onError: (err) => {
-            // Handle error
-            console.error("PayPal error:", err);
-          },
-        })
-        .render(paypal.current);
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }
-  }, [showPaypalButton, totalAmount]);
-  
   return (
     <div className="w-full h-full flex justify-center items-center">
       <div
@@ -287,7 +268,9 @@ function ServiceAvail() {
               />
               <div className="ServDescr">
                 <div className="bg-blue-500 w-full p-2 rounded-t-md sticky top-0 left-0">
-                  <span className="text-xl font-black">Description: <br/></span>
+                  <span className="text-xl font-black">
+                    Description: <br />
+                  </span>
                 </div>
                 <p className="px-6 mt-2">{singleService.genServiceDesc}</p>
               </div>
@@ -312,7 +295,7 @@ function ServiceAvail() {
                     accept="image/*, application/pdf"
                     onChange={(e) => handleFileChange(e)}
                     className="p-2 text-gray-800 w-4/5"
-                    required 
+                    required
                   />
                 </div>
                 <div className="w-1/3 flex flex-col">
@@ -407,12 +390,9 @@ function ServiceAvail() {
                   No materials available for this service.
                 </h1>
               )}
-              <button type="submit" className="OrdButn" >
+              <button type="submit" className="OrdButn" disabled={disabled}>
                 Submit Order
               </button>
-
-              
-              
             </form>
           </div>
         </div>
@@ -437,47 +417,49 @@ function ServiceAvail() {
           </div>
         </div>
       )}
-      
 
-    
-
-{confirmOrder && (
-  <div className="popup-overlay w-full h-full flex justify-center items-center ">
-    <div className="login-popup ">
-      <p className = "text-lg font-semibold mb-4">Thank you for choosing our service ! Please Confirm your order.</p>
-      <div className="order-summary mt-4">
-        <p className="text-bs">Ink Type: {selectedInkType}</p>
-        <p className="text-bs">File Name: {selectedFile.name}</p>
-        <p className="text-bs">Page Count: {pdfPageCount}</p>
-        <p className="text-bs">Material Name: {selectedMaterial.matName}</p>
-        <p className="text-bs">Material Size: {selectedMaterial.matSize}</p>
-        <p className="text-bs">Total Amount: ₱{totalAmount}</p>
-      </div>
-      <div className="flex justify-center mt-4">
-        <button
-            className="Closebtn"
-            onClick={() => setconfirmOrder(false)}
-          >
-              <FaTimes />
-        </button>
-        {/* <Link to = "/Paymentspage">
-            <button className="Checkoutbtn">
-              Proceed to Checkout
-            </button>
-        </Link>
-         */}
-        {showPaypalButton && (
-        <div>
-          {/* Add your PayPal button script here */}
-          <div ref={paypal}/>
+      {confirmOrder && (
+        <div className="popup-overlay w-full h-full relative">
+          <div className="login-popup w-1/2 h-4/5 text-gray-800">
+            <div className="w-1/2 h-3/4full flex flex-col gap-2 justify-evenly mx-auto bg-gray-400 rounded-lg">
+              <h1 className="text-3xl bg-gray-700 h-1/5 flex gap-2 justify-center items-center text-gray-300 rounded-t-lg"><BsClipboard2CheckFill className="text-4xl text-blue-700" />Order Details</h1>
+              <div className="h-1/3 flex flex-col">
+                <p className="text-bs">File Name: {selectedFile.name}</p>
+                <div className="flex w-full justify-center gap-5">
+                  <p className="text-bs">Ink Type: {selectedInkType}</p>
+                  <p className="text-bs">Page Count: {pdfPageCount}</p>
+                </div>
+              </div>
+              <div className="h-1/4">
+                <p className="text-bs">
+                  Material Name: {selectedMaterial.matName}
+                </p>
+                <p className="text-bs">
+                  Material Size: {selectedMaterial.matSize}
+                </p>
+              </div>
+              <div className="h-1/5 flex items-center justify-center bg-green-300 rounded-b-lg">
+                <p className="text-bs">Total Amount: <span className="text-green-800">₱ {totalAmount}</span></p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 justify-center items-center h-full w-1/2 p-5">
+              <h1 className="text-3xl">Thank you for choosing our service, <span className="text-blue-700">{user.userName}</span>!</h1>
+              <h2>Please confirm your order.</h2>
+              <button
+                className="Closebtn"
+                onClick={() => setconfirmOrder(false)}
+              >
+                <FaTimes />
+              </button>
+              {showPaypalButton && (
+                <div className="w-full h-4/5 flex justify-center items-end">
+                  <div ref={paypal} className="w-full h-full overflow-y-scroll"/>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
-        
-
-      </div>
-    </div>
-  </div>
-)}
     </div>
   );
 }
