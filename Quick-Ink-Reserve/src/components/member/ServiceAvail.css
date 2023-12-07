@@ -103,6 +103,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 
 .login-popup {
@@ -119,8 +120,8 @@
 
 .Closebtn {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 15px;
+  right: 15px;
   background-color: #db3434;
   color: #fff;
   border: none;
@@ -131,7 +132,7 @@
 
 .Loginbtn {
   background-color: #3498db;
-  color: #fff;
+  color: rgb(63, 63, 63);
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
@@ -153,4 +154,5 @@
 
 #login:hover {
   background-color: #2982b9;
+  color: rgb(215, 212, 212);
 }

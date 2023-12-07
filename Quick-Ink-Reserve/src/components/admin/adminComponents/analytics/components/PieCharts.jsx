@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import { fetchInactiveData } from "../Functions";
 
 const COLORS = ["#0088FE", "#FF8042"];
 
@@ -56,7 +57,9 @@ export default function PieCharts({ data }) {
   );
 }
 
-export function Header({ year, setYear, fetchInactiveData }) {
+export function Header({ setInactiveUsers }) {
+  const [year, setYear] = useState(new Date().getFullYear());
+
   return (
     <header className="w-2/5 flex flex-col gap-5">
       <h2 className="text-gray-600 w-full font-bold text-4xl flex gap-3 text-left">

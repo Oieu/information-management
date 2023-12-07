@@ -263,12 +263,13 @@ export function statusFilters(
 ) {
   return (
     <div className="w-2/3 m-auto h-full flex items-center gap-5">
-      <div className="flex gap-5 items-center h-full">
+      <div className="flex flex-col items-center justify-center gap-1 h-full">
         <label htmlFor="statusFilter">Filter by Status:</label>
         <select
           id="statusFilter"
           value={statusFilter}
           onChange={(e) => handleStatusFilterChange(e.target.value)}
+          className="w-4/5 p-2 rounded-lg bg-gray-300 text-black cursor-pointer"
         >
           <option value="">All</option>
           <option value="active">Active</option>
@@ -290,7 +291,7 @@ export function statusFilters(
 export function actions(search, setSearch, setFilter, data, generatePDF) {
   return (
     <div className="w-1/3 h-full flex justify-end items-center gap-5 bg-transparent m-0 p-0">
-      <div className="w-[95%] h-full flex items-center gap-5">
+      <div className="w-[95%] h-full flex items-end gap-5">
         <div className="w-4/5 flex items-center justify-center gap-2">
           <label className="text-left text-xl " htmlFor="Search">
             <BsSearch />

@@ -1,18 +1,18 @@
 import axios from "axios";
 
 export const months = [
-  "January",
-  "February",
-  "March",
-  "April",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
   "May",
   "June",
   "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 export const colors = [
@@ -40,6 +40,7 @@ export const fetchInactiveData = async (setInactiveUsers, year) => {
       `http://localhost:5000/admin/analytics/api/user/status/${year}`
       );
       const apiData = response.data.Data;
+      console.log(response);
       setInactiveUsers(apiData);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -69,3 +70,15 @@ export const fetchServiceMaterialData = async (setData) => {
       console.error("Error fetching data:", error);
     }
 };
+
+export const fetchRevenueData = async (setData, year) => {
+  try {
+    const response = await axios.get(
+        `http://localhost:5000/admin/analytics/api/revenue/${year}`
+      );
+      const apiData = response.data.Data;
+      setData(apiData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+}

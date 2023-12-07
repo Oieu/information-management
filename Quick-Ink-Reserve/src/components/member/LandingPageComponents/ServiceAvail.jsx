@@ -207,11 +207,11 @@ function ServiceAvail() {
 
     if (loginStatus == false) {
       setShowLoginPopup(true);
-    } else if (error !== "") {
-      setError("Not enough materials. Please select another.");
+    } else if (error !== "" || selectedMaterialID === -1) {
+      return setError("Not enough materials. Please select another.");
     } else {
-      setconfirmOrder(true);
       setShowPaypalButton(true);
+      setconfirmOrder(true);
     }
   };
 
@@ -247,7 +247,6 @@ function ServiceAvail() {
         console.log("Logout error:", error);
       });
   };
-
 
   return (
     <div className="w-full h-full flex justify-center items-center">
@@ -394,26 +393,50 @@ function ServiceAvail() {
                 Submit Order
               </button>
             </form>
+            {error && (
+              <p className="text-red-700 bg-red-300 w-full p-5 m-auto rounded-sm">
+                {error}
+              </p>
+            )}
           </div>
         </div>
       ))}
       {showLoginPopup && (
         <div className="popup-overlay">
-          <div className="login-popup">
-            <p className="text-gray-800 leading-10 mt-5">
-              <h1>Hello Customer!</h1> Please log in to place an order.
-            </p>
-            <button
-              className="Closebtn"
-              onClick={() => setShowLoginPopup(false)}
-            >
-              <FaTimes />
-            </button>
-            <Link to="/login">
-              <button id="login" className="Loginbtn">
-                Log in
+          <div className="bg-black w-full h-full absolute opacity-10"></div>
+          <div className="w-1/3 h-1/2 bg-gray-200 rounded-tr-2xl rounded-bl-2xl relative">
+            <div className="w-full h-full flex flex-col justify-center items-center">
+              <div className="h-1/3 w-full bg-cover blur-[1px] rounded-tr-2xl bg-[url('https://images.unsplash.com/photo-1631270314738-e6f6827f8d9f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]"></div>
+              <h1 className="text-gray-800 leading-10 h-1/5 flex justify-center items-end">Hello Customer!</h1>
+              <button
+                className="Closebtn"
+                onClick={() => setShowLoginPopup(false)}
+              >
+                <FaTimes />
               </button>
-            </Link>
+              <div className="w-full h-1/2 flex justify-evenly items-center">
+                <div>
+                  <p className="text-gray-800 leading-10">
+                    Please log in to place an order.
+                  </p>
+                  <Link to="/login">
+                    <button id="login" className="Loginbtn">
+                      Log in
+                    </button>
+                  </Link>
+                </div>
+                <div>
+                  <p className="text-gray-800 leading-10">
+                    No account? Then sign-up for free.
+                  </p>
+                  <Link to="/signup">
+                    <button id="signup" className="transition-all border-none p-3 px-4 bg-green-400 text-gray-800 hover:bg-green-600 hover:text-gray-200">
+                      Sign Up
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -422,7 +445,10 @@ function ServiceAvail() {
         <div className="popup-overlay w-full h-full relative">
           <div className="login-popup w-1/2 h-4/5 text-gray-800">
             <div className="w-1/2 h-3/4full flex flex-col gap-2 justify-evenly mx-auto bg-gray-400 rounded-lg">
-              <h1 className="text-3xl bg-gray-700 h-1/5 flex gap-2 justify-center items-center text-gray-300 rounded-t-lg"><BsClipboard2CheckFill className="text-4xl text-blue-700" />Order Details</h1>
+              <h1 className="text-3xl bg-gray-700 h-1/5 flex gap-2 justify-center items-center text-gray-300 rounded-t-lg">
+                <BsClipboard2CheckFill className="text-4xl text-blue-700" />
+                Order Details
+              </h1>
               <div className="h-1/3 flex flex-col">
                 <p className="text-bs">File Name: {selectedFile.name}</p>
                 <div className="flex w-full justify-center gap-5">
@@ -432,18 +458,24 @@ function ServiceAvail() {
               </div>
               <div className="h-1/4">
                 <p className="text-bs">
-                  Material Name: {selectedMaterial.matName}
+                  Material Name: {selectedMaterial?.matName}
                 </p>
                 <p className="text-bs">
-                  Material Size: {selectedMaterial.matSize}
+                  Material Size: {selectedMaterial?.matSize}
                 </p>
               </div>
               <div className="h-1/5 flex items-center justify-center bg-green-300 rounded-b-lg">
-                <p className="text-bs">Total Amount: <span className="text-green-800">₱ {totalAmount}</span></p>
+                <p className="text-bs">
+                  Total Amount:{" "}
+                  <span className="text-green-800">₱ {totalAmount}</span>
+                </p>
               </div>
             </div>
             <div className="flex flex-col gap-2 justify-center items-center h-full w-1/2 p-5">
-              <h1 className="text-3xl">Thank you for choosing our service, <span className="text-blue-700">{user.userName}</span>!</h1>
+              <h1 className="text-3xl">
+                Thank you for choosing our service,{" "}
+                <span className="text-blue-700">{user.userName}</span>!
+              </h1>
               <h2>Please confirm your order.</h2>
               <button
                 className="Closebtn"
@@ -453,7 +485,10 @@ function ServiceAvail() {
               </button>
               {showPaypalButton && (
                 <div className="w-full h-4/5 flex justify-center items-end">
-                  <div ref={paypal} className="w-full h-full overflow-y-scroll"/>
+                  <div
+                    ref={paypal}
+                    className="w-full h-full overflow-y-scroll"
+                  />
                 </div>
               )}
             </div>

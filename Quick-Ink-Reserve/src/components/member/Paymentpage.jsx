@@ -1,13 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import axios from "axios";
 import Nav from "./LandingPageComponents/Nav";
 import { useAppContext } from "../../controllers/auth/AuthContext";
+import { useLocation } from "react-router-dom";
 
 
 
 function Paymentspage() {
   const { loginStatus, user, setUser, setLoginStatus } = useAppContext();
   const paypal = useRef();
+  const nav = useLocation();
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://www.paypal.com/sdk/js?client-id=AQHIxgrzelZZ_Ror73nF0zxvne1Lz7QnQkQXbQ7afN-lKXiwbcori21MHj74JoHiw_YWSFe-3FxnheGG";
@@ -52,7 +55,7 @@ function Paymentspage() {
         if (response.status === 200) {
           setUser("");
           setLoginStatus(false);
-          // Assuming `nav` is a function to navigate, call it here
+          nav("/");
         } else {
           console.error("Logout error:", response);
         }

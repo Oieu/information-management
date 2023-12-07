@@ -140,7 +140,7 @@ export function TotalAmountCards({ setLoading }) {
             ((totalAmountCurrentMonth - totalAmountPreviousMonth) /
               totalAmountPreviousMonth) *
             100
-          ).toFixed(2) === "Infinity" && 100}
+          ).toFixed(0)}
           % from last month
         </span>
       ) : (
@@ -151,7 +151,7 @@ export function TotalAmountCards({ setLoading }) {
               totalAmountPreviousMonth) *
             100
           ).toFixed(2)}
-          %
+          % from last month
         </span>
       )}
     </span>)
@@ -161,8 +161,8 @@ export function TotalAmountCards({ setLoading }) {
     <div className="h-[40%] w-1/3 bg-[#060641] p-5 rounded-lg">
       <div className="flex flex-col w-full h-[90%] bg-blue-200 m-auto">
         <div className="flex w-full h-4/5 bg-blue-200">
-          <h1 className="text-green-400 w-1/2 h-full">
-            <FaMoneyBill className="text-8xl m-auto h-full rotate-[120deg]" />
+          <h1 className="text-green-600 w-1/2 h-full flex justify-center items-center">
+            <FaMoneyBill className="text-8xl rotate-[120deg]" />
           </h1>
           <p className="text-green-800 text-4xl w-3/4 m-auto">
             ₱ {totalAmountCurrentMonth.toFixed(2)} <br />

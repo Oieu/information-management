@@ -15,7 +15,7 @@ export const getUserData = async (setData, setError, setLoading) => {
 export const currentMonthIndex = () => {
   const date = new Date();
   const month = date.getMonth();
-  return month - 1;
+  return month;
 };
 
 export const getOrderIncreasePercentage = async (
