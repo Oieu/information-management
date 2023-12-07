@@ -35,8 +35,6 @@ function ServiceAvail({ user }) {
   const [showPaypalButton, setShowPaypalButton] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-  console.log(user)
-
   useEffect(() => {
     const fetchServiceData = async () => {
       try {

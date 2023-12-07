@@ -4,7 +4,7 @@ import UserContainer from "./UserContainer";
 function UserWrapper({ user, maxWidth }) {
   return (
     <div
-      className={`flex justify-end align-baseline h-full ${
+      className={`flex justify-center align-baseline h-full ${
         user ? "hide-on-mobile" : "show-on-mobile"
       } ${maxWidth ? `w-[${maxWidth}]` : ""}`}
     >
