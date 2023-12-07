@@ -173,7 +173,10 @@ function ServiceAvail({ user }) {
               formData.append("matID", selectedMaterialID);
               formData.append("totalAmount", totalAmount);
               formData.append("genServicesID", service[0].genServicesID);
-
+              formData.append("userEmail", user.userEmail);
+              formData.append("userName", user.userName);
+              formData.append("materialName", selectedMaterial.matName); 
+              formData.append("materialSize", selectedMaterial.matSize); 
               try {
                 const response = await axios.post(
                   `http://localhost:5000/submit_order`,
@@ -390,7 +393,7 @@ function ServiceAvail({ user }) {
                   No materials available for this service.
                 </h1>
               )}
-              <button type="submit" className="OrdButn" disabled={disabled}>
+              <button type="submit" className="OrdButn" >
                 Submit Order
               </button>
             </form>

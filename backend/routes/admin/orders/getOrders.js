@@ -1,7 +1,10 @@
 import express from "express";
 import db from "../../db.js";
+import Mailjet from "node-mailjet";
+import dotenv from "dotenv";
 
 const router = express.Router();
+dotenv.config();
 
 router.get("/admin/orders", (req, res) => {
   const query = `
@@ -16,7 +19,8 @@ router.get("/admin/orders", (req, res) => {
     m.matName,
     m.matSize,
     s.genServiceName,
-    u.userName
+    u.userName,
+    u.userEmail
             FROM 
                 orders o
             INNER JOIN 
@@ -42,10 +46,16 @@ router.get("/admin/orders", (req, res) => {
 
 router.post("/updateStatus/:orderID", (req, res) => {
   const orderID = req.params.orderID;
-  const { status } = req.body;
+  const { status, uniqueNum, TotalAmount, Service, matName, matSize,   email, userName } = req.body;
 
   console.log(orderID);
-  console.log(status);
+  console.log(uniqueNum);
+  console.log(TotalAmount);
+  console.log( Service);
+  console.log( matName);
+  console.log(matSize);
+  console.log(email);
+  
 
   const query = "UPDATE orders SET status = ? WHERE orderID = ?";
 
@@ -55,6 +65,63 @@ router.post("/updateStatus/:orderID", (req, res) => {
     } else {
       console.log("Status updated successfully");
       res.status(200).json({ message: "Status updated successfully" });
+
+      console.log(status);
+
+       //WHEN ORDER IS SUCCESSFUL AN EMAIL IS SENT TO USER FOR THE SUMMARY OF THE ORDER
+      
+       if(status === "completed") {
+        const emailSubject = "Order Number:" + uniqueNum;  
+        const emailBody = "<html>" +
+                            "<body>" +
+                              "<h2> Dear Customer, <br/>" +
+                              "<h2>Thank you for trusting our services! Your order is now ready for pickup</h2><br/>" +
+                              "<p>Here is a summary of the order that you have made:</p><br/>" +
+                              "<p><strong>Service Name:</strong>" + Service +"</p><br/>" +
+                              "<p><strong>Material Name:</strong> " + matName +"</p><br/>"+ 
+                              "<p><strong>Size:</strong>" + matSize +"</p><br/>" +
+                              "<p><strong>Total Amount paid:</strong>" + TotalAmount + "</p><br/><br/>" +
+                              "<p>If you already have picked up your order, please ignore this message.</p><br/>" +
+                              "<p>Thank you and have a wonderful day!</p>"
+                            "</body>" +
+                          "</html>" ;
+  
+  
+        const mailjetClient = new Mailjet({
+          apiKey: process.env.MAILJET_PUBLIC_KEY,
+          apiSecret: process.env.MAILJET_SECRET_KEY,
+        });
+  
+        try {
+          const request = mailjetClient
+            .post('send', { version: 'v3.1' })
+            .request({
+              Messages: [
+                {
+                  From: {
+                    Email: process.env.EMAIL_OFFICIAL_QIR,
+                    Name: 'OFFICIAL QUICK INK RESERVE',
+                  },
+                  To: [
+                    {
+                      Email: email, 
+                      Name: userName,
+                    },
+                  ],
+                  Subject: emailSubject,
+                  HTMLPart: emailBody,
+                },
+              ],
+            });
+          request
+          console.log('Email sent successfully');
+        } catch (emailError) {
+          console.error('Error sending email:', emailError);
+        }
+ 
+       }
+      
+      
     }
   });
 });
