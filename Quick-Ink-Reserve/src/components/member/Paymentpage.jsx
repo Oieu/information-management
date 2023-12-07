@@ -4,8 +4,6 @@ import Nav from "./LandingPageComponents/Nav";
 import { useAppContext } from "../../controllers/auth/AuthContext";
 import { useLocation } from "react-router-dom";
 
-
-
 function Paymentspage() {
   const { loginStatus, user, setUser, setLoginStatus } = useAppContext();
   const paypal = useRef();
@@ -47,6 +45,7 @@ function Paymentspage() {
       document.body.removeChild(script);
     };
   }, []);
+
   const handleLogout = (e) => {
     e.preventDefault();
     axios

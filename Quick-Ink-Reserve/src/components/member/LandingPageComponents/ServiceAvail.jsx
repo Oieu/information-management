@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 import { getTotalPrice } from "./calculations";
 import { BsClipboard2CheckFill, BsSearch } from "react-icons/bs";
 
-function ServiceAvail() {
-  const { loginStatus, user, setUser, setLoginStatus } = useAppContext();
+function ServiceAvail({ user }) {
+  const { loginStatus, setUser, setLoginStatus } = useAppContext();
   const { genServiceName } = useParams();
   const [service, setService] = useState([]);
   const [materials, setMaterials] = useState([]);
@@ -34,6 +34,8 @@ function ServiceAvail() {
   const paypal = useRef();
   const [showPaypalButton, setShowPaypalButton] = useState(false);
   const [disabled, setDisabled] = useState(false);
+
+  console.log(user)
 
   useEffect(() => {
     const fetchServiceData = async () => {
@@ -160,11 +162,12 @@ function ServiceAvail() {
             },
             onApprove: async (data, actions) => {
               const order = await actions.order.capture();
-              console.log(order);
+              console.log(user.userID);
 
               //WHEN PAYPAL TRANSACTION BECOMES SUCCESSFUL ORDER IS POSTED IN THE SERVER
 
               const formData = new FormData();
+              console.log(user.userID);
               formData.append("inkType", selectedInkType);
               formData.append("file", selectedFile);
               formData.append("userID", user.userID);
@@ -479,7 +482,10 @@ function ServiceAvail() {
               <h2>Please confirm your order.</h2>
               <button
                 className="Closebtn"
-                onClick={() => setconfirmOrder(false)}
+                onClick={() => { 
+                  setconfirmOrder(false)
+                  window.location.reload();
+                }}
               >
                 <FaTimes />
               </button>
