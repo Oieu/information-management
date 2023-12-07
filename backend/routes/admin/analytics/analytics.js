@@ -25,18 +25,18 @@ router.get("/admin/analytics/api/user/:year", (req, res) => {
         }
 
         const months = [
-          "January",
-          "February",
-          "March",
-          "April",
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
           "May",
           "June",
           "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
+          "Aug",
+          "Sept",
+          "Oct",
+          "Nov",
+          "Dec",
         ];
 
         const data = months.map((month) => ({
@@ -90,9 +90,27 @@ router.get("/admin/analytics/api/user/status/:year", (req, res) => {
             .status(200)
             .json({ Message: "Query successful", Data: result });
         }
+
+        return res.status(200).json({ Data: [{ 
+          Year: year,
+          Status: "inactive",
+          Count: 0, 
+        }, {
+          Year: year,
+          Status: "active",
+          Count: 0,
+        }]});        
       });
     } else {
-      return res.status(404).json({ Message: "No users found" });
+      return res.status(200).json({ Data: [{ 
+        Year: year,
+        Status: "inactive",
+        Count: 0, 
+      }, {
+        Year: year,
+        Status: "active",
+        Count: 0,
+      }]});
     }
   });
 });
@@ -108,6 +126,36 @@ router.get("/admin/analytics/api/materials-count", (req, res) => {
   materials m ON m.matID = sm.matID
   GROUP BY groupedMatName, sm.serviceID
   ORDER BY Count;`;
+
+  db.query(sql, (err, result) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ Error: err, Message: "Error on the server side!" });
+    }
+    if (result.length > 0) {
+      return res
+        .status(200)
+        .json({ Message: "Query successful", Data: result });
+    }
+  });
+});
+
+router.get("/admin/analytics/api/revenue/:year", (req, res) => {
+  const year = req.params.year || new Date().getFullYear();
+
+  const sql = `
+  WITH RECURSIVE months AS (
+    SELECT 1 AS month
+    UNION
+    SELECT month + 1 FROM months WHERE month < 12
+  )
+  
+  SELECT months.month AS Month, COALESCE(SUM(orders.totalAmount), 0) AS Revenue, COUNT(*) as Sales
+  FROM months
+  LEFT JOIN orders ON months.month = MONTH(orders.createdAt) AND YEAR(orders.createdAt) = ${year}
+  GROUP BY months.month;  
+  `;
 
   db.query(sql, (err, result) => {
     if (err) {

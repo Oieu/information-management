@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchServiceMaterialData } from "./Functions";
+import { fetchServiceMaterialData } from "../Functions";
 
 const ServiceMatTable = () => {
   const [data, setData] = useState([]);

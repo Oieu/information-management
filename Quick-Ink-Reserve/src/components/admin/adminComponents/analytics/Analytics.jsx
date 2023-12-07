@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { fetchData, fetchInactiveData, fetchServiceMaterialData } from "./Functions";
+import { fetchData, fetchInactiveData } from "./Functions";
 import { months } from "./Functions";
 import LoadingComponent from "../../../../utils/LoadingComponent";
 import AnalyticsHeader from "./components/AnalyticsHeader";
 import UserCountData, { UserStatusCompare } from "./components/UserData";
-import ServiceMatTable from "./ServiceMatTable";
+import { OrderCountData } from "./components/LineGraph";
+import ServiceMatTable from "./components/ServiceMatTable";
 import { TabTitle } from "../../../../utils/GeneralFunctions";
 
 export default function Analytics() {
@@ -41,19 +42,20 @@ export default function Analytics() {
   return (
     <div className="w-full h-full flex flex-col">
       <AnalyticsHeader />
-      <div className="w-full h-full flex flex-col gap-5">
+      <div className="w-full h-auto flex flex-col gap-5">
         <UserCountData
-          year={year} data={data} 
+          data={data} 
           month={month} months={months}
-          setYear={setYear} setData={setData} setMonth={setMonth}
+          setData={setData} setMonth={setMonth}
           fetchData={fetchData}
         />
         <UserStatusCompare
-          year={year} setYear={setYear}
           inactiveUsers={inactiveUsers}
           fetchInactiveData={fetchInactiveData}
+          setInactiveUsers={setInactiveUsers}
         />
         <ServiceMatTable />
+        <OrderCountData />
       </div>
     </div>
   );

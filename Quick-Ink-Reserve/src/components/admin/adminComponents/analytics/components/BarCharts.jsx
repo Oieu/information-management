@@ -6,14 +6,11 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useState, useEffect } from "react";
 import { FaUsers } from "react-icons/fa";
 import { RiUserSharedFill } from "react-icons/ri";
 import { FaArrowUpRightDots } from "react-icons/fa6";
-import { fetchServiceMaterialData } from "./Functions";
 
 export function Headers({ text, year, setYear, setData, fetchData }) {
   return (
@@ -23,11 +20,11 @@ export function Headers({ text, year, setYear, setData, fetchData }) {
         <input
           type="text"
           value={year}
-          className="w-1/3 h-full text-lg p-2 rounded-lg bg-gray-500 border-none focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+          className="w-1/2 h-full text-lg p-2 rounded-lg bg-gray-500 border-none focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
           onChange={(e) => setYear(e.target.value)}
         />
         <button
-          className="bg-blue-500 text-lg text-black p-2 rounded-md w-1/3 h-full transition-all border-none hover:text-gray-200 hover:bg-blue-700 hover:translate-y-[-2px]"
+          className="bg-blue-500 text-lg text-black p-2 rounded-md w-1/2 transition-all border-none hover:text-gray-200 hover:bg-blue-700 hover:translate-y-[-2px]"
           onClick={(e) => fetchData(setData, year)}
         >
           Filter
@@ -100,14 +97,14 @@ export function UserCompare({ months, month, setMonth, data }) {
       </h2>
       <div className="h-1/2 w-full flex justify-evenly items-center">
         <div className="flex flex-col w-1/2 justify-center items-center gap-2">
-          <div className="w-full h-2/3 flex justify-center items-center">
+          <div className="w-full h-2/3 flex items-center">
             <RiUserSharedFill className="h-1/3 w-1/4 text-blue-200" />
             <h1 className="text-blue-400">
               {data[months.indexOf(month)].Count}
             </h1>
           </div>
           <h3 className="w-full h-1/3 flex gap-3 items-center">
-            Previous <br/> month: <span className={`text-2xl ${percentageChange < 0 ? "text-green-400" : "text-red-400"}`}>{data[months.indexOf(month) - 1].Count}</span>
+            Previous : <span className={`text-2xl ${percentageChange < 0 ? "text-green-400" : "text-red-400"}`}>{data[months.indexOf(month) - 1].Count}</span>
           </h3>
         </div>
         <div className="flex gap-3 items-center h-full">

@@ -3,15 +3,12 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import LoadingComponent from "../../../../utils/LoadingComponent";
 import "./Order.css";
-import { createColumns } from "./functions";
-import DataTable from "react-data-table-component";
-import { styles } from "../users/TableData";
-import { StyleSheetManager } from "styled-components";
-import { OrdersTable } from "./components/Components";
+import { Actions, OrdersTable } from "./components/Components";
 
 function Orders() {
   TabTitle("Orders", false);
   const [orders, Setorders] = useState([]);
+  const [filter, setFilter] = useState([]);
   const [UpdateStatus, setUpdateStatus] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -24,6 +21,7 @@ function Orders() {
 
         if (Array.isArray(response.data)) {
           Setorders(response.data);
+          setFilter(response.data);
         } else {
           console.error("API response is not an array:", response.data);
         }
@@ -83,7 +81,7 @@ function Orders() {
   }
 
   return (
-    <div className="w-full h-[90%] flex flex-col gap-5">
+    <div className="w-full h-[90%] flex flex-col gap-2">
       <header className="flex flex-col gap ml-5 h-[10%] text-white">
         <div className="flex items-center gap-5 w-[90%]">
           <h1 className="text-left">Orders</h1>
@@ -93,7 +91,8 @@ function Orders() {
           Here they can also update the status of the order.
         </p>
       </header>
-      <OrdersTable orders={orders} handleUpdatePopup={handleUpdatePopup} />
+      <Actions data={orders} setFilter={setFilter}/>
+      <OrdersTable orders={filter} handleUpdatePopup={handleUpdatePopup} />
       {UpdateStatus && selectedOrder && (
         <div className="popup-container">
           <div className="popup-content">

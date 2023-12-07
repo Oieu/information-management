@@ -115,7 +115,7 @@ function Users() {
       </header>
       <div className="container">
         <div className="row">
-          <div className="flex w-full m-auto h-20">
+          <div className="flex w-full h-20 bg-gray-700 p-2 rounded-lg mt-2">
             {actions(search, setSearch, setFilter, data)}
             {statusFilters(
               statusFilter,

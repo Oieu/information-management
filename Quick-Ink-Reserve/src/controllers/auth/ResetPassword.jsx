@@ -63,7 +63,7 @@ function ResetPassword() {
   const handlePasswordChange = (e) => {
     e.preventDefault();
 
-    passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 
     if (state.newPassword.trim() === "") {
       return setError("Input a new password.");

@@ -48,6 +48,7 @@ router.post("/api/reset", (req, res) => {
                   apiKey: process.env.MAILJET_PUBLIC_KEY,
                   apiSecret: process.env.MAILJET_SECRET_KEY,
                 });
+                console.log(user.userEmail)
                 const request = mailjetClient
                   .post("send", { version: "v3.1" })
                   .request({
