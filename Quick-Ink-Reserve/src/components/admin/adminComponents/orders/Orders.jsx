@@ -45,6 +45,13 @@ function Orders() {
         `http://localhost:5000/updateStatus/${selectedOrder.orderID}`,
         {
           status: selectedStatus,
+          uniqueNum: selectedOrder.uniqueNum,
+          TotalAmount: selectedOrder.totalAMount,
+          Service: selectedOrder.genServiceName,
+          matName: selectedOrder.matName,
+          matSize: selectedOrder.matSize,
+          email: selectedOrder.userEmail,
+          userName: selectedOrder.userName
         }
       );
 
