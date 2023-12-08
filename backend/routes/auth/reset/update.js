@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 const router = express.Router();
 const saltRounds = process.env.SALT_ROUNDS || 10;
 
-router.put('/reset', (req, res) => {
+router.post('/profile/reset', (req, res) => {
     const { email, newUsername, newPassword, currPassword } = req.body;  
     const checkCurrPasswordQuery = 'SELECT * FROM user WHERE userEmail = ?';
   

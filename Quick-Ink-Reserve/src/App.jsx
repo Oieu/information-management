@@ -12,6 +12,7 @@ import ForgotPassword from './controllers/auth/ForgotPassword'
 import { useAppContext } from './controllers/auth/AuthContext'
 import ServiceAvail from './components/member/LandingPageComponents/ServiceAvail'
 import ResetPassword from './controllers/auth/ResetPassword'
+import GetOrders from './components/member/GetOrders'
 
 function App() {
   const { loginStatus, user, setLoginStatus, setUser } = useAppContext();
@@ -65,6 +66,7 @@ function App() {
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path = '/service-avail/:genServiceName' element = {<ServiceAvail user={user}/>} />
         <Route path = '/reset/*' element = {<ResetPassword />} />
+        <Route path='/orders' element={<GetOrders />} />
       </Routes>
     </Router>
   );

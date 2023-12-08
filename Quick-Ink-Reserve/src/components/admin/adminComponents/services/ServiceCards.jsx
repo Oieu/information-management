@@ -28,15 +28,6 @@ function ServiceCards({
     <div
       className="bg-gray-800 w-[300px] h-[300px] rounded-lg p-5 relative overflow-hidden cursor-pointer text-zinc-400 shadow-zinc-400 shadow-sm border-white hover:shadow-blue-400 hover:shadow-lg transition-all"
     >
-      <div className="absolute z-10 right-5">
-        <span>
-          {service.featured === "false" ? (
-            <AiOutlineStar className="text-3xl text-yellow-200 hover:text-yellow-300 hover:scale-125 transition-all" />
-          ) : (
-            <AiFillStar className="text-3xl text-yellow-200 hover:text-yellow-300 hover:scale-125 transition-all" />
-          )}
-        </span>
-      </div>
       <div
         className="absolute top-0 left-0 w-full h-4/5 bg-cover bg-center hover:scale-150 transition-all"
         onClick={(e) =>

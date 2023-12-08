@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Label from "../formComponents/Label";
 import Inputs from "../formComponents/Inputs";
 import Errors from "../formComponents/Errors";
 
 function RegisterForm({ handleSubmit, handleFileInputChange, values, setValues, errors }) {
+
   return (
     <form onSubmit={handleSubmit} className="flex gap-5 flex-col">
       <div className="flex flex-col align-items-center justify-center gap-x-4">
-        <Label labelFor="userName" title="User Name" />
+        <Label labelFor="userName" title="Username" />
         <Inputs 
           type="text"
           placeholder="Enter your user name..."
@@ -44,6 +45,21 @@ function RegisterForm({ handleSubmit, handleFileInputChange, values, setValues, 
         />
         {errors.passwordError && (
           <Errors errors={errors.passwordError} />
+        )}
+      </div>
+      <div className="flex flex-col align-items-center justify-center gap-x-4">
+        <Label labelFor="number" title="Contact Number" />
+        <input 
+          type="text"
+          placeholder="Enter your contact number..."
+          name="number"
+          value={values.number}
+          onChange={(e) => setValues({ ...values, number: e.target.value })}
+          className="bg-gray-300 p-2 w-2/3 m-auto rounded-md placeholder:text-gray-400 text-gray-900"
+          maxLength="11"
+        />
+        {errors.error && (
+          <Errors errors={errors.error} />
         )}
       </div>
       <div className="m-auto flex flex-col gap-5 justify-center items-center outline-dashed outline-black outline-offset-2 h-32 w-2/3">

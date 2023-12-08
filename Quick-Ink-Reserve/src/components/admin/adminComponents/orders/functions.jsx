@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 export const tableHeaders = [
   "Order ID",
   "Unique Order ID",
@@ -81,8 +83,14 @@ export const createColumns = (handleUpdatePopup) => {
     },
     {
       name: <span className="text-lg">Date Ordered</span>,
-      selector: (row) => row.createdAt,
-      width: "10%",
+      selector: (row) => {
+        const formattedDate = format(
+          new Date(row.createdAt),
+          "MMMM d, yyyy, h:mm:ss a"
+        );
+        return formattedDate;
+      },
+      width: "15%",
       sortable: true,
     },
     {

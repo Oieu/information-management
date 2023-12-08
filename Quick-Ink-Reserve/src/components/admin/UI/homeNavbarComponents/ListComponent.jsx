@@ -45,26 +45,26 @@ export function ListComponent({ defaultActive }) {
 
 export function EditListComponent({ name }) {
   return (
-    <ul className="flex flex-col bg-white align-top rounded-lg mt-7 w-2/3">
+    <ul className="flex flex-col bg-transparent align-top w-full">
       <EditListItem 
         name={name} 
         title="Profile Information" 
         linkedTo="/profile" 
-        IconSelected={<BiSolidUser className="w-6 h-6 text-blue-500 lg:mr-2"/>} 
+        IconSelected={<BiSolidUser className="w-6 h-6 text-blue-300 lg:mr-2"/>} 
         IconUnselected={<BiSolidUser className="w-6 h-6 text-white lg:mr-2"/>}
       />
       <EditListItem 
         name={name} 
         title="Edit Information" 
         linkedTo="/edit" 
-        IconSelected={<AiTwotoneEdit className="w-6 h-6 text-blue-500 lg:mr-2"/>} 
+        IconSelected={<AiTwotoneEdit className="w-6 h-6 text-blue-300 lg:mr-2"/>} 
         IconUnselected={<AiTwotoneEdit className="w-6 h-6 text-white lg:mr-2"/>}
       />
       <EditListItem 
         name={name} 
         title="Pending Orders" 
         linkedTo="/orders" 
-        IconSelected={<FaFileInvoiceDollar className="w-6 h-6 text-blue-500 lg:mr-2"/>} 
+        IconSelected={<FaFileInvoiceDollar className="w-6 h-6 text-blue-300 lg:mr-2"/>} 
         IconUnselected={<FaFileInvoiceDollar className="w-6 h-6 text-white lg:mr-2"/>}
       />
     </ul>

@@ -48,15 +48,6 @@ router.post("/updateStatus/:orderID", (req, res) => {
   const orderID = req.params.orderID;
   const { status, uniqueNum, TotalAmount, Service, matName, matSize,   email, userName } = req.body;
 
-  console.log(orderID);
-  console.log(uniqueNum);
-  console.log(TotalAmount);
-  console.log( Service);
-  console.log( matName);
-  console.log(matSize);
-  console.log(email);
-  
-
   const query = "UPDATE orders SET status = ? WHERE orderID = ?";
 
   db.query(query, [status, orderID], (err, results) => {
@@ -85,7 +76,6 @@ router.post("/updateStatus/:orderID", (req, res) => {
                               "<p>Thank you and have a wonderful day!</p>"
                             "</body>" +
                           "</html>" ;
-  
   
         const mailjetClient = new Mailjet({
           apiKey: process.env.MAILJET_PUBLIC_KEY,

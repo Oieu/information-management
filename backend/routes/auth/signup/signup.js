@@ -7,13 +7,14 @@ const router = express.Router();
 const saltRounds = process.env.SALT_ROUNDS || 10;
 
 router.post("/signup", upload.single("profilePicture"), (req, res) => {
-  const { email, password, userName } = req.body;
+  const { email, password, userName, number } = req.body;
   const profilePicturePath = req.file ? req.file.path : null;
 
   const emailCheck = "SELECT * FROM user WHERE userEmail = ?";
 
   db.query(emailCheck, [email], (checkError, checkResult) => {
     if (checkError) {
+      console.error("Error from the server side:", checkError);
       return res.status(500).json({ Message: "Error from the server side." });
     }
 
@@ -24,16 +25,19 @@ router.post("/signup", upload.single("profilePicture"), (req, res) => {
     }
 
     const insertSql =
-      "INSERT INTO user (userEmail, userPassword, userName, profilePicture) VALUES (?, ?, ?, ?)";
+      "INSERT INTO user (userEmail, userPassword, userName, profilePicture, userNumber) VALUES (?, ?, ?, ?, ?)";
 
     bcrypt.hash(password, saltRounds, (err, hash) => {
       if (err) {
+        console.error("Error from the server side:", checkError);
         return res.status(500).json({ Message: "Error on the server side!" });
       }
 
-      const values = [email, hash, userName, profilePicturePath];
+      const values = [email, hash, userName, profilePicturePath, number];
+      
       db.query(insertSql, values, (err, insertResult) => {
         if (err) {
+          console.error("Error from the server side:", err);
           return res.status(500).json({ Message: "Error on the server side!" });
         }
         return res

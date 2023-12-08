@@ -72,7 +72,7 @@ function Nav({ handleLogout, user, loginStatus }) {
           {loginStatus != false ? (
             <>
               <UserWrapper user={user} maxWidth={"55%"} />
-              <div className="md:w-1/4 flex justify-center items-center">
+              <div className="md:w-1/2 h-full flex justify-center items-center">
                 {loginStatus === true ? (
                   <LogoutButtonMember handleLogout={handleLogout} />
                 ) : (
@@ -81,7 +81,7 @@ function Nav({ handleLogout, user, loginStatus }) {
               </div>
             </>
           ) : (
-            <div className="w-3/4 flex items-center gap-5">
+            <div className="w-3/4 flex justify-end items-center gap-5">
               <Link
                 to={`/login`}
                 className={`md:w-1/4 w-1/2 p-3 rounded-lg bg-blue-300 text-black hover:text-white hover:bg-blue-900 hover:translate-y-[-5px] transition-all

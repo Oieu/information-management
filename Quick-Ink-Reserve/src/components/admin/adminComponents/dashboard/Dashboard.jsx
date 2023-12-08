@@ -20,7 +20,7 @@ function Dashboard() {
   return (
     <div className="w-full h-[90%] relative overflow-hidden">
       <h1 className="mb-5">Dashboard</h1>
-      <div className="w-[95%] h-full flex justify-evenly gap-5 m-auto bg-[#090975] rounded-t-xl overflow-y-scroll p-12">
+      <div className="w-[95%] h-full flex justify-evenly m-auto bg-[#090975] rounded-t-xl overflow-y-scroll p-10">
         <UserCountCards 
           data={data}
           currentMonthIndex={currentMonthIndex}

@@ -16,12 +16,13 @@ function SignUp() {
     userName: '',
     email: '',
     password: '',
-    profilePicture: null
+    profilePicture: null,
+    number: ''
   });
   const [errors, setErrors] = useState({
     error: '',
     emailError: '',
-    passwordError: ''
+    passwordError: '',
   });
   const nav = useNavigate();
 
@@ -56,6 +57,11 @@ function SignUp() {
     }
   
     return passwordError.trim();
+  };
+  const validateNumber = (number) => {
+    const numberRegex = /^[0-9]*$/;
+    const temp = number.trim();
+    return numberRegex.test(number);
   };  
   function handleFileInputChange(event) {
     const fileInput = event.target;
@@ -79,15 +85,19 @@ function SignUp() {
       return setErrors({ ...errors, passwordError: pError });
     }
 
+    if(!validateNumber(values.number)) {
+      return setErrors({ ...errors, error: 'Invalid number format' });
+    }
+
     const formData = new FormData();
     formData.append('userName', values.userName);
     formData.append('email', values.email);
     formData.append('password', values.password);
     formData.append('profilePicture', values.profilePicture);
+    formData.append('number', values.number);
 
     axios.post('http://localhost:5000/signup', formData)
       .then(res => {
-          console.log(res.data.Message);
           nav('/login');
       })
       .catch(err => {
@@ -105,7 +115,7 @@ function SignUp() {
 
   return (
     <div className='h-full w-full flex align-items-center justify-center'>
-      <div className='absolute z-[-1] blur-sm opacity-70 bg-[url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")] bg-cover bg-no-repeat h-full w-full '></div>
+      <div className='absolute z-[-1] blur-sm opacity-70 bg-[url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")] bg-cover bg-no-repeat h-full w-full'></div>
       <RegisterFormContainer 
         values={values}
         setValues={setValues}

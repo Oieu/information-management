@@ -288,7 +288,7 @@ export function statusFilters(
   );
 };
 
-export function actions(search, setSearch, setFilter, data, generatePDF) {
+export function actions(search, setSearch, setFilter, data) {
   return (
     <div className="w-1/3 h-full flex justify-end items-center gap-5 bg-transparent m-0 p-0">
       <div className="w-[95%] h-full flex items-end gap-5">
@@ -318,7 +318,7 @@ export function actions(search, setSearch, setFilter, data, generatePDF) {
   );
 };
 
-function emptyTable() {
+export function emptyTable() {
   return (
     <div className="h-[700px] flex justify-center items-center">
       <h1 className="m-auto">No data available</h1>

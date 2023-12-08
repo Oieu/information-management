@@ -19,10 +19,10 @@ function LogoutButton({ handleLogout }) {
 export function LogoutButtonMember({ handleLogout }) {
   
     return (
-      <div className="flex w-[100%] items-center justify-center h-1/3">
+      <div className="flex w-[75%] items-center justify-center h-1/3">
         <button
           onClick={handleLogout}
-          className="text-black hover:text-white transition-all ml-5 w-full bg-red-500 hover:bg-red-700 hover:-translate-y-1 flex justify-center items-center gap-3"
+          className="text-black hover:text-white transition-all w-full bg-red-500 hover:bg-red-700 hover:-translate-y-1 flex justify-center items-center gap-3"
         >
           <BsBoxArrowLeft />
           Logout

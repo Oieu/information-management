@@ -19,14 +19,14 @@ export function EditListItem({ name, title, linkedTo, IconSelected, IconUnselect
 
   return  (
     <li
-        className={`p-5 border-b-blue-500 border-b-2 ${
-          title.toLowerCase().includes(name.toString().toLowerCase()) ? "bg-blue-500 rounded-lg" : ""
+        className={`p-5 ${
+          title.toLowerCase().includes(name.toString().toLowerCase()) ? "bg-gray-500" : "bg-none"
         }`}
       >
         <Link to={linkedTo} className="flex items-center justify-center">
           {title.toLowerCase().includes(name.toString().toLowerCase()) ? IconUnselected : IconSelected}
           <h1
-            className={`text-base text-blue-500 hidden lg:block ${
+            className={`text-base text-blue-300 hidden lg:block ${
               title.toLowerCase().includes(name.toString().toLowerCase()) ? "text-white" : ""
             }`}
           >

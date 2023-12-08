@@ -82,8 +82,6 @@ export function Actions({ data, setFilter}) {
     doc.save("orders-report.pdf");
   };
 
-  console.log(data)
-
   return (
     <div className="flex items-end gap-5 w-full bg-gray-950 h-20 p-2">
       <div className="flex items-center w-1/4 gap-2">
