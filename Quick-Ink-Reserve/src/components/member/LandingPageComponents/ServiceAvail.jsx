@@ -33,7 +33,30 @@ function ServiceAvail({ user }) {
   const nav = useNavigate();
   const paypal = useRef();
   const [showPaypalButton, setShowPaypalButton] = useState(false);
-  const [disabled, setDisabled] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [countdown, setCountdown] = useState(5);
+  const [redirecting, setRedirecting] = useState(false);
+
+  useEffect(() => {
+    let countdownTimer;
+
+    if (showSuccess) {
+      countdownTimer = setInterval(() => {
+        setCountdown((prevCount) => prevCount - 1);
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(countdownTimer);
+    };
+  }, [showSuccess]);
+
+  useEffect(() => {
+    if (countdown === 0 && showSuccess) {
+      setRedirecting(true);
+      nav("/orders");
+    }
+  }, [countdown, showSuccess]);
 
   useEffect(() => {
     const fetchServiceData = async () => {
@@ -175,8 +198,8 @@ function ServiceAvail({ user }) {
               formData.append("genServicesID", service[0].genServicesID);
               formData.append("userEmail", user.userEmail);
               formData.append("userName", user.userName);
-              formData.append("materialName", selectedMaterial.matName); 
-              formData.append("materialSize", selectedMaterial.matSize); 
+              formData.append("materialName", selectedMaterial.matName);
+              formData.append("materialSize", selectedMaterial.matSize);
               try {
                 const response = await axios.post(
                   `http://localhost:5000/submit_order`,
@@ -188,6 +211,8 @@ function ServiceAvail({ user }) {
                   }
                 );
                 console.log("Order placed:", response.data);
+                setShowPaypalButton(false);
+                setShowSuccess(true);
               } catch (error) {
                 console.error("Error submitting order:", error);
               }
@@ -393,7 +418,7 @@ function ServiceAvail({ user }) {
                   No materials available for this service.
                 </h1>
               )}
-              <button type="submit" className="OrdButn" >
+              <button type="submit" className="OrdButn">
                 Submit Order
               </button>
             </form>
@@ -411,7 +436,9 @@ function ServiceAvail({ user }) {
           <div className="w-1/3 h-1/2 bg-gray-200 rounded-tr-2xl rounded-bl-2xl relative">
             <div className="w-full h-full flex flex-col justify-center items-center">
               <div className="h-1/3 w-full bg-cover blur-[1px] rounded-tr-2xl bg-[url('https://images.unsplash.com/photo-1631270314738-e6f6827f8d9f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]"></div>
-              <h1 className="text-gray-800 leading-10 h-1/5 flex justify-center items-end">Hello Customer!</h1>
+              <h1 className="text-gray-800 leading-10 h-1/5 flex justify-center items-end">
+                Hello Customer!
+              </h1>
               <button
                 className="Closebtn"
                 onClick={() => setShowLoginPopup(false)}
@@ -434,7 +461,10 @@ function ServiceAvail({ user }) {
                     No account? Then sign-up for free.
                   </p>
                   <Link to="/signup">
-                    <button id="signup" className="transition-all border-none p-3 px-4 bg-green-400 text-gray-800 hover:bg-green-600 hover:text-gray-200">
+                    <button
+                      id="signup"
+                      className="transition-all border-none p-3 px-4 bg-green-400 text-gray-800 hover:bg-green-600 hover:text-gray-200"
+                    >
                       Sign Up
                     </button>
                   </Link>
@@ -483,8 +513,8 @@ function ServiceAvail({ user }) {
               <h2>Please confirm your order.</h2>
               <button
                 className="Closebtn"
-                onClick={() => { 
-                  setconfirmOrder(false)
+                onClick={() => {
+                  setconfirmOrder(false);
                   window.location.reload();
                 }}
               >
@@ -500,6 +530,22 @@ function ServiceAvail({ user }) {
               )}
             </div>
           </div>
+          {showSuccess && !redirecting && (
+            <div className="w-full h-full relative">
+              <div className="bg-black w-full h-full opacity-70 absolute"></div>
+              <div className="absolute top-[40%] left-0 w-full flex-col flex gap-5">
+                <h1 className="text-green-300 text-7xl">
+                  Thank you for availing with our services!
+                </h1>
+                <h2 className="text-gray-400 text-3xl">
+                  An email has been sent to you with the order details.
+                </h2>
+                <h3 className="text-orange-400 text-xl">
+                  Redirecting in {countdown}...
+                </h3>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

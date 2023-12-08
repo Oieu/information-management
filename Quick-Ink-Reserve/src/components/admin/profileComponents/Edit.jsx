@@ -107,9 +107,9 @@ function Edit() {
 
   return (
     <>
-      <div className="flex w-full m-auto h-full bg-gray-700 relative">
+      <div className="flex w-full m-auto h-full bg-gray-700">
         <Navbar nav={nav} name={"edit"} />
-        <div className="w-4/5 h-4/5 m-auto flex flex-col justify-center items-center">
+        <div className="w-4/5 h-full m-auto flex flex-col justify-center items-center relative">
           <h1 className="h-2/5 flex items-center">Edit Profile Information</h1>
           <div className="w-full h-4/5">
             <form
@@ -240,15 +240,10 @@ function Edit() {
                 </div>
               )}
             </h1>
-          </div>
-
-          <div className="flex justify-end absolute top-5 right-5">
-            <button
-              onClick={() => handleReturn}
-              className="flex gap-2 items-center justify-end transition ease-in-out delay-150 bg-green-400 hover:-translate-y-1 hover:scale-100 hover:bg-green-600 hover:text-white duration-300 p-5 rounded-lg text-gray-900"
-            >
-              <BsBoxArrowLeft />
-              Back to Dashboard
+            <button onClick={handleReturn} 
+              className='flex gap-2 items-center transition ease-in-out delay-150 bg-green-400 hover:-translate-y-1 hover:scale-100 hover:bg-green-600 hover:text-white duration-300 p-5 rounded-lg absolute top-5 left-0 text-gray-900'>
+                <BsBoxArrowLeft />
+                Back to Home
             </button>
           </div>
         </div>

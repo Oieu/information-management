@@ -20,6 +20,7 @@ function Orders() {
         const response = await axios.get("http://localhost:5000/admin/orders");
 
         if (Array.isArray(response.data)) {
+          console.log("API response is an array:", response.data)
           Setorders(response.data);
           setFilter(response.data);
         } else {

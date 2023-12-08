@@ -55,14 +55,14 @@ function GetOrders() {
   return (
     <div className="w-full h-full bg-gray-700 flex">
       <Navbar nav={nav} name={"orders"} />
-      <div className="w-4/5 h-4/5 bg-gray-800 m-auto p-5 flex flex-col relative">
+      <div className="relative w-5/6 h-full bg-gray-800 m-auto p-5 flex flex-col justify-center">
         {loading ? (
           <LoadingComponentDots loading={loading} />
         ) : (
           <>
-            <div className="flex w-full">
-              <h1 className="text-gray-300 text-left p-5">
-                {user.userName}'s Orders
+            <div className="flex w-full justify-center items-center">
+              <h1 className="text-gray-300 text-left p-5 w-2/5">
+                {(user.userName).split(" ")[0]}'s Orders
               </h1>
               <div className="w-3/5 flex items-end p-5 gap-2">
                 <label htmlFor="search">
@@ -127,10 +127,8 @@ function GetOrders() {
             </StyleSheetManager>
           </>
         )}
-        <button
-            onClick={() => nav('/')}
-            className="flex gap-2 items-center transition ease-in-out delay-150 bg-green-400 hover:-translate-y-1 hover:scale-100 hover:bg-green-600 hover:text-white duration-300 p-5 rounded-lg text-gray-900 absolute right-5 bottom-5"
-        >
+        <button onClick={() => nav('/')} 
+          className='flex gap-2 items-center transition ease-in-out delay-150 bg-green-400 hover:-translate-y-1 hover:scale-100 hover:bg-green-600 hover:text-white duration-300 p-5 rounded-lg absolute top-5 left-8 text-gray-900'>
             <BsBoxArrowLeft />
             Back to Home
         </button>

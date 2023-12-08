@@ -108,7 +108,7 @@ function ResetPassword() {
       )}
       {authenticated === true && (
         <ResetPasswordForm
-          state={state}
+          state={state} nav={nav}
           handleInputChange={handleInputChange}
           handlePasswordChange={handlePasswordChange}
           error={error} success={success}

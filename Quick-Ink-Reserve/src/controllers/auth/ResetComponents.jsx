@@ -86,7 +86,7 @@ export function OtpRequest({ otp, setOtp, handleSubmitOTP }) {
 }
 
 export function ResetPasswordForm({
-  state,
+  state, nav,
   handleInputChange,
   handlePasswordChange,
   error, success
@@ -100,7 +100,7 @@ export function ResetPasswordForm({
         setTimer((prev) => prev - 1);
       }, 1000);
     } else if (timer === 0 && success) {
-      window.location.href = "/login";
+      nav("/login");
     }
     return () => clearInterval(countdown);
   }, [timer, success]);

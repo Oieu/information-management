@@ -41,7 +41,7 @@ export function UserCountCards({ data, currentMonthIndex }) {
    };
    
   return (
-    <div className="h-[40%] w-1/3 bg-[#060641] p-5 pb-10 rounded-lg">
+    <div className="h-full w-1/3 bg-[#060641] p-5 pb-10 rounded-lg">
       <div className="flex flex-col w-full h-full bg-blue-200 m-auto">
         <div className="flex w-full h-4/5 bg-blue-200">
           <RiUserFill className="text-9xl m-auto text-blue-500 w-1/2" />
@@ -83,7 +83,7 @@ export function PendingOrderCards({ setLoading }) {
   const pendingOrders = data.filter((order) => order.status === "pending");
 
   return (
-    <div className="h-[40%] w-1/3 bg-[#060641] p-5 rounded-lg">
+    <div className="h-full w-1/3 bg-[#060641] p-5 rounded-lg">
       <div className="flex w-full h-[90%] bg-blue-200 m-auto">
         <h1 className="text-orange-400 w-1/2 h-full">
           <FaClipboardList className="text-8xl m-auto h-full" />
@@ -158,7 +158,7 @@ export function TotalAmountCards({ setLoading }) {
   };
 
   return (
-    <div className="h-[40%] w-1/3 bg-[#060641] p-5 rounded-lg">
+    <div className="h-full w-1/3 bg-[#060641] p-5 rounded-lg">
       <div className="flex flex-col w-full h-[90%] bg-blue-200 m-auto">
         <div className="flex w-full h-4/5 bg-blue-200">
           <h1 className="text-green-600 w-1/2 h-full flex justify-center items-center">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createColumns } from "../functions";
 import DataTable from "react-data-table-component";
-import { styles } from "../../users/TableData";
+import { emptyTable, styles } from "../../users/TableData";
 import { StyleSheetManager } from "styled-components";
 import { BsSearch } from "react-icons/bs";
 import JsPDF from "jspdf";
@@ -17,9 +17,9 @@ export function OrdersTable({ orders, handleUpdatePopup }) {
           pagination
           paginationRowsPerPageOptions={[10, 20, 30]}
           className="w-full bg-white border border-gray-300 shadow-md"
-          noDataComponent={<span>No orders found.</span>}
-          defaultSortField="userName"
-          defaultSortAsc={true}
+          noDataComponent={emptyTable()}
+          defaultSortField="status"
+          defaultSortAsc={false}
           highlightOnHover
           paginationComponentOptions={{
             rowsPerPageText: "No. of rows per page:",
@@ -45,7 +45,9 @@ export function Actions({ data, setFilter}) {
     setFilter(data.filter((order) => {
       const matchesSearch = (
         order.userName.toLowerCase().includes(search.toLowerCase()) ||
-        order.uniqueNum.toLowerCase().includes(search.toLowerCase())
+        order.uniqueNum.toLowerCase().includes(search.toLowerCase()) ||
+        order.matName.toLowerCase().includes(search.toLowerCase()) ||
+        order.genServiceName.toLowerCase().includes(search.toLowerCase())
       );
   
       const matchesDateRange = (

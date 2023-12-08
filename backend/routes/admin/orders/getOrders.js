@@ -28,7 +28,8 @@ router.get("/admin/orders", (req, res) => {
             INNER JOIN 
                 genservices s ON o.serviceID = s.genServicesID
             INNER JOIN 
-                user u ON o.userID = u.userID;
+                user u ON o.userID = u.userID
+    ORDER BY status, createdAt DESC;
        `;
 
   db.query(query, (err, results) => {
@@ -161,6 +162,27 @@ router.get("/admin/orders/total-amount/current-month", (req, res) => {
     }
  
     return res.status(200).json(results[0]);
+  });
+ });
+
+ router.get("/admin/api/order/:month", (req, res) => {
+  const month = req.params.month;
+  const sql = `
+    SELECT *
+    FROM orders o LEFT JOIN user u ON o.userID = u.userID
+    WHERE MONTH(o.createdAt) = ? AND YEAR(o.createdAt) = YEAR(CURDATE())
+  `
+
+  db.query(sql, [month], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Error on the server side" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Orders not Found" });
+    }
+
+    return res.status(200).json(results);
   });
  });
  

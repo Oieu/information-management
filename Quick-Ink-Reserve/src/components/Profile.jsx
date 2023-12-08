@@ -68,7 +68,7 @@ function Profile() {
                 <div className='text-center bg-gray-900 p-5 w-full rounded-md '>{user.userRole}</div>
               </div>
             </div>
-            <button onClick={() => handleReturn} 
+            <button onClick={handleReturn} 
               className='flex gap-2 items-center transition ease-in-out delay-150 bg-green-400 hover:-translate-y-1 hover:scale-100 hover:bg-green-600 hover:text-white duration-300 p-5 rounded-lg absolute top-5 left-0 text-gray-900'>
                 <BsBoxArrowLeft />
                 Back to Home

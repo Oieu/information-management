@@ -3,6 +3,7 @@ import { EditListItem, ListItem } from "./ListItem";
 import { BiSolidUser } from "react-icons/bi";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { FaFileInvoiceDollar } from "react-icons/fa6";
+import { useAppContext } from "../../../../controllers/auth/AuthContext";
 
 export function ListComponent({ defaultActive }) {
   return (
@@ -44,6 +45,8 @@ export function ListComponent({ defaultActive }) {
 }
 
 export function EditListComponent({ name }) {
+  const { user } = useAppContext();
+  console.log(user);
   return (
     <ul className="flex flex-col bg-transparent align-top w-full">
       <EditListItem 
@@ -63,7 +66,7 @@ export function EditListComponent({ name }) {
       <EditListItem 
         name={name} 
         title="Pending Orders" 
-        linkedTo="/orders" 
+        linkedTo={`${user.userRole === "ADMIN" ? "/admin/orders" : "/orders"}`}
         IconSelected={<FaFileInvoiceDollar className="w-6 h-6 text-blue-300 lg:mr-2"/>} 
         IconUnselected={<FaFileInvoiceDollar className="w-6 h-6 text-white lg:mr-2"/>}
       />

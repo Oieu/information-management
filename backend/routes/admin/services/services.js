@@ -89,7 +89,7 @@ router.put(
   "/admin/services/update/:id",
   upload.single("serviceImage"),
   (req, res) => {
-    const { id, name, rateUnit, description, featured } = req.body;
+    const { id, name, rateUnit, description } = req.body;
     const serviceImagePath = req.file ? req.file.path : null;
 
     let updateSql, params;
@@ -99,12 +99,12 @@ router.put(
 
     if (serviceImagePath === null) {
       updateSql =
-        "UPDATE genservices SET genServiceName = ?, genServiceDesc = ?, rateUnit = ?, featured = ? WHERE genServicesID = ?";
-      params = [name, description, rateUnit, featured, id];
+        "UPDATE genservices SET genServiceName = ?, genServiceDesc = ?, rateUnit = ? WHERE genServicesID = ?";
+      params = [name, description, rateUnit, id];
     } else {
       updateSql =
-        "UPDATE genservices SET genServiceName = ?, genServiceDesc = ?, genServiceImageUrl = ?, rateUnit = ?, featured = ? WHERE genServicesID = ?";
-      params = [name, description, serviceImagePath, rateUnit, featured, id];
+        "UPDATE genservices SET genServiceName = ?, genServiceDesc = ?, genServiceImageUrl = ?, rateUnit = ? WHERE genServicesID = ?";
+      params = [name, description, serviceImagePath, rateUnit, id];
     }
 
     db.query(updateSql, params, (err, result) => {

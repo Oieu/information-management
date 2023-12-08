@@ -48,7 +48,7 @@ router.post("/api/reset", (req, res) => {
                   apiKey: process.env.MAILJET_PUBLIC_KEY,
                   apiSecret: process.env.MAILJET_SECRET_KEY,
                 });
-                console.log(user.userEmail)
+                console.log(user.userEmail);
                 const request = mailjetClient
                   .post("send", { version: "v3.1" })
                   .request({
@@ -245,19 +245,22 @@ router.post("/api/reset-password/:email", (req, res) => {
 
               return res.status(400).json({ message: "OTP has expired" });
             } else {
-              if(otpData.otp !== otp) return res.status(400).json({ message: "OTP is incorrect" })
+              if (otpData.otp !== otp)
+                return res.status(400).json({ message: "OTP is incorrect" });
               else {
-                const sql = "UPDATE otp_reset SET status = ? WHERE userID = ?"
+                const sql = "UPDATE otp_reset SET status = ? WHERE userID = ?";
 
                 db.query(sql, [0, user.userID], (err, result) => {
-                  if(err) {
+                  if (err) {
                     console.log(err);
                     return res.status(500).json({ error: err });
                   } else {
-                    console.log('Status has been set to inactive!');
-                    return res.status(200).json({ message: "Correct OTP. Change your password!" });
+                    console.log("Status has been set to inactive!");
+                    return res
+                      .status(200)
+                      .json({ message: "Correct OTP. Change your password!" });
                   }
-                })
+                });
               }
             }
           }
@@ -286,42 +289,34 @@ router.post("/api/reset-password/user/:email", (req, res) => {
         res.status(400).json({ message: "Email does not exist" });
       } else {
         const user = result[0];
-        const checkPassword = bcrypt.compareSync(
-          oldPassword,
-          user.userPassword
-        );
+        const hashedPassword = bcrypt.hashSync(newPassword, 10);
+        const updatePassword =
+          "UPDATE user SET userPassword = ? WHERE userID = ?";
 
-        if (checkPassword) {
-          const hashedPassword = bcrypt.hashSync(newPassword, 10);
-          const updatePassword =
-            "UPDATE user SET userPassword = ? WHERE userID = ?";
+        db.query(
+          updatePassword,
+          [hashedPassword, user.userID],
+          (err, result) => {
+            if (err) {
+              console.log(err);
+              res.status(500).json({ message: "Server error" });
+            } else {
+              const updateOtpStatus =
+                "UPDATE otp_reset SET status = ? WHERE userID = ?";
 
-          db.query(
-            updatePassword,
-            [hashedPassword, user.userID],
-            (err, result) => {
-              if (err) {
-                console.log(err);
-                res.status(500).json({ message: "Server error" });
-              } else {
-                const updateOtpStatus = "UPDATE otp_reset SET status = ? WHERE userID = ?";
-
-                db.query(updateOtpStatus, [0, user.userID], (err, result) => {
-                  if (err) {
-                    console.log(err);
-                    res.status(500).json({ message: "Server error" });
-                  } else {
-                    return res
-                      .status(200)
-                      .json({ message: "Password has been updated" });
-                  }
-                });
-              }
+              db.query(updateOtpStatus, [0, user.userID], (err, result) => {
+                if (err) {
+                  console.log(err);
+                  res.status(500).json({ message: "Server error" });
+                } else {
+                  return res
+                    .status(200)
+                    .json({ message: "Password has been updated" });
+                }
+              });
             }
-          );
-        } else {
-          return res.status(400).json({ message: "Old password is incorrect" });
-        }
+          }
+        );
       }
     });
   }
